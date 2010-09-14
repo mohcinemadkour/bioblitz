@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" height="720" width="509" creationComplete="	currentState='checkingtoken'" 
+	title="FlickrTagger" xmlns:auth="com.vizzuality.views.authentication.*" xmlns:main="com.vizzuality.views.main.*" xmlns:auth_comps="com.vizzuality.views.authentication.components.*"  minHeight="720" minWidth="509" borderColor="#B6ABAB" 
+>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
+			import com.adobe.gpslib.GPX;
+			import com.vizzuality.dao.DataAccessObject;
+			
+
+			public var gpx: GPX = new GPX();
+			public var count: int = 0;
+			
+			public var uploadingAllPictures:Boolean=false;
+			public var deletingAllPictures: Boolean=false;
+			[Bindable] public var taxon: String = "";
+			[Bindable] public var tagSequence: String = "";
+			public var croppedImagesDictionary : Dictionary = new Dictionary();
+				
+			public function onAuthorizationComplete():void {
+				var dao: DataAccessObject = new DataAccessObject();
+				
+				if (count==1) {
+					dao.openConnection("UPDATE user SET token = '"+ FlickrAuthorizationSettings.authToken +"' WHERE alias = '"+ FlickrAuthorizationSettings.accountName +"'");
+					dao.showTable(dao.dbResult);
+				}
+				else {
+					dao.openConnection("INSERT INTO user (alias, token) VALUES ('"+ FlickrAuthorizationSettings.accountName +"','"+ FlickrAuthorizationSettings.authToken +"')");
+					dao.showTable(dao.dbResult);
+				}
+				currentState="imagetagger";
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Style source="com/vizzuality/skin/components.css"/>
+	
+	<mx:states>
+		<mx:State name="imagetagger">
+			<mx:AddChild>
+				<main:PrincipalView id="principalView" left="0" right="0" top="0" bottom="0"/>
+			</mx:AddChild>
+			<mx:SetProperty name="height" value="674"/>
+		</mx:State>
+		<mx:State name="checkingtoken">
+			<mx:AddChild>
+				<auth_comps:CheckingToken onGetTokenOK="currentState='imagetagger'" onGetTokenKO="currentState='authorizationFlickr'" horizontalCenter="0" verticalCenter="-50" borderColor="#F9F7F4"/>
+			</mx:AddChild>
+			<mx:SetStyle name="backgroundGradientAlphas" value="[1.0, 1.0]"/>
+		</mx:State>
+		<mx:State name="authorizationFlickr">
+			<mx:AddChild>
+				<auth:AuthorizationView id="authorization" color="#F6F8F9" horizontalCenter="0" width="100%" top="0" bottom="0"/>
+			</mx:AddChild>
+			<mx:SetStyle name="backgroundColor" value="#2E2E2E"/>
+		</mx:State>
+	</mx:states>
+</mx:WindowedApplication>

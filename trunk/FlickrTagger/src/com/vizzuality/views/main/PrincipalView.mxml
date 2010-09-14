@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" backgroundAlpha="0" 
+	xmlns:main="com.vizzuality.views.main.*">
+	
+	
+	
+		<mx:Script>
+			<![CDATA[
+				import mx.core.Application;
+				import com.adobe.gpslib.gpx.events.ParseEvent;
+				import com.adobe.gpslib.GPX;
+				import com.adobe.gpslib.GPXService;
+				import mx.events.FileEvent;
+				import mx.controls.Alert;
+				private var gpxFile:File = File.documentsDirectory;
+				
+				private function selectGPXFile(gpx:File):void {
+					var imgFilter:FileFilter = new FileFilter("GPX Files", "*.gpx");
+			  		gpx.addEventListener(Event.SELECT, fileSelected);
+					gpx.browseForOpen("Open", [imgFilter]);
+				}
+				
+				private function fileSelected(event:Event):void {
+    				var stream:FileStream = new FileStream();
+					stream.open(gpxFile,FileMode.READ);
+					var fileData:String = stream.readUTFBytes(stream.bytesAvailable);
+					stream.close();
+					var xmlData:XML = new XML(fileData);
+    				
+					var gpxSrv:GPXService = new GPXService();
+					gpxSrv.addEventListener(ParseEvent.PARSE_COMPLETE,onGpxParse);
+					gpxSrv.load(xmlData);	
+				}
+				
+			protected function onGpxParse(event:ParseEvent):void {
+				var len:int = event.gpx.arrWaypoints.length;
+				Application.application.gpx = event.gpx;
+				//gpx_data.text = event.gpx.time.day + '/' + event.gpx.time.month + '/' + event.gpx.time.fullYear + ' --> ' + event.gpx.name;
+			}
+				
+				
+			]]>
+		</mx:Script>
+		
+		
+      	<mx:VBox height="100%" width="100%" verticalGap="0">
+	        <mx:HBox height="70" width="100%" horizontalAlign="center" verticalAlign="bottom" horizontalGap="1">
+        		<mx:Button width="162" height="70" label="Manage photos"/>
+        		<mx:Button width="162" height="70" label="link a GPX file"/>
+        		<mx:Button width="162" height="70" label="Help and more info"/>
+	        </mx:HBox>
+	        <mx:Canvas height="37" width="100%" backgroundColor="#FF8400">
+	        	<mx:Label text="Drag or select multiple photos (alt+click) to create groups" x="10" y="10" color="#000000"/>
+	        </mx:Canvas>
+	        <main:ImagesContainer id="system" label="Search" width="100%" height="100%"/>
+	        <!--<mx:HBox width="100%">
+	        	<mx:Button label="Add GPX file" left="0" click="selectGPXFile(gpxFile)" styleName="JamCreation"/>
+	        	<mx:Label id="gpx_data" text="GPX File data" right="0" width="298" height="26" color="#FFFFFF" fontSize="12" fontFamily="Verdana" fontWeight="bold" textAlign="left" paddingTop="3"/>	
+	        </mx:HBox>-->
+     	</mx:VBox>  
+</mx:Canvas>
+

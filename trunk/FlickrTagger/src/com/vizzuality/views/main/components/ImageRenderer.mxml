@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="225" height="200" color="#040404" creationComplete="initRenderer()" verticalScrollPolicy="off" 
+	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0" top="3">
+        
+        <mx:Script>
+                <![CDATA[
+                	import com.vizzuality.views.main.ImagesContainer;
+                	import mx.core.Application;
+                    import com.vizzuality.dao.FlickrUploadService;
+                    import mx.core.IFlexDisplayObject;
+                    import mx.managers.PopUpManager;
+                    import mx.events.EffectEvent;
+                    import mx.events.ChildExistenceChangedEvent;
+                    import mx.effects.RemoveItemAction;
+                    import mx.controls.Alert;
+                    import mx.events.ListEvent;
+                    import mx.controls.TileList;
+                    import mx.events.FlexEvent;
+                    import mx.managers.PopUpManager;
+                    
+                    [Bindable]private var isPhotoSelected:Boolean=false;
+                    private var outerList:TileList;
+                    private var popUpImage:PopUpManagerImage = new PopUpManagerImage();
+                    
+                    [Bindable]private var inputColor: uint;
+                    [Bindable]private var path: String;
+                    [Bindable]private var enabling: Boolean;  
+                    [Bindable]private var textButton: String; 
+                    [Bindable]private var textInput: String;                 
+                    
+                    override public function set data(value:Object):void{
+
+						  if (value != null) {
+						     path = value.path;
+						     if (value.scientific == null || value.scientific == "") {						
+						     	textInput = 'Not recognized';
+						     	inputColor = 0x000000;
+						     } else {
+						     	textInput = value.scientific;
+						     	inputColor = 0xBBBBBB;
+						     }
+						     enabling = true;	
+						  	 textButton = "Upload to Flickr";	
+						  } else {
+						  	 inputColor = 0xf65951;
+						  	 textInput = "";
+						  	 path = ""; 
+						  	 enabling = true;
+						  	 textButton = "Upload to Flickr";						     
+						  }
+						  super.data = value;
+					}
+					
+					
+                    private function initRenderer():void {
+                        this.outerList = (this.parentDocument as ImagesContainer).tilelist;
+                        this.outerList.addEventListener(ListEvent.CHANGE, updateSelected); 
+                        this.addEventListener(FlexEvent.DATA_CHANGE, checkSelected);
+		                var glow:GlowFilter = new GlowFilter();
+
+		                glow.color = 0xFF7700;
+		                glow.alpha = 0.4;
+		                glow.blurX = 3;
+		                glow.blurY = 3;
+		                glow.strength =5;
+		                glow.quality = BitmapFilterQuality.HIGH;
+		
+		                itemSpace.filters = [glow];
+                    }
+                     
+                 
+                    
+                    private function updateScientificName():void {
+                            (this.parentDocument as ImagesContainer).updateName(scientificNameInput.text,data.path);  
+                            textInput = scientificNameInput.text;
+                            data.scientific = textInput;            
+                            changeColorInput();                             
+                    }
+                    
+                    private function changeColorInput():void {
+                        if(textInput =='' || textInput == 'Not recognized') {
+                                inputColor = 0x000000;
+                        } else {
+                                inputColor = 0xBBBBBB;
+                        }
+                    }
+                    
+                    private function updateSelected(event:ListEvent):void {
+                       if(event.itemRenderer == this)
+                         isPhotoSelected=true;
+                       else
+                         isPhotoSelected=false;
+                    }
+                    
+                    private function checkSelected(event:FlexEvent):void {
+                        if (this.outerList.selectedItem == this.data) {
+                           isPhotoSelected=true;
+                        } else {
+                           isPhotoSelected=false;                        	
+                        }
+                    }
+                    
+                    private function uploadImage():void {
+                            if (textInput == "" || textInput == "Tag this image!") {
+                                    Alert.show("Tag this image first!","Error uploading")
+                            } else {
+                                    textButton = "Uploading now";
+                                    enabling = false;
+                                    var upFlick: FlickrUploadService = new FlickrUploadService();
+                                    upFlick.resolveTagsFlickr(data.path,scientificNameInput.text);
+                            }
+                    }
+                    
+                    private function eraseImage():void {
+                            (this.parentDocument as ImagesContainer).deleteImage(data.path,1);
+                    }       
+                    
+                   /*  private function overImage():void {
+                            canvas2.setStyle("backgroundAlpha","0.6");
+                            canvas2.setStyle("backgroundColor","#000000");
+                    }
+                    private function outImage():void {
+                            canvas2.setStyle("backgroundAlpha","0");
+                    }      */  
+                    
+                    
+                    private function changeScientificName():void {
+                            if (textInput == "Not recognized") {
+                                    textInput = "";
+                            }
+                    }
+                    
+                    private function changeTaxonomy():void {
+                            if (textInput == "" || textInput == "Not recognized") {
+                                    Alert.show("Tag this image first!","Error taxonoming!!!¿?");
+                            } /* else {
+                                    (this.parentDocument as ImagesContainer).openTaxonomyPanel(data.path,scientificNameInput.text);
+                            } */
+                    }
+                    
+                    private function onClickImage(ev:MouseEvent):void {
+		                popUpImage.source = data.path;
+		                PopUpManager.addPopUp(popUpImage,this, true);
+		                
+		            }
+                ]]>
+        </mx:Script>
+        
+                      
+        
+        <mx:Canvas id="itemSpace" height="136" width="180" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" verticalCenter="0" backgroundColor="white">
+			<components:CroppedImage pathImage="{path}" verticalCenter="0" horizontalCenter="0"/>
+        </mx:Canvas>
+        <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="142" horizontalCenter="0"/>
+        <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName()" textAlign="center" width="180" 
+        	creationComplete="changeColorInput()" height="24" enter="changeTaxonomy()" fontFamily="Arial" fontSize="13" x="22" y="169" color="#BBBBBB" fontWeight="bold"/>
+		<mx:Button label="{textButton}" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" enabled="{enabling}" x="10" y="20"/>
+        <mx:Button label="x" fontSize="10" click="eraseImage()" width="28" id="del" height="28" enabled="{enabling}" x="189" y="20"/>          	
+        	
+        
+</mx:Canvas>

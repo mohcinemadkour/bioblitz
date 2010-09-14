@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	height="98" width="138" borderStyle="solid" borderThickness="0" cornerRadius="10" 
+	backgroundColor="#FEFCFC" backgroundAlpha="1.0" themeColor="#000000" borderColor="#382513" creationComplete="onCreationComplete()">
+	
+	<mx:states>
+		<mx:State name="httpError">
+			<mx:RemoveChild target="{bar}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="10" y="38" label="Try again" click="initialState()"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="252" y="38" label="Exit" click="NativeApplication.nativeApplication.exit()"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="26" y="10" text="Ups!! You aren't connect currently to internet" width="258" textAlign="center"/>
+			</mx:AddChild>
+			<mx:SetProperty name="width" value="310"/>
+			<mx:SetProperty name="height" value="70"/>
+			<mx:RemoveChild target="{swfloader1}"/>
+		</mx:State>
+	</mx:states>
+		
+	<mx:Script>
+		<![CDATA[
+			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
+			import com.adobe.serialization.json.JSON;
+			import flash.events.Event;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.http.HTTPService;
+			import mx.collections.ArrayCollection;
+			import mx.core.Application;
+			import com.adobe.crypto.MD5;
+			import com.vizzuality.dao.*;
+			import com.vizzuality.event.GetTokenEvent;
+			
+	
+			private var sqlArray: ArrayCollection;
+			private var object: Object;
+			private var ko:GetTokenEvent = new GetTokenEvent(GetTokenEvent.KO_TOKEN);
+			private var ok:GetTokenEvent = new GetTokenEvent(GetTokenEvent.OK_TOKEN);
+
+			
+			private function onCreationComplete():void {
+				createSQL();
+				createDirectory();
+				askToken();
+			}
+			
+	
+			private function askToken():void {
+				bar.text="Checking token..."			
+				if (FlickrAuthorizationSettings.authToken!=""){
+					bar.text="Checking token..."
+					var sig:String = FlickrAuthorizationSettings.flickrAPISecret + "api_key" + 
+						FlickrAuthorizationSettings.flickrAPIKey + "auth_token" + 
+						FlickrAuthorizationSettings.authToken + "formatjsonmethodflickr.auth.checkTokennojsoncallback1";
+					var jsonService: HTTPService = new HTTPService();
+					jsonService.method = "get";
+					jsonService.resultFormat = "text";
+					jsonService.addEventListener(ResultEvent.RESULT,onResult);
+					jsonService.addEventListener(FaultEvent.FAULT,onFault);
+					var flickrurl:String = "http://api.flickr.com/services/rest/?method=flickr.auth.checkToken&format=json&nojsoncallback=1&api_key="+ 
+						FlickrAuthorizationSettings.flickrAPIKey + "&auth_token="+
+						FlickrAuthorizationSettings.authToken+"&api_sig="+MD5.hash(sig);
+					jsonService.url=flickrurl;
+			 		jsonService.send();
+			 	} else {
+	        		dispatchEvent(ko);
+	        		trace("Empty Token");
+			 	}
+				
+			}
+		
+	
+			private function onResult(ev:ResultEvent):void{
+		        var data:String = String(ev.result);
+		 		object = JSON.decode(data);
+				if (object==null || object.stat!="ok" ) {
+	        		dispatchEvent(ko);
+	        		trace("Token expired");
+	 			}
+				else {
+	        		dispatchEvent(ok);
+	        		trace("Token ok");
+				}
+			}
+	
+			private function onFault(ev:FaultEvent):void {
+	        	currentState='httpError';
+			}
+			
+			private function createDirectory():void {
+				bar.text="Creating directories..."
+				var dir:File = File.applicationStorageDirectory.resolvePath("images");
+				 if ( !dir.exists ) {
+				    dir.createDirectory();
+				    trace( "Directory created." );
+				 }
+				 else {
+				    trace( "Directory already exists." );
+				 }
+		
+			}
+			
+			private function createSQL():void {		
+				var dao: DataAccessObject = new DataAccessObject();
+				dao.createTables(); 
+
+				bar.text="Creating tables..."
+				
+				dao.openConnection("SELECT COUNT(alias) FROM user");
+				sqlArray = dao.dbResult;
+			    Application.application.count = dao.countHandler(sqlArray);
+			    
+			    if (Application.application.count == 1) {
+				    dao.openConnection("SELECT alias FROM user");
+					sqlArray = dao.dbResult;
+		    		FlickrAuthorizationSettings.accountName = sqlArray[0].alias;
+				    
+					dao.openConnection("SELECT token FROM user");	
+					sqlArray = dao.dbResult;
+					if (sqlArray.length!=0) {FlickrAuthorizationSettings.authToken = sqlArray[0].token};  
+			    }
+			}
+			
+			private function initialState():void {
+				currentState='';
+				askToken();
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		    [Event(name="onGetTokenOK", type="com.vizzuality.event.GetTokenEvent")]
+		    [Event(name="onGetTokenKO", type="com.vizzuality.event.GetTokenEvent")]
+	</mx:Metadata>
+	<mx:SWFLoader source="/com/vizzuality/assets/loading.swf" x="53" y="16" id="swfloader1"/>
+	<mx:Label id="bar" text="Checking..." y="56" color="#596161" fontSize="12" height="23" horizontalCenter="0" fontWeight="bold"/>
+</mx:Canvas>

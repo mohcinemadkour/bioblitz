@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="800" height="500">
+
+        <mx:Script source="AuthorizationViewClass.as" />
+
+        <mx:states>
+                <mx:State name="settingsErrorState">
+                        <mx:RemoveChild target="{text1}"/>
+                        <mx:RemoveChild target="{text2}"/>
+                        <mx:RemoveChild target="{text3}"/>
+                        <mx:RemoveChild target="{option1}"/>
+                        <mx:RemoveChild target="{option2}"/>
+                        <mx:AddChild position="lastChild">
+                                <mx:Text y="70" text="Flickr API Key and Flickr secret have not been set." right="10" left="10" textAlign="center" color="#FF0202" height="78"/>
+                        </mx:AddChild>
+                        <mx:RemoveChild target="{auth_button}"/>
+                        <mx:AddChild position="lastChild">
+                                <mx:Button label="Open Settings" bottom="10" left="10" click="onOpenSettingsClick()"/>
+                        </mx:AddChild>
+                </mx:State>
+                <mx:State name="authorizationState">
+                        <mx:RemoveChild target="{text1}"/>
+                        <mx:RemoveChild target="{text2}"/>
+                        <mx:RemoveChild target="{text3}"/>
+                        <mx:RemoveChild target="{option1}"/>
+                        <mx:RemoveChild target="{option2}"/>
+                        <mx:AddChild position="lastChild">
+                                <mx:ProgressBar bottom="10" left="10" right="10" mode="manual" label="" labelPlacement="top" id="pBar" indeterminate="true"/>
+                        </mx:AddChild>
+                </mx:State>
+                <mx:State name="webBrowser">
+                        <mx:RemoveChild target="{text1}"/>
+                        <mx:AddChild position="lastChild">
+                                <mx:VBox width="100%" height="100%" verticalGap="0">
+                                	<mx:HBox width="100%" height="30" color="#B7BABB" backgroundColor="#F2F6C2" horizontalAlign="center" verticalAlign="middle">
+                                		<mx:Label text="Please, proceed with authentication on flickr to use FlickrTagger" fontWeight="normal" color="#3F4040" fontFamily="Arial" fontSize="13"/>
+                                		<mx:Button label="Cancel" click="currentState=''" alpha="1.0" fillAlphas="[1.0, 1.0, 1.0, 1.0]" fillColors="[#807D7D, #807D7D]" color="#CECFD0"/>
+                                	</mx:HBox>
+	                                <mx:HTML id="web" creationComplete="onLaunchFlickrClick()" addedToStage="onLaunchFlickrClick()" width="100%" height="100%"/>
+                                </mx:VBox>
+                        </mx:AddChild>
+                </mx:State>
+                <mx:State name="urlAuthorizationState">
+                        <mx:RemoveChild target="{text3}"/>
+                        <mx:RemoveChild target="{option1}"/>
+                        <mx:RemoveChild target="{option2}"/>
+                        <mx:SetProperty target="{text1}" name="text" value="For the final step of authorization, you must click the Complete Authorization button below. This will launch the Flickr website in your browser, where you can complete the authorization."/>
+                        <mx:SetProperty target="{text2}" name="text" value="Once you have authorized the application on the Flickr website, return to Image Tagger to complete the process."/>
+                        <mx:AddChild position="lastChild">
+                                <mx:Button label="Launch Flickr to Authorize" left="10" bottom="10" click="currentState='webBrowser'"/>
+                        </mx:AddChild>
+                </mx:State>
+                <mx:State name="authorizationCompleteState">
+                        <mx:enterState>
+                        	exitTimer();
+                        </mx:enterState>
+                        <mx:RemoveChild target="{text3}"/>
+                        <mx:RemoveChild target="{option1}"/>
+                        <mx:RemoveChild target="{option2}"/>
+                        <mx:SetProperty target="{text1}" name="text" value="Ok, you are authenticated correctly&#xd;"/>
+                        <mx:SetProperty target="{text2}" name="text" value="Wait 5 segs or click on &quot;continue&quot; to proceed.&#xd;"/>
+                        <mx:AddChild position="lastChild">
+                                <mx:Button id="closeBut" label="Continue" click="onCloseClick()" horizontalCenter="0" bottom="10"/>
+                        </mx:AddChild>
+                </mx:State>
+                <mx:State name="errorState">
+                        <mx:RemoveChild target="{text3}"/>
+                        <mx:RemoveChild target="{option1}"/>
+                        <mx:RemoveChild target="{option2}"/>
+                        <mx:SetProperty target="{text1}" name="text" value="Authorization Failed"/>
+                        <mx:SetProperty target="{text2}" name="text" value="The authorization failed. Make sure that you are online, and click Try Again, to try to authorize the application again."/>
+                        <mx:AddChild position="lastChild">
+                                <mx:Button label="Back" click="currentState=''" bottom="10" right="10"/>
+                        </mx:AddChild>
+                </mx:State>
+        </mx:states>
+        
+    
+        
+        <mx:VBox x="0" width="100%" horizontalAlign="center" borderStyle="solid" borderColor="black" borderThickness="1" top="0" bottom="0">
+        	<mx:HBox height="107" top="0" left="0" horizontalAlign="center" verticalAlign="middle" right="0" width="100%">
+				<mx:Image source="@Embed('com/vizzuality/assets/logo.png')"/>
+			</mx:HBox>
+			<mx:Text width="90%" id="text1" text="Flickrtagger allows you to georeference, tag and upload your photos biodiversity photos to flickr." styleName="authText"/>
+			<mx:Text width="90%" id="text2" paddingTop="20" text="For it, you only need to syncronize your camera clock with your GPS device." styleName="authText"/>
+			<mx:Text width="90%" id="text3" paddingTop="70" text="Do you have a Flickr account?" styleName="authText"/>
+
+        	<mx:VBox id="option1" width="90%" backgroundColor="green">
+				<mx:HBox>
+					<mx:RadioButton  y="13" x="20" selected="true" click="toggleOptions('option1')"/>
+					<mx:Text text="Yes I have it and I want to upload the photos to it" x="45" styleName="authText" y="10"/>
+				</mx:HBox>
+				<mx:Button id="auth_button" label="Proceed and authenticate on Flickr" click="onAuthorizationStartClick()" right="10" top="42"/>
+			</mx:VBox>
+			<mx:VBox id="option2" width="90%">
+				<mx:HBox width="100%">
+					<mx:RadioButton y="13" x="21" selected="false" click="toggleOptions('option2')"/>
+					<mx:Text width="90%" text="No I have not / I want to upload the photos to the TDWG2010 account" x="48" styleName="authText" y="10"/>
+				</mx:HBox>
+				<mx:HBox width="100%">
+					<mx:TextInput id="textInput" textAlign="left" left="21" top="62" width="200" visible="false"/>
+					<mx:Button id="start_button" label="Start tagging photos" right="10" bottom="10" click="getAnonymousToken()" visible="false"/>
+				</mx:HBox>
+			</mx:VBox>
+        </mx:VBox>
+
+
+</mx:Canvas>
