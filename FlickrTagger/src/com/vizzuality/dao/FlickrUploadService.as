@@ -31,7 +31,7 @@ package com.vizzuality.dao
 			var tag : String = "";
 			taxon = name;
 			dir = path;
-			tag = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger,bioblitz2010:scientificName=\""+FlickrAuthorizationSettings.authToken+"\"";
+			tag = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger,bioblitz2010:scientificName=\""+taxon+"\"";
 			sendImageFlickr(tag);
 		}
 

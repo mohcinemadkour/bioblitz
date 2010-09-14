@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="225" height="200" color="#040404" creationComplete="initRenderer()" verticalScrollPolicy="off" 
-	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0" top="3">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="225" height="200" color="#040404" creationComplete="{initRenderer()}" verticalScrollPolicy="off" 
+	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0" top="3" dragEnter="onDragEnter(event)"
+	dragDrop="onDragDrop(event)" dragComplete="onDragDrop(event)"  mouseDown="onMouseDown(event)">
         
         <mx:Script>
                 <![CDATA[
+                	import mx.core.IUIComponent;
+                	import mx.core.DragSource;
+                	import mx.core.UIComponent;
+                	import mx.managers.DragManager;
+                	import mx.events.DragEvent;
+                	import mx.collections.ArrayCollection;
+                	import mx.utils.ArrayUtil;
+                	import com.vizzuality.components.TileListFlickTagger;
                 	import com.vizzuality.views.main.ImagesContainer;
                 	import mx.core.Application;
                     import com.vizzuality.dao.FlickrUploadService;
@@ -14,19 +23,20 @@
                     import mx.effects.RemoveItemAction;
                     import mx.controls.Alert;
                     import mx.events.ListEvent;
-                    import mx.controls.TileList;
                     import mx.events.FlexEvent;
                     import mx.managers.PopUpManager;
                     
                     [Bindable]private var isPhotoSelected:Boolean=false;
-                    private var outerList:TileList;
+                    private var outerList:TileListFlickTagger;
                     private var popUpImage:PopUpManagerImage = new PopUpManagerImage();
+                    
                     
                     [Bindable]private var inputColor: uint;
                     [Bindable]private var path: String;
                     [Bindable]private var enabling: Boolean;  
                     [Bindable]private var textButton: String; 
-                    [Bindable]private var textInput: String;                 
+                    [Bindable]private var textInput: String;   
+                                  
                     
                     override public function set data(value:Object):void{
 
@@ -53,19 +63,11 @@
 					
 					
                     private function initRenderer():void {
-                        this.outerList = (this.parentDocument as ImagesContainer).tilelist;
-                        this.outerList.addEventListener(ListEvent.CHANGE, updateSelected); 
-                        this.addEventListener(FlexEvent.DATA_CHANGE, checkSelected);
-		                var glow:GlowFilter = new GlowFilter();
-
-		                glow.color = 0xFF7700;
-		                glow.alpha = 0.4;
-		                glow.blurX = 3;
-		                glow.blurY = 3;
-		                glow.strength =5;
-		                glow.quality = BitmapFilterQuality.HIGH;
-		
-		                itemSpace.filters = [glow];
+                    	if (this.parentDocument is ImagesContainer) {
+                    		this.outerList = (this.parentDocument as ImagesContainer).tilelist;
+                        	this.outerList.addEventListener(ListEvent.CHANGE, updateSelected); 
+                        	this.addEventListener(FlexEvent.DATA_CHANGE, checkSelected);
+                    	}
                     }
                      
                  
@@ -79,25 +81,39 @@
                     
                     private function changeColorInput():void {
                         if(textInput =='' || textInput == 'Not recognized') {
-                                inputColor = 0x000000;
+                        	inputColor = 0x000000;
                         } else {
-                                inputColor = 0xBBBBBB;
+                            inputColor = 0xBBBBBB;
                         }
                     }
                     
                     private function updateSelected(event:ListEvent):void {
-                       if(event.itemRenderer == this)
-                         isPhotoSelected=true;
-                       else
-                         isPhotoSelected=false;
+						var selected:Boolean = false;
+					  	if(this.outerList.allowMultipleSelection) {
+					  		var aux_array:ArrayCollection = new ArrayCollection(this.outerList.selectedItems);
+					    	selected = Boolean((aux_array).getItemIndex(this.data) != -1);
+					  	} else {
+					    	selected = Boolean(event.itemRenderer == this);
+					  	}
+                    	
+						if(selected) {
+         					flickrButton.alpha = 1;
+         					deleteButton.alpha = 1;
+						} else {
+							flickrButton.alpha = 0;
+         					deleteButton.alpha = 0;
+						}
                     }
                     
                     private function checkSelected(event:FlexEvent):void {
-                        if (this.outerList.selectedItem == this.data) {
-                           isPhotoSelected=true;
+					  	var aux_array:ArrayCollection = new ArrayCollection(this.outerList.selectedItems);
+                        if (this.outerList.selectedItem == this.data || ((aux_array).getItemIndex(this.data) != -1)) {
+         					flickrButton.alpha = 1;
+         					deleteButton.alpha = 1;
                         } else {
-                           isPhotoSelected=false;                        	
-                        }
+							flickrButton.alpha = 0;
+         					deleteButton.alpha = 0;
+         				}
                     }
                     
                     private function uploadImage():void {
@@ -131,9 +147,9 @@
                     }
                     
                     private function changeTaxonomy():void {
-                            if (textInput == "" || textInput == "Not recognized") {
+                            /*if (textInput == "" || textInput == "Not recognized") {
                                     Alert.show("Tag this image first!","Error taxonoming!!!¿?");
-                            } /* else {
+                            }  else {
                                     (this.parentDocument as ImagesContainer).openTaxonomyPanel(data.path,scientificNameInput.text);
                             } */
                     }
@@ -143,6 +159,31 @@
 		                PopUpManager.addPopUp(popUpImage,this, true);
 		                
 		            }
+		            
+		            
+		            /*  Drop and drag functions  */
+		            
+		            private function onMouseDown(event:MouseEvent):void {
+					    var dragInitiator:IUIComponent = event.currentTarget as IUIComponent;
+					    var dragSource:DragSource = new DragSource();
+					    DragManager.doDrag(dragInitiator,dragSource,event,null);
+		            }
+
+		            
+		            private function onDragEnter(event:DragEvent):void {
+		            	var dropTarget:IUIComponent = event.currentTarget as IUIComponent;
+					    DragManager.acceptDragDrop(dropTarget);
+		            }
+		            
+
+		            private function onDragDrop(event:DragEvent):void {
+      					var dragSource:DragSource = event.dragSource;
+      					var dragInitiator:IUIComponent = event.dragInitiator as IUIComponent;
+      					var dropTarget:Object = event.currentTarget;
+      					Alert.show( "Dragged ("+dragInitiator['path']+") to ("+dropTarget['path']+") and Dropped" );
+		            }
+		            
+		            
                 ]]>
         </mx:Script>
         
@@ -154,8 +195,8 @@
         <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="142" horizontalCenter="0"/>
         <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName()" textAlign="center" width="180" 
         	creationComplete="changeColorInput()" height="24" enter="changeTaxonomy()" fontFamily="Arial" fontSize="13" x="22" y="169" color="#BBBBBB" fontWeight="bold"/>
-		<mx:Button label="{textButton}" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" enabled="{enabling}" x="10" y="20"/>
-        <mx:Button label="x" fontSize="10" click="eraseImage()" width="28" id="del" height="28" enabled="{enabling}" x="189" y="20"/>          	
+		<mx:Button label="{textButton}" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" enabled="{enabling}" x="10" y="20" alpha="0"/>
+        <mx:Button label="x" fontSize="10" click="eraseImage()" width="28" id="deleteButton" height="28" enabled="{enabling}" x="189" y="20" alpha="0"/>          	
         	
         
 </mx:Canvas>

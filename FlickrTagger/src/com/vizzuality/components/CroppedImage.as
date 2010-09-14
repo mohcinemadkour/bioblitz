@@ -58,15 +58,9 @@ package com.vizzuality.components
 		 
 	  		var sx:Number =  newWidth / originalWidth;
 	  		var sy:Number = newHeight / originalHeight;
-/* 	  		if (sx>1) {
-	  			sx=1;
-	  			sy=1;
-	  		}
-	  		 */
 	  		var scale:Number = Math.min(sx, sy);
 	  		newWidth = originalWidth * scale;
 	  		newHeight = originalHeight * scale;	
-			//trace(originalWidth+"/"+newWidth +"----"+originalHeight+"/"+newHeight );
 
 
 		 	m.scale(scale, scale);
