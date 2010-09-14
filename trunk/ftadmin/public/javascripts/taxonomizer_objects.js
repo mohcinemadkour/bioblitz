@@ -1,0 +1,271 @@
+
+
+
+	function createLoading() {
+		var loading_container = document.createElement("div");
+		loading_container.style.position = "absolute";
+		loading_container.style.display = "block";
+		loading_container.id = "loading_container";
+		loading_container.style.height = "125px";
+		loading_container.style.width = "125px";
+		loading_container.style.padding = "0";
+	 	loading_container.style.margin = "-75px 0 0 -75px";
+	 	loading_container.style.background = "url(images/loading_bkg.png) no-repeat 0 0";
+	 	loading_container.style.top = "50%";
+	 	loading_container.style.left = "50%";
+		loading_container.style.zIndex = "100";
+		viewer.addControl(loading_container);
+		
+	}
+
+
+	function createOverlayObjects() {
+		
+		//Create vizzuality logo
+		var vizzuality = document.createElement("a");
+   	vizzuality.href = "http://www.vizzuality.com";
+	 	vizzuality.target = "_blank";
+		vizzuality.id = "vizzuality";
+		vizzuality.style.display = "none";
+	 	vizzuality.style.position = "absolute";
+	 	vizzuality.style.padding = "0";
+	 	vizzuality.style.margin = "0";
+	 	vizzuality.style.bottom = "10px";
+	 	vizzuality.style.left = "10px";
+	 	vizzuality.style.background = "url(../images/vizzuality.png) no-repeat 0 0";
+	 	vizzuality.style.height = "40px";
+	 	vizzuality.style.width = "75px";
+		viewer.addControl(vizzuality);
+		
+		
+		//Zoom container
+		var zoom_container = document.createElement("div");
+		zoom_container.style.position = "absolute";
+		zoom_container.style.display = "none";
+		zoom_container.id = "zoom_container";
+		zoom_container.style.height = "106px";
+		zoom_container.style.width = "48px";
+		zoom_container.style.padding = "0";
+	 	zoom_container.style.margin = "0";
+	 	zoom_container.style.top = "30px";
+	 	zoom_container.style.left = "30px";
+		zoom_container.style.zIndex = "100";
+		
+		//Zoom in Taxxonomaizer
+		var zoomIn = document.createElement("a");
+   	zoomIn.href = "javascript:void zoom_in()";
+	 	zoomIn.style.position = "absolute";
+	 	zoomIn.style.padding = "0";
+	 	zoomIn.style.margin = "0";
+		zoomIn.style.top = '0';
+		zoomIn.style.left = '0';
+	 	zoomIn.style.background = "url(../images/zoomIn.png) no-repeat 0 0";
+	 	zoomIn.style.height = "48px";
+	 	zoomIn.style.width = "48px";
+		$(zoomIn).hover(function(ev){
+			$(this).css('background-position','0 -48px');
+		},function(ev){
+			$(this).css('background-position','0 0');
+		});
+		zoom_container.appendChild(zoomIn);
+		
+		
+		//Zoom out Taxxonomaizer
+		var zoomOut = document.createElement("a");
+   	zoomOut.href = "javascript:void zoom_out()";
+	 	zoomOut.style.position = "absolute";
+	 	zoomOut.style.padding = "0";
+	 	zoomOut.style.margin = "0";
+		zoomOut.style.top = '60px';
+		zoomOut.style.left = '0px';
+	 	zoomOut.style.background = "url(../images/zoomOut.png) no-repeat 0 0";
+	 	zoomOut.style.height = "48px";
+	 	zoomOut.style.width = "48px";
+		$(zoomOut).hover(function(ev){
+			$(this).css('background-position','0 -48px');
+		},function(ev){
+			$(this).css('background-position','0 0');
+		});
+		zoom_container.appendChild(zoomOut);
+		viewer.addControl(zoom_container);
+
+
+
+		//Top right container
+		var image_info_container = document.createElement("div");
+		image_info_container.style.position = "absolute"; 	
+		image_info_container.style.height = "48px";
+		image_info_container.style.width = "250px";
+	 	image_info_container.style.top = "30px";
+	 	image_info_container.style.right = "30px";
+		image_info_container.style.zIndex = "100";	
+		image_info_container.style.display = "none";
+		image_info_container.id = "image_info_container";
+
+		
+		//Next image
+		var next = document.createElement("a");
+   	next.href = "#";
+	 	next.style.position = "absolute";
+	 	next.style.padding = "0";
+	 	next.style.margin = "0";
+	 	next.style.top = "0";
+	 	next.style.right = "0";
+		next.style.zIndex = "100";
+	 	next.style.background = "url(../images/next.png) no-repeat 0 0";
+	 	next.style.height = "48px";
+	 	next.style.width = "48px";
+		$(next).hover(function(ev){
+			$(this).css('background-position','0 -48px');
+		},function(ev){
+			$(this).css('background-position','0 0');
+		});
+		image_info_container.appendChild(next);
+		
+		
+		//Image info
+		var image_info = document.createElement("a");
+   	image_info.href = "#";
+	 	image_info.style.position = "absolute";
+	 	image_info.style.padding = "0";
+	 	image_info.style.margin = "0";
+	 	image_info.style.top = "0";
+	 	image_info.style.right = "60px";
+		image_info.style.zIndex = "100";
+	 	image_info.style.background = "url(../images/image_info.png) no-repeat 0 0";
+	 	image_info.style.height = "48px";
+	 	image_info.style.width = "48px";
+		$(image_info).hover(function(ev){
+			$(this).css('background-position','0 -48px');
+		},function(ev){
+			$(this).css('background-position','0 0');
+		});
+		image_info_container.appendChild(image_info);
+		viewer.addControl(image_info_container);		
+		
+		
+		
+		
+		//Main container
+		var main_container = document.createElement("div");
+		main_container.style.position = "absolute"; 
+		main_container.style.top = "65%";
+		main_container.style.left = "50%";
+		main_container.style.margin = "0 0 0 -373px";	
+		main_container.style.height = "108px";
+		main_container.style.width = "746px";
+		main_container.style.padding = "0";
+		main_container.style.background = "url(../images/main_bkg.png) no-repeat 0 0";
+		main_container.style.display = "none";
+		main_container.id = "main_container";
+		
+		var logo = document.createElement('img');
+		logo.src = "../images/taxonomizer.png";
+		logo.style.position = "absolute";
+		logo.style.top = "27px";
+		logo.style.left = "20px";
+		main_container.appendChild(logo);
+		
+		
+		var title = document.createElement('h1');
+		title.innerHTML = "Can you recognize this specie?";
+		title.style.position = "absolute";
+		title.style.padding = "0";
+		title.style.margin = "0";
+		title.style.font = "normal 17px Arial";
+		title.style.color = "white";
+		title.style.textShadow = "#000000 0 -1px";
+		title.style.top = "13px";
+		title.style.left = "222px";		
+		main_container.appendChild(title);
+		
+		var skip_image = document.createElement("a");
+   	skip_image.href = "#";
+		skip_image.innerHTML = "No, skip this image";
+	 	skip_image.style.position = "absolute";
+	 	skip_image.style.padding = "0";
+	 	skip_image.style.margin = "0";
+	 	skip_image.style.textDecoration = "underline";
+	 	skip_image.style.top = "14px";
+	 	skip_image.style.right = "20px";
+		skip_image.style.zIndex = "100";
+		skip_image.style.font = "normal 13px Arial";
+		skip_image.style.color = "white";
+		$(skip_image).hover(function(ev){
+			$(this).css('color','blue');
+		},function(ev){
+			$(this).css('color','white');
+		});
+		main_container.appendChild(skip_image);
+		
+		
+		
+		var form = document.createElement("form");
+		form.style.width = "504px";
+		form.style.height = "38px";
+		form.style.position = "absolute";
+		form.style.right = "19px";
+		form.style.top = "41px";
+		main_container.appendChild(form);
+		
+		
+		var text_input = document.createElement("input");
+		text_input.style.position = "absolute";
+		text_input.style.top = "0";
+		text_input.style.left = "0";
+	 	text_input.style.padding = "10px";
+	 	text_input.style.margin = "0";
+	 	text_input.style.width = "386px";
+	 	text_input.style.height = "18px";
+	 	text_input.style.border = "none";
+		text_input.style.background = "url(../images/text_input_bkg.png) no-repeat 0 0";
+	 	text_input.style.font = "normal 17px Arial";
+	 	text_input.style.color = "#999999";
+		text_input.type = "text";
+		text_input.value = "Enter scientific name here";
+		form.appendChild(text_input);
+		
+		var submit_input = document.createElement("input");
+		submit_input.style.position = "absolute";
+		submit_input.style.top = "0";
+		submit_input.style.right = "0";
+	 	submit_input.style.padding = "9px 10px 11px 10px";
+	 	submit_input.style.margin = "0";
+	 	submit_input.style.width = "98px";
+	 	submit_input.style.height = "38px";
+	 	submit_input.style.border = "none";
+	 	submit_input.style.textAlign = "center";
+	 	submit_input.style.letterSpacing = "-1px";
+		submit_input.style.textShadow = "#000000 0 -1px";
+		submit_input.style.background = "url(../images/send_button.png) no-repeat right 0";
+	 	submit_input.style.font = "bold 19px Arial";
+	 	submit_input.style.color = "white";
+		submit_input.type = "submit";
+		submit_input.value = "Send";
+		$(submit_input).hover(function(ev){
+			$(this).css('background-position','0 -40px');
+			$(this).css('cursor','pointer');
+		},function(ev){
+			$(this).css('background-position','0 0');
+			$(this).css('cursor','default');
+		});
+		form.appendChild(submit_input);		
+		
+		
+		var image_by = document.createElement("p");
+		image_by.style.position = "absolute";
+		image_by.innerHTML = "Image by Raúl Barroso";
+		image_by.style.bottom = "8px";
+		image_by.style.left = "222px";
+	 	image_by.style.padding = "0";
+	 	image_by.style.margin = "0";
+	 	image_by.style.font = "normal 11px Arial";
+	 	image_by.style.color = "white";
+		main_container.appendChild(image_by);		
+		
+		
+		
+		
+		viewer.addControl(main_container);
+
+	}
