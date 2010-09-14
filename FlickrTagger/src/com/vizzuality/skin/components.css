@@ -1,0 +1,176 @@
+/*New code*/
+
+
+WindowedApplication {    
+    background-image:   Embed("com/vizzuality/assets/header_bkg.png");
+    background-repeat:   repeat;
+    background-position: center;
+    background-blend:    multiply;
+}
+
+Canvas.auth {
+	background-image:   Embed("com/vizzuality/assets/shadow.png");
+    background-repeat: 	repeat;
+    background-position: center;
+}
+
+VBox.auth {
+	background-image:   Embed("com/vizzuality/assets/app_bkg.jpg");
+    background-repeat: 	repeat;
+    background-position: center;
+}
+
+Text.authText {
+	fontFamily: Arial;
+	fontSize: 17;
+	color: white; 
+}
+
+
+
+
+
+/*Old code*/
+
+
+global {
+    modalTransparencyBlur: 0;
+    modalTransparency: 0.6;
+    modalTransparencyColor: black;
+    modalTransparencyDuration: 300;
+}
+Button.JamCreation
+{
+	color: #CCCCCC;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #454545, #454545, #A7A7A7, #686868;
+	fontFamily: DINOT-Bold;
+	fontSize: 12;
+	fontWeight: normal;
+	textRollOverColor: #FFFFFF;
+	themeColor: #6C6C6C;
+}
+
+Button.itemButton
+{
+	borderColor: #9F9F9F;
+	color: #BDBDBD;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #444444, #363636, #363636, #444444;
+	fontFamily: DINOT-Bold;
+	fontSize: 10;
+	fontWeight: normal;
+	textRollOverColor: #E6E6E6;
+	textSelectedColor: #6B6B6B;
+	themeColor: #969696;
+	cornerRadius: 0;
+	disabledColor: #8D8D8D;
+	paddingBottom: 2;
+	selectedColor: #444444;
+	paddingLeft: 5;
+	paddingRight: 5;
+	horizontalGap: 1;
+	paddingTop: 2;
+}
+
+Canvas.Mamufas
+{
+	borderColor: #000000;
+	borderStyle: solid;
+	borderThickness: 0.5;
+	disabledColor: #000000;
+	backgroundDisabledColor: #000000;
+	disabledOverlayAlpha: 0.6;
+}
+
+TabNavigator.TabNavigatorFlickrTagger
+{
+	paddingBottom: 0;
+	paddingLeft: 0;
+	paddingRight: 0;
+	paddingTop: 0;
+	backgroundColor: #4F4C4C;
+	borderThickness: 1;
+	fontFamily: Arial;
+	color: #FFFFFF;
+	fontWeight: normal;
+	fontSize: 12;
+	tabStyleName: tabNavigatorTab;
+	selectedTabTextStyleName: tabNavigatorSelectedTabText;
+	firstTabStyleName: tabNavigatorFirstTab;
+	disabledColor: #E4E9E9;
+	lastTabStyleName: tabNavigatorLastTab;
+}
+
+.tabNavigatorSelectedTabText
+{
+	color: #FFFFFF;
+}
+.tabNavigatorFirstTab
+{
+	fillAlphas: 1.0, 1.0, 1.0, 1.0;
+	fillColors: #DADADA, #DADADA;
+	cornerRadius: 2;
+	themeColor: #B2B2B2;
+	color: #656565;
+	textRollOverColor: #8D8D8D;
+}
+.tabNavigatorLastTab
+{
+	color: #656565;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #DADADA, #DADADA;
+	textRollOverColor: #8D8D8D;
+	themeColor: #B2B2B2;
+} 
+
+Alert {
+    titleStyleName: "alertTitle";
+    messageStyleName: "alertMessage";
+    buttonStyleName: "alertButton";
+    dropShadowEnabled: true;
+    shadowDistance: 5;
+    shadowDirection: right;
+    cornerRadius: 0;
+    embedFonts: true;
+    fontFamily: DINOT-Bold;
+}
+
+.alertTitle {
+    letterSpacing: 0;
+    fontSize: 14;
+    color: white;
+}
+
+.alertMessage {
+    letterSpacing: 0;
+    fontSize: 10;
+    fontWeight: normal;
+    color: black;
+}
+
+.alertButton {
+    letterSpacing: 0;
+    fontSize: 11;
+    cornerRadius: 0;
+    fontWeight: normal;
+    textRollOverColor: white;
+    color: grey;
+}
+
+.CustomTilelist{
+  	vertical-scroll-bar-style-name: "VScrollBar";
+}
+
+.VScrollBar {
+   cornerRadius: 0;
+   highlightAlphas: 0, 0;
+   fillAlphas: 0.75, 0.7, 0.6, 0.6;
+   fillColors: #000000, #000000, #000000, #000000;
+   trackColors: #999999, #999999;
+   themeColor: #999999;
+   borderColor: #b7babc;
+   iconColor: #ffffff;
+   thumbOffset: 1;
+}
+

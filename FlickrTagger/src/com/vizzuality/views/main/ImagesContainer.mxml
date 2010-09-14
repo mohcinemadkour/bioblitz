@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="com.vizzuality.components.*" creationComplete="onCreationComplete()" backgroundColor="#4a4a4a">
+	
+		
+	<mx:Script>
+		<![CDATA[
+			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
+			import mx.containers.TabNavigator;
+			import com.vizzuality.dao.FlickrUploadService;
+			import mx.states.AddChild;
+			import mx.events.CloseEvent;
+			import com.vizzuality.dao.TaxonomyResolutionService;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+            import com.adobe.crypto.MD5;
+			import mx.events.ListEvent;
+			import mx.controls.Image;
+			import mx.controls.TileList;
+			import mx.collections.ArrayCollection;
+			import com.vizzuality.dao.DataAccessObject;
+			import flash.filesystem.*;
+			import flash.net.FileFilter;
+			import flash.desktop.*;
+			import flash.data.*;
+		   	import mx.controls.Alert;
+		   	import com.vizzuality.*;
+		    import mx.core.Application;
+		    import com.adobe.webapis.flickr.events.*;
+			import com.adobe.webapis.flickr.FlickrService;
+			import com.adobe.webapis.flickr.methodgroups.Upload;
+			import mx.managers.PopUpManager;
+            import mx.core.IFlexDisplayObject;
+			import com.adobe.serialization.json.JSON;
+			
+			
+			//progress uploading bar
+			public var progressPop:IFlexDisplayObject;	
+			private var dao: DataAccessObject= new DataAccessObject();
+			[Bindable] public var sqlArray: ArrayCollection;
+			private var dir:File = File.applicationStorageDirectory.resolvePath("images");
+			private var imagesDir:String;
+			private var fileToOpen:File = File.documentsDirectory;
+			private var alias: String;
+			private var identification: String;
+			
+			private var path: String;
+			private var scientific: String;
+			//public var uploadedImage: Boolean = false;
+			
+			private var taxonomyResolutionService:TaxonomyResolutionService;
+			
+			
+						
+			private function onCreationComplete():void {
+		    	refreshTilelist();
+   			  	imagesDir = dir.nativePath;
+				addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDragEnter);
+				addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDragDrop);
+		 	}
+		 			 
+		 			 	
+		    public function uploadPhoto(path: String,name:String):void {
+		   		var tag:String;
+		   		if (taxonomyResolutionService==null)
+		   			taxonomyResolutionService= new TaxonomyResolutionService();
+		   		
+				//taxonomyResolutionService.resolveTaxonomy(path,name);
+		   	            		
+		    }
+		 	
+		 	public function deleteImage(path:String,num:int):void {
+	 			var file:File = new File;
+	 			if (num==0) {
+		 			dao.openConnection("DELETE FROM photos WHERE path='"+ "file://" + escape(path) +"'");
+		 			file.url= "file://" + path;
+	 			} else {
+	 				dao.openConnection("DELETE FROM photos WHERE path='"+ path +"'");
+		 			file.url= path;
+	 			}
+	 			file.deleteFile();
+	 			//uploadedImage = true;
+	 			
+	 			//search index item in ArrayCollection
+	 			for (var i:int=0;i<sqlArray.length;i++) {
+ 					if (file.url==sqlArray[i].path)
+ 						break;
+	 			}
+	 			
+	 			//lines for reusing Tilelist!! and delete path reference to Dicciontary
+	 			delete Application.application.croppedImagesDictionary[file.url];
+	 			tilelist.indexToItemRenderer(i).data=null;
+	 			sqlArray.removeItemAt(i);
+	 			
+	 			
+	 			if (Application.application.deletingAllPictures) {
+					Application.application.principalView.system.deleteAll();
+				}
+		 	}
+
+		 	
+		 	public function updateName(scientificName:String,path:String):void {
+			 	dao.openConnection("UPDATE photos SET scientific='"+scientificName+"' WHERE path='"+path+"'");
+		 	}
+		 	
+		 	
+		 	public function refreshTilelist():void {
+				dao.openConnection("SELECT scientific,path FROM photos");
+				sqlArray = dao.dbResult;
+				var arrayTestRenderers: Array = tilelist.renderers;
+		 	}
+		 	
+			private function insertSQL():void {				 
+	    		var sqlArrayColl : ArrayCollection = new ArrayCollection();
+	    		dao.openConnection("INSERT INTO photos (login) VALUES ('"+ FlickrAuthorizationSettings.accountName +"')");
+	    		dao.openConnection("SELECT id FROM photos");
+	    		sqlArrayColl = dao.dbResult;
+	    		identification = dao.countHandler(sqlArrayColl).toString();
+			}
+	
+	
+			private function selectImageFile(root:File):void {
+				
+				var imgFilter:FileFilter = new FileFilter("Images", "*.jpg;*.jpeg;*.gif;*.png");
+				root.browseForOpenMultiple("Open", [imgFilter]);
+			  	root.addEventListener(FileListEvent.SELECT_MULTIPLE, fileSelected);
+			}
+			
+			private function fileSelected(event:FileListEvent):void {
+				
+				var files:Array = event.files as Array;
+				var i: int = files.length;
+			  	for (var j:int = 0; j < i; j++) {
+				    insertImage(files[j]);
+				}
+	
+			}
+			
+			private function insertImage(object:Object):void {
+				var original:File = File.userDirectory.resolvePath(object.nativePath);
+			  	var newFile:File;
+			  	insertSQL();
+			  	newFile = File.applicationStorageDirectory.resolvePath(imagesDir + "/"+ identification +'.'+ object.extension);
+			  	original.copyTo(newFile, true);
+			  	dao.openConnection("UPDATE photos SET path='"+newFile.url+"' WHERE id='"+identification+"'");
+			  	var obj: Object = new Object();
+			  	obj.path = newFile.url;
+			  	obj.scientific = null;
+			  	sqlArray.addItem(obj);
+			  	/* refreshTilelist(); */
+			}
+			
+			
+			private function onDragEnter(event:NativeDragEvent):void {
+	 			NativeDragManager.acceptDragDrop(tilelist);
+	   		}
+	   		
+			private function onDragDrop(event:NativeDragEvent):void {
+				NativeDragManager.dropAction = NativeDragActions.COPY;
+			    var droppedFiles:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+			    for each (var file:File in droppedFiles) {
+			    	if (file.isDirectory) {						
+					     var dirContents:Array = file.getDirectoryListing();
+					     for each (var fi:File in dirContents) {
+							if (!fi.isHidden) {
+								switch (fi.extension) {
+						        	case "jpg":
+						           		addDroppedFile(fi.nativePath,fi.extension);
+						           		break;
+						           	case "jpeg":
+						           		addDroppedFile(fi.nativePath,fi.extension);
+						           		break;
+						         	case "png":
+						           		addDroppedFile(fi.nativePath,fi.extension);
+						           		break;
+						         	case "gif":
+						           		addDroppedFile(fi.nativePath,fi.extension);
+						           		break;
+						         	default: Alert.show("Unsupported file");       
+					       		}
+					  		}
+			    		}	
+
+			    	} else {
+				    	switch (file.extension) {
+				        	case "jpg":
+				           		addDroppedFile(file.nativePath,file.extension);
+				           		break;
+				           	case "jpeg":
+				           		addDroppedFile(file.nativePath,file.extension);
+				           		break;
+				         	case "png":
+				           		addDroppedFile(file.nativePath,file.extension);
+				           		break;
+				         	case "gif":
+				           		addDroppedFile(file.nativePath,file.extension);
+				           		break;
+				         	default: Alert.show("Unsupported file");       
+				       	}
+			    	}			       
+			    }
+			}
+			
+
+
+			
+		   	private function addDroppedFile(nativePath:String,fileName:String):void {
+		   		var original:File = File.userDirectory.resolvePath(nativePath);
+		     	var newFile:File;
+			 	insertSQL();
+		      	newFile = File.applicationStorageDirectory.resolvePath(imagesDir + "/"+identification+"."+fileName);
+		     	original.copyTo(newFile, true);
+		     	dao.openConnection("UPDATE photos SET path='"+newFile.url+"' WHERE id='"+identification+"'");
+		     	var obj: Object = new Object();
+			  	obj.path = newFile.url;
+			  	obj.scientific = null;
+			  	sqlArray.addItem(obj);
+		     	/* refreshTilelist(); */
+		   }
+		   
+		   
+		   public function getAllImages():void {
+		   		//Change this for reuse!!
+		   		refreshTilelist();
+				if (sqlArray.length>0) {
+					Application.application.uploadingAllPictures=true;
+			   		var upFlickr: FlickrUploadService = new FlickrUploadService();
+			   		upFlickr.resolveTagsFlickr(sqlArray[0].path,sqlArray[0].scientific);				
+		  		} else {
+					Application.application.uploadingAllPictures=false;
+					DockIcon(NativeApplication.nativeApplication.icon).bounce();
+		  		}
+		   }
+		   
+		   private function deleteAll():void {
+		   		/* refreshTilelist(); */
+		   		if (sqlArray.length>0) {
+					Application.application.deletingAllPictures=true;
+		   			deleteImage(sqlArray[0].path,1);
+		  		} else {
+					Application.application.deletingAllPictures=false;
+		  		}
+		   }
+
+
+		   private function confirmDelete():void {
+		   		if (sqlArray.length!=0) {
+			   		var a: Alert = Alert.show("Are you sure you want to delete all images?","Confirmation",Alert.YES|Alert.NO);
+			   		a.addEventListener(Event.CLOSE,deleteEvent);		   			
+		   		}
+		   }
+		   
+		   private function deleteEvent(ev: CloseEvent): void {
+		   		if (ev.detail == Alert.YES) {deleteAll()}
+		   }
+		   
+		   private function confirmUpdate():void {
+		   		if (sqlArray.length!=0) {
+			   		var a: Alert = Alert.show("Are you sure you want to upload all tagged images?","Confirmation",Alert.YES|Alert.NO);
+			   		a.addEventListener(Event.CLOSE,uploadEvent);
+			   	}
+		   }
+		   
+		   private function uploadEvent(ev: CloseEvent): void {
+		   		if (ev.detail == Alert.YES) {getAllImages()}
+		   }
+
+		]]>
+	</mx:Script>
+	
+		
+	
+	<comp:TileListFlickTagger selectionColor="#4a4a4a" selectionDisabledColor="#4a4a4a" rollOverColor="#4a4a4a" id="tilelist"  dataProvider="{sqlArray}" styleName="CustomTilelist"
+			itemRenderer="com.vizzuality.views.main.components.ImageRenderer" borderThickness="0.5" width="100%" height="100%" borderColor="#999999" backgroundColor="#4A4A4A" themeColor="#4A4A4A" allowMultipleSelection="true"/>			
+	
+</mx:Canvas>
