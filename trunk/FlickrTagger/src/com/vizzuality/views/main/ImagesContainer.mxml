@@ -4,6 +4,7 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import mx.events.DragEvent;
 			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
 			import mx.containers.TabNavigator;
 			import com.vizzuality.dao.FlickrUploadService;
@@ -54,9 +55,10 @@
 			private function onCreationComplete():void {
 		    	refreshTilelist();
    			  	imagesDir = dir.nativePath;
-				addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDragEnter);
-				addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDragDrop);
+				addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDropEnter);
+				addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDrop);
 		 	}
+
 		 			 
 		 			 	
 		    public function uploadPhoto(path: String,name:String):void {
@@ -150,11 +152,11 @@
 			}
 			
 			
-			private function onDragEnter(event:NativeDragEvent):void {
+			private function onDropEnter(event:NativeDragEvent):void {
 	 			NativeDragManager.acceptDragDrop(tilelist);
 	   		}
 	   		
-			private function onDragDrop(event:NativeDragEvent):void {
+			private function onDrop(event:NativeDragEvent):void {
 				NativeDragManager.dropAction = NativeDragActions.COPY;
 			    var droppedFiles:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
 			    for each (var file:File in droppedFiles) {
@@ -217,52 +219,6 @@
 		     	/* refreshTilelist(); */
 		   }
 		   
-		   
-		   public function getAllImages():void {
-		   		//Change this for reuse!!
-		   		refreshTilelist();
-				if (sqlArray.length>0) {
-					Application.application.uploadingAllPictures=true;
-			   		var upFlickr: FlickrUploadService = new FlickrUploadService();
-			   		upFlickr.resolveTagsFlickr(sqlArray[0].path,sqlArray[0].scientific);				
-		  		} else {
-					Application.application.uploadingAllPictures=false;
-					DockIcon(NativeApplication.nativeApplication.icon).bounce();
-		  		}
-		   }
-		   
-		   private function deleteAll():void {
-		   		/* refreshTilelist(); */
-		   		if (sqlArray.length>0) {
-					Application.application.deletingAllPictures=true;
-		   			deleteImage(sqlArray[0].path,1);
-		  		} else {
-					Application.application.deletingAllPictures=false;
-		  		}
-		   }
-
-
-		   private function confirmDelete():void {
-		   		if (sqlArray.length!=0) {
-			   		var a: Alert = Alert.show("Are you sure you want to delete all images?","Confirmation",Alert.YES|Alert.NO);
-			   		a.addEventListener(Event.CLOSE,deleteEvent);		   			
-		   		}
-		   }
-		   
-		   private function deleteEvent(ev: CloseEvent): void {
-		   		if (ev.detail == Alert.YES) {deleteAll()}
-		   }
-		   
-		   private function confirmUpdate():void {
-		   		if (sqlArray.length!=0) {
-			   		var a: Alert = Alert.show("Are you sure you want to upload all tagged images?","Confirmation",Alert.YES|Alert.NO);
-			   		a.addEventListener(Event.CLOSE,uploadEvent);
-			   	}
-		   }
-		   
-		   private function uploadEvent(ev: CloseEvent): void {
-		   		if (ev.detail == Alert.YES) {getAllImages()}
-		   }
 
 		]]>
 	</mx:Script>
@@ -270,6 +226,7 @@
 		
 	
 	<comp:TileListFlickTagger selectionColor="#4a4a4a" selectionDisabledColor="#4a4a4a" rollOverColor="#4a4a4a" id="tilelist"  dataProvider="{sqlArray}" styleName="CustomTilelist"
-			itemRenderer="com.vizzuality.views.main.components.ImageRenderer" borderThickness="0.5" width="100%" height="100%" borderColor="#999999" backgroundColor="#4A4A4A" themeColor="#4A4A4A" allowMultipleSelection="true"/>			
+			itemRenderer="com.vizzuality.views.main.components.ImageRenderer" borderThickness="0.5" width="100%" height="100%" borderColor="#999999" backgroundColor="#4A4A4A" themeColor="#4A4A4A" 
+			allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true"/>			
 	
 </mx:Canvas>
