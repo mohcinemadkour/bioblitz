@@ -10,7 +10,7 @@
 			import com.vizzuality.dao.DataAccessObject;
 			
 
-			public var gpx: GPX = new GPX();
+			public var gpx: GPX = new GPX(); 
 			public var count: int = 0;
 			
 			public var uploadingAllPictures:Boolean=false;
