@@ -27,10 +27,27 @@ class Api::IdentificationsController < ApplicationController
     ft = GData::Client::FusionTables.new
     ft.clientlogin(config["ft_username"],config["ft_password"])
     
-    sql="UPDATE 225363 SET scientificName = #{params[:scientificName]} WHERE ROWID=#{params[:ROWID]}"
+    if (params[:id])
+      taxonomy=resolve_taxonomy(params[:id])
+    
+      sql="UPDATE 225363 SET 
+        colId='#{taxonomy[0]['id_col']}',
+        colLsid='#{taxonomy[0]['lsid']}',
+        kingdom='#{taxonomy[0]['k']}',
+        phylum='#{taxonomy[0]['p']}',
+        class='#{taxonomy[0]['c']}',
+        'order'='#{taxonomy[0]['o']}',
+        family='#{taxonomy[0]['f']}',
+        genus='#{taxonomy[0]['g']}'
+      WHERE ROWID='#{params[:rowid]}'"
+    else
+      sql="UPDATE 225363 SET scientificName = #{params[:scientificName]}, colId='failed' WHERE ROWID=#{params[:rowid]}"
+    end
+    
     ft.sql_post(sql)
     
-        
+    #/api/provide_identification?rowid=2323&id=232323
+    #/api/provide_identification?rowid=2323&scientificName=Pepito
     result ="ok"
     
     
@@ -41,4 +58,10 @@ class Api::IdentificationsController < ApplicationController
     end
   end
 
+end
+
+
+def resolve_taxonomy(id)
+  conn = PGconn.connect( :dbname => 'col',:user=>'postgres' )
+  result =conn.exec("select lsid,k,c,o,p,f,id_col,g,s from taxonomy where id = #{id}")
 end

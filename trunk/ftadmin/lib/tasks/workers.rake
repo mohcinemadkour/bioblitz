@@ -1,6 +1,7 @@
 require 'net/http'
 require 'json' 
 require 'uri'
+require 'pg'
 
 namespace :workers do
   desc 'Resolve Taxonomy for those records who had not yet been resolved.'
@@ -9,25 +10,25 @@ namespace :workers do
     ft = GData::Client::FusionTables.new
     ft.clientlogin(config["ft_username"],config["ft_password"])
     
-    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,scientificName from 225363 WHERE gbifResolvedId='' and scientificName not equal to ''"))
+    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,scientificName from 225363 WHERE colId='' and scientificName not equal to ''"))
     res.body.each do |rec|
       rowid = rec[:rowid]      
-      spec_id= get_taxon_uid(rec[:scientificname])
-      if(spec_id)
-        puts spec_id
-        taxonomy = get_taxonomy_by_uid(spec_id)
+      taxonomy=resolve_taxonomy(rec[:scientificname])
+      if(taxonomy.any?)
+        puts taxonomy[0]['id_col']
         ft.sql_post("UPDATE 225363 SET 
-          gbifResolvedId='#{spec_id}',
-          kingdom='#{taxonomy[:kingdom]}',
-          phylum='#{taxonomy[:phylum]}',
-          class='#{taxonomy[:t_class]}',
-          'order'='#{taxonomy[:t_order]}',
-          family='#{taxonomy[:family]}',
-          genus='#{taxonomy[:genus]}'
+          colId='#{taxonomy[0]['id_col']}',
+          colLsid='#{taxonomy[0]['lsid']}',
+          kingdom='#{taxonomy[0]['k']}',
+          phylum='#{taxonomy[0]['p']}',
+          class='#{taxonomy[0]['c']}',
+          'order'='#{taxonomy[0]['o']}',
+          family='#{taxonomy[0]['f']}',
+          genus='#{taxonomy[0]['g']}'
         WHERE ROWID='#{rowid}'")
       else
         puts "not found:#{rec[:scientificname]}"
-        ft.sql_post("UPDATE 225363 SET taxonomyResolved='failed' WHERE ROWID='#{rowid}'")
+        ft.sql_post("UPDATE 225363 SET colId='failed' WHERE ROWID='#{rowid}'")
       end
       
     end
@@ -58,6 +59,27 @@ namespace :workers do
     end 
   end
 end
+
+def resolve_taxonomy(name)
+  conn = PGconn.connect( :dbname => 'col',:user=>'postgres' )
+  result =conn.exec("select lsid,k,c,o,p,f,id_col,g,s from taxonomy where s like '#{name}%'  limit 1")
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def get_taxon_uid(name)
