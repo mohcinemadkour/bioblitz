@@ -1,4 +1,5 @@
 require 'net/http'
+require 'json' 
 require 'uri'
 
 namespace :workers do
@@ -30,9 +31,31 @@ namespace :workers do
       end
       
     end
-    
-    #ft.sql_post("UPDATE 225363 SET class='' WHERE ROWID='201'")
-
+  end
+  
+  desc 'Pregenerate zoomIt images'
+  task :zoomit => :environment do
+    config = YAML::load_file("#{Rails.root}/config/credentials.yml")
+    ft = GData::Client::FusionTables.new
+    ft.clientlogin(config["ft_username"],config["ft_password"])    
+    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,associatedMedia from 225363 WHERE zoomitId='' and associatedMedia not equal to ''"))
+    res.body.each do |rec|
+      rowid = rec[:rowid] 
+      #Loop over the images on the observation
+      ids= Array.new
+      rec[:associatedmedia].each(" ") {|image|
+        connection = Net::HTTP.new("api.zoom.it")
+        res = ""
+        connection.start do |http|
+          req = Net::HTTP::Get.new("/v1/content/?url="+URI.escape(image))
+          res = http.request(req)
+        end  
+        response=JSON.parse(res.body)
+        ids << response['id']
+        puts response['id']
+      }
+      ft.sql_post("UPDATE 225363 SET zoomitId='#{ids.join(" ")}' WHERE ROWID='#{rowid}'")
+    end 
   end
 end
 

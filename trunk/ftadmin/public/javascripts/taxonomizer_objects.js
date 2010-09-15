@@ -349,7 +349,7 @@
 
 
 
-		$('#text_input').focus().autocomplete('http://data.gbif.org/species/nameSearch?maxResults=5&returnType=nameId&nameType=1&view=json',{
+		$('#text_input').focus().autocomplete('/api/taxonomy',{
 					dataType: 'jsonp',
 					parse: function(data){
                       var animals = new Array();
