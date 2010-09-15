@@ -3052,3 +3052,537 @@ Started GET "/api/proxy?url=http://cache.zoom.it/content/3imq.dzi" for 127.0.0.1
   Parameters: {"url"=>"http://cache.zoom.it/content/3imq.dzi"}
 Rendered text template (0.0ms)
 Completed 200 OK in 1309ms (Views: 0.9ms | ActiveRecord: 0.0ms)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+
+
+Started GET "/" for 127.0.0.1 at Wed Sep 15 10:40:53 +0200 2010
+  Processing by WebController#show as HTML
+Rendered web/show.html.erb within layouts/application (1.3ms)
+Completed 200 OK in 29ms (Views: 28.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/javascript/cufon-yui.js" for 127.0.0.1 at Wed Sep 15 10:40:53 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/cufon-yui.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.7ms)
+
+
+Started GET "/javascript/Museo_Sans_500_400.font.js" for 127.0.0.1 at Wed Sep 15 10:40:53 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/Museo_Sans_500_400.font.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/javascript/jquery.scrollTo-1.4.2-min.js" for 127.0.0.1 at Wed Sep 15 10:40:53 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/jquery.scrollTo-1.4.2-min.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.8ms)
+
+
+Started GET "/javascript/web.js" for 127.0.0.1 at Wed Sep 15 10:40:53 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/web.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/taxonomizer" for 127.0.0.1 at Wed Sep 15 10:40:59 +0200 2010
+  Processing by TaxonomizerController#show as HTML
+Rendered taxonomizer/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 6ms (Views: 5.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/proxy?url=http://cache.zoom.it/content/HHgK.dzi" for 127.0.0.1 at Wed Sep 15 10:41:00 +0200 2010
+  Processing by Api::ProxyController#show as */*
+  Parameters: {"url"=>"http://cache.zoom.it/content/HHgK.dzi"}
+Rendered text template (0.0ms)
+Completed 200 OK in 909ms (Views: 18.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/taxonomizer" for 127.0.0.1 at Wed Sep 15 10:41:24 +0200 2010
+  Processing by TaxonomizerController#show as HTML
+Rendered taxonomizer/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 6ms (Views: 5.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/proxy?url=http://cache.zoom.it/content/HHgK.dzi" for 127.0.0.1 at Wed Sep 15 10:41:26 +0200 2010
+  Processing by Api::ProxyController#show as */*
+  Parameters: {"url"=>"http://cache.zoom.it/content/HHgK.dzi"}
+Rendered text template (0.0ms)
+Completed 200 OK in 385ms (Views: 0.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at Wed Sep 15 10:42:59 +0200 2010
+  Processing by WebController#show as HTML
+Rendered web/show.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 6ms (Views: 4.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/javascript/cufon-yui.js" for 127.0.0.1 at Wed Sep 15 10:42:59 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/cufon-yui.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.7ms)
+
+
+Started GET "/javascript/Museo_Sans_500_400.font.js" for 127.0.0.1 at Wed Sep 15 10:42:59 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/Museo_Sans_500_400.font.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/javascript/jquery.scrollTo-1.4.2-min.js" for 127.0.0.1 at Wed Sep 15 10:42:59 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/jquery.scrollTo-1.4.2-min.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/javascript/web.js" for 127.0.0.1 at Wed Sep 15 10:42:59 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/web.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/api/proxy?url=http://cache.zoom.it/content/iVKE.dzi" for 127.0.0.1 at Wed Sep 15 10:43:04 +0200 2010
+  Processing by Api::ProxyController#show as */*
+  Parameters: {"url"=>"http://cache.zoom.it/content/iVKE.dzi"}
+Rendered text template (0.0ms)
+Completed 200 OK in 385ms (Views: 1.0ms | ActiveRecord: 0.0ms)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+
+
+Started GET "/api/" for 127.0.0.1 at Wed Sep 15 13:30:36 +0200 2010
+
+ActionController::RoutingError (No route matches "/api"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.7ms)
+
+
+Started GET "/api/dwca_to_fusion_tables" for 127.0.0.1 at Wed Sep 15 13:30:47 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+Completed   in 0ms
+
+URI::InvalidURIError (bad URI(is not URI?): ):
+  app/controllers/api/dwc_archive_controller.rb:6:in `new'
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.erb (0.9ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (3.0ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (8.4ms)
+
+
+Started GET "/api/dwca_to_fusion_tables?url=http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip" for 127.0.0.1 at Wed Sep 15 13:32:33 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+  Parameters: {"url"=>"http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip"}
+Completed   in 2326ms
+
+NoMethodError (undefined method `body' for #<String:0x10354f5e8>):
+  app/controllers/api/dwc_archive_controller.rb:8:in `new'
+  app/controllers/api/dwc_archive_controller.rb:7:in `open'
+  app/controllers/api/dwc_archive_controller.rb:7:in `new'
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.erb (0.9ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (3.4ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (7.5ms)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+
+
+Started GET "/api/dwca_to_fusion_tables?url=http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip" for 127.0.0.1 at Wed Sep 15 13:58:43 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+  Parameters: {"url"=>"http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip"}
+Completed   in 3651ms
+
+NoMethodError (undefined method `zip_file_path' for #<Api::DwcArchiveController:0x10315dc50>):
+  app/controllers/api/dwc_archive_controller.rb:39:in `unzip'
+  app/controllers/api/dwc_archive_controller.rb:10:in `new'
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.1ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (4.0ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (13.8ms)
+
+
+Started GET "/api/dwca_to_fusion_tables?url=http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip" for 127.0.0.1 at Wed Sep 15 14:00:19 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+  Parameters: {"url"=>"http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip"}
+Completed   in 3582ms
+
+NoMethodError (undefined method `zip_file_path' for #<Api::DwcArchiveController:0x1033fb070>):
+  app/controllers/api/dwc_archive_controller.rb:39:in `unzip'
+  app/controllers/api/dwc_archive_controller.rb:10:in `new'
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.erb (0.9ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (3.6ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (8.1ms)
+
+
+Started GET "/api/dwca_to_fusion_tables?url=http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip" for 127.0.0.1 at Wed Sep 15 14:00:40 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+  Parameters: {"url"=>"http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip"}
+Completed   in 1780ms
+
+NoMethodError (undefined method `zip_file_path' for #<Api::DwcArchiveController:0x103400520>):
+  app/controllers/api/dwc_archive_controller.rb:39:in `unzip'
+  app/controllers/api/dwc_archive_controller.rb:10:in `new'
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.erb (0.9ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (3.4ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (7.9ms)
+
+
+Started GET "/api/dwca_to_fusion_tables?url=http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip" for 127.0.0.1 at Wed Sep 15 14:03:18 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+  Parameters: {"url"=>"http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip"}
+Completed 200 OK in 2310ms (Views: 60.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/dwca_to_fusion_tables?url=http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip" for 127.0.0.1 at Wed Sep 15 14:03:59 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+  Parameters: {"url"=>"http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip"}
+Completed 200 OK in 4483ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/dwca_to_fusion_tables?url=http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip" for 127.0.0.1 at Wed Sep 15 14:05:40 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+  Parameters: {"url"=>"http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip"}
+Completed   in 3974ms
+
+NameError (uninitialized constant Zip):
+  app/controllers/api/dwc_archive_controller.rb:48:in `unzip'
+  app/controllers/api/dwc_archive_controller.rb:10:in `new'
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.erb (0.9ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (3.6ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (8.0ms)
+
+
+Started GET "/api/dwca_to_fusion_tables?url=http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip" for 127.0.0.1 at Wed Sep 15 14:15:18 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+  Parameters: {"url"=>"http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip"}
+Completed 200 OK in 5518ms (Views: 1.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/dwca_to_fusion_tables?url=http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip" for 127.0.0.1 at Wed Sep 15 14:16:13 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+  Parameters: {"url"=>"http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip"}
+Completed 200 OK in 4744ms (Views: 1.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/dwca_to_fusion_tables?url=http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip" for 127.0.0.1 at Wed Sep 15 14:19:24 +0200 2010
+  Processing by Api::DwcArchiveController#new as JSON
+  Parameters: {"url"=>"http://vizzuality.com.s3.amazonaws.com/NonMarineMolluscanIreland.zip"}
+Completed   in 4921ms
+
+FasterCSV::MalformedCSVError (Illegal quoting on line 1.):
+  app/controllers/api/dwc_archive_controller.rb:14:in `new'
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.erb (0.9ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (3.5ms)
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (8.0ms)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+
+
+Started GET "/api/taxonomy" for 127.0.0.1 at Wed Sep 15 17:09:48 +0200 2010
+  Processing by Api::TaxonomyController#get_name as JSON
+Completed 200 OK in 9ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=A" for 127.0.0.1 at Wed Sep 15 17:09:59 +0200 2010
+  Processing by Api::TaxonomyController#get_name as JSON
+  Parameters: {"q"=>"A"}
+Completed 200 OK in 9ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=Abi" for 127.0.0.1 at Wed Sep 15 17:10:04 +0200 2010
+  Processing by Api::TaxonomyController#get_name as JSON
+  Parameters: {"q"=>"Abi"}
+Completed 200 OK in 9ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=Abies+alba" for 127.0.0.1 at Wed Sep 15 17:10:09 +0200 2010
+  Processing by Api::TaxonomyController#get_name as JSON
+  Parameters: {"q"=>"Abies alba"}
+Completed 200 OK in 9ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=Abies+alba&callback=asdasd" for 127.0.0.1 at Wed Sep 15 17:10:54 +0200 2010
+  Processing by Api::TaxonomyController#get_name as JSON
+  Parameters: {"callback"=>"asdasd", "q"=>"Abies alba"}
+Completed 200 OK in 8ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=Abies+alba" for 127.0.0.1 at Wed Sep 15 17:11:03 +0200 2010
+  Processing by Api::TaxonomyController#get_name as JSON
+  Parameters: {"q"=>"Abies alba"}
+Completed 200 OK in 8ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=A" for 127.0.0.1 at Wed Sep 15 17:11:11 +0200 2010
+  Processing by Api::TaxonomyController#get_name as JSON
+  Parameters: {"q"=>"A"}
+Completed 200 OK in 9ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B" for 127.0.0.1 at Wed Sep 15 17:11:14 +0200 2010
+  Processing by Api::TaxonomyController#get_name as JSON
+  Parameters: {"q"=>"B"}
+Completed 200 OK in 9ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B" for 127.0.0.1 at Wed Sep 15 17:13:21 +0200 2010
+  Processing by Api::TaxonomyController#get_name as JSON
+  Parameters: {"q"=>"B"}
+Completed 200 OK in 8ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B&max=10" for 127.0.0.1 at Wed Sep 15 17:13:30 +0200 2010
+  Processing by Api::TaxonomyController#get_name as JSON
+  Parameters: {"max"=>"10", "q"=>"B"}
+Completed 200 OK in 10ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B&max=10&callback=asd" for 127.0.0.1 at Wed Sep 15 17:15:06 +0200 2010
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"10", "callback"=>"asd", "q"=>"B"}
+Completed 200 OK in 10ms (Views: 1.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B&max=10" for 127.0.0.1 at Wed Sep 15 17:15:41 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"10", "q"=>"B"}
+Completed 200 OK in 10ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B&max=10" for 127.0.0.1 at Wed Sep 15 17:20:15 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"10", "q"=>"B"}
+Completed 200 OK in 11ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B&max=10" for 127.0.0.1 at Wed Sep 15 17:20:19 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"10", "q"=>"B"}
+Completed 200 OK in 11ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B&max=100" for 127.0.0.1 at Wed Sep 15 17:20:24 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"100", "q"=>"B"}
+Completed 200 OK in 35ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B&max=10" for 127.0.0.1 at Wed Sep 15 17:20:26 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"10", "q"=>"B"}
+Completed 200 OK in 11ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B&max=1" for 127.0.0.1 at Wed Sep 15 17:20:29 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"1", "q"=>"B"}
+Completed 200 OK in 9ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?q=B&max=1" for 127.0.0.1 at Wed Sep 15 17:21:22 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"1", "q"=>"B"}
+Completed 200 OK in 28ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 192.168.1.140 at Wed Sep 15 17:26:31 +0200 2010
+  Processing by WebController#show as HTML
+Rendered web/show.html.erb within layouts/application (14.2ms)
+Completed 200 OK in 74ms (Views: 73.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/javascript/cufon-yui.js" for 192.168.1.140 at Wed Sep 15 17:26:31 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/cufon-yui.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.7ms)
+
+
+Started GET "/javascript/Museo_Sans_500_400.font.js" for 192.168.1.140 at Wed Sep 15 17:26:31 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/Museo_Sans_500_400.font.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.7ms)
+
+
+Started GET "/javascript/web.js" for 192.168.1.140 at Wed Sep 15 17:26:31 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/web.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.8ms)
+
+
+Started GET "/javascript/jquery.scrollTo-1.4.2-min.js" for 192.168.1.140 at Wed Sep 15 17:26:31 +0200 2010
+
+ActionController::RoutingError (No route matches "/javascript/jquery.scrollTo-1.4.2-min.js"):
+  
+
+Rendered /Users/jatorre/.rvm/gems/ruby-1.8.7-p299@bioblitz/gems/actionpack-3.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/jatorre/workspace/bioblitz/ftadmin/config/routes.rb:1)
+
+
+Started GET "/api/taxonomy?query=B&max=1" for 127.0.0.1 at Wed Sep 15 17:29:15 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"1", "query"=>"B"}
+Completed 200 OK in 9ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/taxonomizer" for 127.0.0.1 at Wed Sep 15 17:30:16 +0200 2010
+  Processing by TaxonomizerController#show as HTML
+Rendered taxonomizer/show.html.erb (0.3ms)
+Completed 200 OK in 21ms (Views: 20.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/proxy?url=http://cache.zoom.it/content/HHgK.dzi" for 127.0.0.1 at Wed Sep 15 17:30:20 +0200 2010
+  Processing by Api::ProxyController#show as */*
+  Parameters: {"url"=>"http://cache.zoom.it/content/HHgK.dzi"}
+Rendered text template (0.0ms)
+Completed 200 OK in 697ms (Views: 41.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?query=B&max=1" for 127.0.0.1 at Wed Sep 15 17:30:26 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"1", "query"=>"B"}
+Completed 200 OK in 8ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?query=B&max=2" for 127.0.0.1 at Wed Sep 15 17:31:04 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"max"=>"2", "query"=>"B"}
+Completed 200 OK in 9ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/taxonomizer" for 127.0.0.1 at Wed Sep 15 17:31:59 +0200 2010
+  Processing by TaxonomizerController#show as HTML
+Rendered taxonomizer/show.html.erb (0.2ms)
+Completed 200 OK in 2ms (Views: 1.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/proxy?url=http://cache.zoom.it/content/kntb.dzi" for 127.0.0.1 at Wed Sep 15 17:32:00 +0200 2010
+  Processing by Api::ProxyController#show as */*
+  Parameters: {"url"=>"http://cache.zoom.it/content/kntb.dzi"}
+Rendered text template (0.0ms)
+Completed 200 OK in 458ms (Views: 1.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?max=3&callback=jsonp1284564719749&query=luzz&limit=3&timestamp=1284564752058" for 127.0.0.1 at Wed Sep 15 17:32:32 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"timestamp"=>"1284564752058", "max"=>"3", "callback"=>"jsonp1284564719749", "limit"=>"3", "query"=>"luzz"}
+Completed 200 OK in 39ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/taxonomizer" for 127.0.0.1 at Wed Sep 15 17:32:48 +0200 2010
+  Processing by TaxonomizerController#show as HTML
+Rendered taxonomizer/show.html.erb (0.2ms)
+Completed 200 OK in 2ms (Views: 1.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/proxy?url=http://cache.zoom.it/content/kntb.dzi" for 127.0.0.1 at Wed Sep 15 17:32:49 +0200 2010
+  Processing by Api::ProxyController#show as */*
+  Parameters: {"url"=>"http://cache.zoom.it/content/kntb.dzi"}
+Rendered text template (0.0ms)
+Completed 200 OK in 463ms (Views: 1.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?max=3&callback=jsonp1284564768574&query=luzu&limit=3&timestamp=1284564775633" for 127.0.0.1 at Wed Sep 15 17:32:55 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"timestamp"=>"1284564775633", "max"=>"3", "callback"=>"jsonp1284564768574", "limit"=>"3", "query"=>"luzu"}
+Completed 200 OK in 9ms (Views: 1.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/taxonomizer" for 127.0.0.1 at Wed Sep 15 17:33:20 +0200 2010
+  Processing by TaxonomizerController#show as HTML
+Rendered taxonomizer/show.html.erb (0.2ms)
+Completed 200 OK in 2ms (Views: 2.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/proxy?url=http://cache.zoom.it/content/HHgK.dzi" for 127.0.0.1 at Wed Sep 15 17:33:22 +0200 2010
+  Processing by Api::ProxyController#show as HTML
+  Parameters: {"url"=>"http://cache.zoom.it/content/HHgK.dzi"}
+Rendered text template (0.0ms)
+Completed 200 OK in 428ms (Views: 1.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?max=3&callback=jsonp1284564768574&query=luzu&limit=3&timestamp=1284564775633" for 127.0.0.1 at Wed Sep 15 17:33:35 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"timestamp"=>"1284564775633", "max"=>"3", "callback"=>"jsonp1284564768574", "limit"=>"3", "query"=>"luzu"}
+Completed 200 OK in 27ms (Views: 1.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/taxonomizer" for 127.0.0.1 at Wed Sep 15 17:34:28 +0200 2010
+  Processing by TaxonomizerController#show as HTML
+Rendered taxonomizer/show.html.erb (0.2ms)
+Completed 200 OK in 2ms (Views: 1.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/proxy?url=http://cache.zoom.it/content/3imq.dzi" for 127.0.0.1 at Wed Sep 15 17:34:31 +0200 2010
+  Processing by Api::ProxyController#show as HTML
+  Parameters: {"url"=>"http://cache.zoom.it/content/3imq.dzi"}
+Rendered text template (0.0ms)
+Completed 200 OK in 466ms (Views: 1.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?callback=jsonp1284564869195&query=luzu%C3%B1&limit=3&timestamp=1284564876365" for 127.0.0.1 at Wed Sep 15 17:34:36 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"timestamp"=>"1284564876365", "callback"=>"jsonp1284564869195", "limit"=>"3", "query"=>"luzuñ"}
+Completed 200 OK in 9ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?callback=jsonp1284564869196&query=luzu&limit=3&timestamp=1284564886831" for 127.0.0.1 at Wed Sep 15 17:34:46 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"timestamp"=>"1284564886831", "callback"=>"jsonp1284564869196", "limit"=>"3", "query"=>"luzu"}
+Completed 200 OK in 8ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?callback=jsonp1284564869197&query=luzula&limit=3&timestamp=1284564891679" for 127.0.0.1 at Wed Sep 15 17:34:51 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"timestamp"=>"1284564891679", "callback"=>"jsonp1284564869197", "limit"=>"3", "query"=>"luzula"}
+Completed 200 OK in 8ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/taxonomizer" for 127.0.0.1 at Wed Sep 15 17:36:44 +0200 2010
+  Processing by TaxonomizerController#show as HTML
+Rendered taxonomizer/show.html.erb (0.2ms)
+Completed 200 OK in 2ms (Views: 2.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/proxy?url=http://cache.zoom.it/content/3imq.dzi" for 127.0.0.1 at Wed Sep 15 17:36:46 +0200 2010
+  Processing by Api::ProxyController#show as HTML
+  Parameters: {"url"=>"http://cache.zoom.it/content/3imq.dzi"}
+Rendered text template (0.0ms)
+Completed 200 OK in 443ms (Views: 0.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/taxonomy?callback=jsonp1284565004969&query=luzul&limit=3&timestamp=1284565037735" for 127.0.0.1 at Wed Sep 15 17:37:17 +0200 2010
+  Processing by Api::TaxonomyController#index as JSON
+  Parameters: {"timestamp"=>"1284565037735", "callback"=>"jsonp1284565004969", "limit"=>"3", "query"=>"luzul"}
+Completed 200 OK in 9ms (Views: 1.3ms | ActiveRecord: 0.0ms)

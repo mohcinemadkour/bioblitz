@@ -1,15 +1,18 @@
 Ftadmin::Application.routes.draw do |map|
 
-  root :to =>'main#index'
+  root :to =>'web#show'
   
   
   namespace :api do
     get "identification_request" => "identifications#new", :format => :json
+    get "dwca_to_fusion_tables" => "dwc_archive#new", :format => :json
     get "provide_identification" => "identifications#update", :format => :json
+    get "taxonomy" => "taxonomy#index", :format => :json
     get "proxy" => "proxy#show"
   end
   
   get "taxonomizer" => "taxonomizer#show"
+  get "admin" => "main#show"
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

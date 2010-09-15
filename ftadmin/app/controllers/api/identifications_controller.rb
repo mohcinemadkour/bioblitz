@@ -23,8 +23,13 @@ class Api::IdentificationsController < ApplicationController
   #Provide an identification
   def update
     
-    t =GData::Client::FusionTables::Table.new(ft,{:table_id=>225363,:name =>"bioblitz_obs"})
+    config = YAML::load_file("#{Rails.root}/config/credentials.yml")
+    ft = GData::Client::FusionTables.new
+    ft.clientlogin(config["ft_username"],config["ft_password"])
+    
     sql="UPDATE 225363 SET scientificName = #{params[:scientificName]} WHERE ROWID=#{params[:ROWID]}"
+    ft.sql_post(sql)
+    
         
     result ="ok"
     

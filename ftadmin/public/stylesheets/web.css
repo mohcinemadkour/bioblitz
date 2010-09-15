@@ -1,0 +1,66 @@
+body,div,ul,li,ol,h1,h2,h3,h4,h5,h6,form,fieldset,p{margin:0; padding:0; font-weight:normal}
+img,fieldset{border:none; padding:0; margin:0;}
+body{font:normal 12px Arial; background:white}
+span.clear{clear:both;}
+a:focus{outline:none}
+input:focus{outline:none;}
+ul {list-style:none;}
+
+div#container {width: 100%;}
+div.outer_block1 {position: relative; z-index: 100; width:100%; background:url(../images/header_background.png) repeat-x center 0; overflow: hidden;}
+div.block1 {position: relative; width: 1000px; margin: 0px auto; padding:0;  z-index:100; height:493px;}
+div.outer_illustration {float:left; width:100%; background:url(../images/illustration.png) no-repeat center 0;}
+div.block1 h1 {float: left; color: white; font-size: 45px; font-weight: bold; width: 100%; text-shadow: 2px 2px 2px #000;}
+div.block1 p {float: left; font: normal 19px Arial; color:white; width:400px; text-shadow: 0px -1px 0px #386876; clear: both;}
+div.block1 p.supertitle {float: left; width: 100%; margin-top:79px; color: white; font-weight: bold; font-size: 23px;}
+div.block1 p.location {float: left; font: normal 15px Arial; margin:25px 0 0 0; padding:3px 0 23px 50px; color: #366775; width: 200px; height: 42px; text-shadow:none; background:url(../images/location_marker.png) no-repeat 0 0; clear: both;}
+div.block1 div.links {float:left; width:100%;}
+div.block1 div.links a {float:left; text-decoration:none; text-align:center; font-size: 18px; padding:12px 0 0 0; margin:20px 0 0 0;}
+div.block1 a#howto {float: left; width: 179px; height:34px; background:url(../images/contribute_button.png) no-repeat center 0; color: #121F23; margin:20px 10px 0 0;}
+div.block1 a#signup {float: left; width: 130px; height: 34px; background:url(../images/signup_button.png) no-repeat center 0; color: white;}
+div.block1 a#howto:hover {background-position:0 -47px;}
+div.block1 a#signup:hover {background-position:0 -47px;}
+div.outer_block2 {position: relative; float:left; z-index:100; width: 100%; background:url(../images/grey_background.png) repeat;}
+div.block2 {position:relative; width: 1000px; margin: 0px auto;}
+div.separator1 {position: absolute;  bottom: 0px; z-index: 20; width: 100%; height: 9px; background: url(../images/separator1.png) repeat-x center 0;}
+div.explanation {float: left; width:450px; margin-bottom: 30px; height:420px;}
+div.explanation h3 {color: #509FBA; font-size: 27px; font-weight: normal; text-shadow: 2px 2px 2px #000; margin-top: 35px; clear: both; overflow: hidden;}
+div.explanation p {margin-top: 20px; font: normal 17px Arial; color: #666666;}
+div.explanation p a.link {text-decoration:underline; font:normal 17px Arial; color:#50A1BA; height:auto; padding:0; margin:0; float:none;} 	
+div.explanation p a.link:hover {color:#366D7E;}
+div.explanation a#schedule {float:left; width:158px; height:35px; background:url(../images/schedule_button.png) no-repeat top left; text-align:center; color:white; padding:10px 0 0 25px; margin:20px 0 0 0; font:normal 17px Arial;}
+div.explanation a#schedule:hover {background-position:0 -46px;}
+div.goals {position:absolute; left:470px; top:-88px; z-index:1000; width: 540px; height: 505px; background:url(../images/goals_background.png) no-repeat top right;}
+div.goals h3 {font-size: 27px; color: #333333; margin-top: 90px; margin-left: 80px;}
+div.goals ul {margin-left: 80px;}
+div.goals ul li {font: normal 17px Arial; padding-left: 30px; padding-top: 20px; padding-right: 50px;color: #414141; background:url(../images/tick.png) no-repeat center left;}
+div.separator2 {position: absolute; width: 100%; height: 9px; background: url(../images/separator2.png) repeat-x center 0;}
+div.outer_block3 {width: 100%; overflow: hidden; background:url(../images/green_background.png) repeat-x center 0; overflow: hidden;}
+div.block3 {position:relative; width:1000px; margin: 0px auto; padding:0 0 30px;}
+div.block3 h3{ font-size: 27px; color: #56631B; margin: 30px 0 0 0;}
+div.block3 p{ font: normal 15px Arial; color: #56631B; margin:0px;}
+div.outer_block4 {width: 100%; overflow: hidden; }
+div.block4 {width: 1000px; margin: 0px auto;}
+div.tool {width: 250px; float: left; margin-top: 40px;}
+div.tool img.img_tool {width: 220px; height: 165px; background:url(../images/img_tool_background.png) no-repeat center 0; padding: 5px 20px 20px 5px;}
+div.tool h4 {font-size: 19px; color: #333333;}
+div.tool p.tool_author {font: normal 13px Arial; color: #999999; margin-top: 0px;}
+div.tool p.tool_author a {color: #999999;}
+div.tool p.tool_explanation {font: normal 15px Arial; color: #999999; width: 220px; margin-top: 10px;}
+div.tool a.download {width: 111px; height: 22px; background:url(../images/download_button.png) no-repeat top left; float: left; margin:20px 10px 0 0; text-decoration: none; text-align: center; font-size: 18px; padding:4px 0 0 10px; font:normal 13px Arial; color:white;}
+div.tool a.download:hover {background-position:0 -26px;}
+div.outer_footer { width: 100%; background: url(../images/footer_bkg.jpg) repeat 0 0; height:262px; margin:30px 0 0 0; padding:0;}
+div.outer_footer div.footer {margin:0 auto; width:1000px; padding:47px 0 0 0;}
+div.outer_footer div.footer div.left {float:left; width:auto;}
+div.outer_footer div.footer ul {float:left; width:auto;}
+div.outer_footer div.footer ul li {float:left; width:auto; padding:0 15px 0 10px; background:url(../images/list_separator.png) no-repeat right -2px;}
+div.outer_footer div.footer ul li a {font:normal 13px Arial; color:white; text-decoration:none;}
+div.outer_footer div.footer ul li a:hover {text-decoration:underline;}
+div.outer_footer div.footer ul li.first {padding:0 15px 0 0;}
+div.outer_footer div.footer ul li.last {background:none;}
+div.outer_footer div.footer div.right {float:right; width:100px;}
+div.outer_footer div.footer div.right p {float:right; font:normal 13px Arial; color:white;}
+div.outer_footer div.footer div.right a {float:right; background:url(../images/tdwg.jpg) no-repeat 0 0; width:89px; height:49px; margin:10px 0 0 0;}
+div.outer_footer div.footer div.last {float:left; padding:70px 0 0 0; width:100%;}
+div.outer_footer div.footer div.last p.vizzuality {float:left; width:auto; padding:26px 0 0 0; margin:0 5px 0 0; font:normal 13px Arial; color:white;}
+div.outer_footer div.footer div.last a {float:left; background:url(../images/vizzuality.png) no-repeat 0 0; width:82px; height:43px;}
