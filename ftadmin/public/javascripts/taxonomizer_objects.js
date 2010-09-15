@@ -10,13 +10,40 @@
 		loading_container.style.width = "125px";
 		loading_container.style.padding = "0";
 	 	loading_container.style.margin = "-75px 0 0 -75px";
-	 	loading_container.style.background = "url(images/loading_bkg.png) no-repeat 0 0";
+	 	loading_container.style.background = "url(images/loading_bkg_.png) no-repeat 0 0";
 	 	loading_container.style.top = "50%";
 	 	loading_container.style.left = "50%";
 		loading_container.style.zIndex = "100";
-		viewer.addControl(loading_container);
 		
+		var state = document.createElement("p");
+		state.style.position = "absolute";
+		state.id = "state";
+		state.innerHTML = "Loading...";
+		state.style.top = "18px";
+		state.style.width = "125px";
+		state.style.textAlign = "center";
+		state.style.letterSpacing = "-1px";
+		state.style.left = "0";
+	 	state.style.padding = "0";
+	 	state.style.margin = "0";
+	 	state.style.font = "normal 21px Arial";
+	 	state.style.color = "white";
+		loading_container.appendChild(state);		
+		
+		
+		var spinning = document.createElement("img");
+		spinning.style.position = "absolute";
+		spinning.style.top = "60px";
+		spinning.style.left = "46px";
+	 	spinning.style.padding = "0";
+	 	spinning.style.margin = "0";
+		spinning.src = "images/big_loader.gif";
+		loading_container.appendChild(spinning);
+
+		viewer.addControl(loading_container);
 	}
+
+
 
 
 	function createOverlayObjects() {
@@ -105,7 +132,7 @@
 		
 		//Next image
 		var next = document.createElement("a");
-   	next.href = "#";
+   	next.href = "javascript:void getNext()";
 	 	next.style.position = "absolute";
 	 	next.style.padding = "0";
 	 	next.style.margin = "0";
@@ -149,7 +176,7 @@
 		//Main container
 		var main_container = document.createElement("div");
 		main_container.style.position = "absolute"; 
-		main_container.style.top = "65%";
+		main_container.style.bottom = "170px";
 		main_container.style.left = "50%";
 		main_container.style.margin = "0 0 0 -373px";	
 		main_container.style.height = "108px";
@@ -158,6 +185,13 @@
 		main_container.style.background = "url(../images/main_bkg.png) no-repeat 0 0";
 		main_container.style.display = "none";
 		main_container.id = "main_container";
+		$(main_container).hover(function(ev){
+			over_main = true;
+			$(this).stop().fadeTo("fast",1);
+		},function(ev){
+			over_main = false;
+			$(this).stop().fadeTo("slow",0.5);
+		});
 		
 		var logo = document.createElement('img');
 		logo.src = "../images/taxonomizer.png";
@@ -180,7 +214,7 @@
 		main_container.appendChild(title);
 		
 		var skip_image = document.createElement("a");
-   	skip_image.href = "#";
+   	skip_image.href = "javascript:void getNext()";
 		skip_image.innerHTML = "No, skip this image";
 	 	skip_image.style.position = "absolute";
 	 	skip_image.style.padding = "0";
@@ -192,7 +226,7 @@
 		skip_image.style.font = "normal 13px Arial";
 		skip_image.style.color = "white";
 		$(skip_image).hover(function(ev){
-			$(this).css('color','blue');
+			$(this).css('color','#999999');
 		},function(ev){
 			$(this).css('color','white');
 		});
@@ -201,7 +235,7 @@
 		
 		
 		var form = document.createElement("form");
-		form.style.width = "504px";
+		form.style.width = "502px";
 		form.style.height = "38px";
 		form.style.position = "absolute";
 		form.style.right = "19px";
@@ -209,8 +243,23 @@
 		main_container.appendChild(form);
 		
 		
+		var spinning = document.createElement("img");
+		spinning.style.position = "absolute";
+		spinning.style.zIndex = "1000";
+		spinning.style.display = "none";
+		spinning.id = "spinning";
+		$(spinning).addClass('loader');
+		spinning.style.top = "11px";
+		spinning.style.right = "108px";
+	 	spinning.style.padding = "0";
+	 	spinning.style.margin = "0";
+		spinning.src = "images/ajax-loader.gif";
+		form.appendChild(spinning);
+		
+		
 		var text_input = document.createElement("input");
 		text_input.style.position = "absolute";
+		text_input.id = "text_input";
 		text_input.style.top = "0";
 		text_input.style.left = "0";
 	 	text_input.style.padding = "10px";
@@ -254,18 +303,85 @@
 		
 		var image_by = document.createElement("p");
 		image_by.style.position = "absolute";
+		image_by.id = "observedBy";
 		image_by.innerHTML = "Image by Raúl Barroso";
-		image_by.style.bottom = "8px";
+		image_by.style.bottom = "10px";
 		image_by.style.left = "222px";
 	 	image_by.style.padding = "0";
 	 	image_by.style.margin = "0";
 	 	image_by.style.font = "normal 11px Arial";
 	 	image_by.style.color = "white";
 		main_container.appendChild(image_by);		
-		
-		
-		
-		
+
 		viewer.addControl(main_container);
 
+		
+		//Images carousel
+		var carousel = document.createElement("div");
+		carousel.style.position = "absolute"; 
+		carousel.style.display = "none"; 
+		carousel.style.bottom = "10px";
+		carousel.style.left = "50%";
+		carousel.style.margin = "0";	
+		carousel.style.height = "125px";
+		carousel.style.padding = "0 0 0 10px";
+		carousel.style.background = "url(../images/carousel_left.png) no-repeat 0 0";
+		carousel.id = "carousel";
+		
+		
+		var inner_carousel = document.createElement("span");
+		inner_carousel.style.position = "relative"; 
+		inner_carousel.style.float = "left"; 
+		inner_carousel.style.bottom = "0";
+		inner_carousel.style.left = "0";
+		inner_carousel.style.top = "0";
+		inner_carousel.style.margin = "0";	
+		inner_carousel.style.height = "105px";
+		inner_carousel.style.padding = "10px 10px 10px 0";
+		inner_carousel.style.background = "url(../images/carousel_right.png) no-repeat right 0";
+		inner_carousel.style.display = "block";
+		inner_carousel.style.overflow = "hidden";
+		inner_carousel.id = "inner_carousel";
+		carousel.appendChild(inner_carousel);		
+		
+		
+		viewer.addControl(carousel);
+
+
+
+		$('#text_input').focus().autocomplete('http://data.gbif.org/species/nameSearch?maxResults=5&returnType=nameId&nameType=1&view=json',{
+					dataType: 'jsonp',
+					parse: function(data){
+                      var animals = new Array();
+                      gbif_data = data;
+
+                      for(var i=0; i<gbif_data.length; i++) {
+                        animals[i] = { data: gbif_data[i], value: gbif_data[i].scientificName, result: gbif_data[i].scientificName };
+                      }
+
+                      return animals;
+					}, 
+					formatItem: function(row, i, n, value, term) {
+								
+						var menu_string = '<p style="float:left;width:100%;font:normal 15px Arial;">' + value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term.replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>") + '</p>';
+						return menu_string;
+		      },					
+					width: 404,
+					height: 125,
+					minChars: 4,
+					max: 3,
+					selectFirst: false,
+					loadingClass: 'loader',
+					multiple: false,
+					scroll: false
+				}).result(function(event,row){
+					// location.href = '/editor/' + row.id + '/' + escape(row.scientificName);
+				});
+				
+
 	}
+	
+	
+	
+	
+	

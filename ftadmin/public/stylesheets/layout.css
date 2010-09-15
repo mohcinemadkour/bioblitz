@@ -1,2 +1,83 @@
-#container {position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%; background-color:white; color: white; z-index:1;}
+#container {position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%; background-color:black; color:white; z-index:1;}
 a:focus {outline:none;}
+input:focus {outline:none;}
+
+/*autocomplete css*/
+.ac_results {padding:0 0 10px 0; width:390px; height:149px; background: url(../images/search_bkg_top.png) no-repeat 0 0; overflow:hidden; z-index: 99999;}
+.ac_results_small{ border: 1px solid #00334E; border-top:none;} 
+.ac_results ul {width: 100%; list-style-position:outside; background:url(../images/search_bkg.png) no-repeat 0 bottom; list-style:none; padding:0; border:none; margin:10px 0 0 0; max-height:150px; overflow-x:hidden; overflow-y:auto;}
+.ac_results li {margin: 0px; padding: 12px 12px; display: block; overflow: hidden; color:#999999;}
+.ac_results li.odd {background:#F1F1F1;}
+.ac_results li.last {border-bottom:none;}
+.ac_results li p {margin:0; padding:0; font-weight:normal;}
+.ac_results li p strong {text-decoration:underline; font-weight:bold;}
+.ac_results li.ac_over {cursor: pointer; color: #333333;}
+.ac_results li.empty.ac_over {cursor: default; color: black;}
+
+
+/*scroll*/
+
+.jScrollPaneContainer {
+	position: relative;
+	overflow: hidden;
+	z-index: 1;
+}
+
+.jScrollPaneTrack {
+	position: absolute;
+	cursor: pointer;
+	right: 0;
+	top: 0;
+	height: 100%;
+	background: #aaa;
+}
+.jScrollPaneDrag {
+	position: absolute;
+	background: #666;
+	cursor: pointer;
+	overflow: hidden;
+}
+.jScrollPaneDragTop {
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+}
+.jScrollPaneDragBottom {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;
+}
+a.jScrollArrowUp {
+	display: block;
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	right: 0;
+	text-indent: -2000px;
+	overflow: hidden;
+	/*background-color: #666;*/
+	height: 9px;
+}
+a.jScrollArrowUp:hover {
+	/*background-color: #f60;*/
+}
+
+a.jScrollArrowDown {
+	display: block;
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	right: 0;
+	text-indent: -2000px;
+	overflow: hidden;
+	/*background-color: #666;*/
+	height: 9px;
+}
+a.jScrollArrowDown:hover {
+	/*background-color: #f60;*/
+}
+a.jScrollActiveArrowButton, a.jScrollActiveArrowButton:hover {
+	/*background-color: #f00;*/
+}
