@@ -1,9 +1,44 @@
-Flickertagger
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Flickrtagger</title> 
+    <link rel="shortcut icon" href="./images/favicon.ico"/>
 
-Geocode and Taxotag your observation pictures
 
-Flickertagger is an application developed specifically for the TDWG2010 Techno/Bioblitz. It is developed with the idea that most users will not be taking pictures with their mobiles, but rather use their own "good" cameras. With Flickertagger you will be able to later automatically georeference your pictures by providing a GPX file of the track you made during the Bioblitz. Every group will have at least one person with a GPS enable device to create this GPX file. We will upload all those GPX files for every trip during the Bioblitz. So, with all your images, plus this GPX file that you generate or we give you, you can start using Flickertagger. 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
 
-Flickertagger allows you to upload your pictures to your own Flickr account, or to upload them to a public repository. All those observations will then be submmited to the Bioblitz database.
+  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js" type="text/javascript" charset="utf-8"></script> 
 
-This is an Adobe AIR application that can run in Mac, Windows and Linux. Click the button to install
+ 	<%= stylesheet_link_tag 'flickrtagger' %>
+	<script src="/javascripts/cufon-yui.js" type="text/javascript" charset="utf-8"></script> 
+	<script src="/javascripts/Museo_Sans_500_400.font.js" type="text/javascript" charset="utf-8"></script> 
+	<%= javascript_include_tag 'flickrtagger/supersized.2.0','flickrtagger/flickrtagger' %>
+		
+</head> 
+ 
+<body> 
+
+	<!--Slides-->
+	<div id="supersize">
+		<%= image_tag('flickrtagger/background.jpg') %>
+	</div>
+
+	<div id="content">
+		<div class="float_content">
+			<div id="flickr_tagger_content">
+				<div class="text">
+					<p class="title museo_font">for TDWG2010</p>
+					<p class="first museo_font">Flickertagger is developed with the idea that most users will not be taking pictures with their mobiles, but rather use their own “good” cameras. With Flickertagger you will be able to later automatically georeference your pictures by providing a GPX file of the track you made during the Bioblitz. </p>
+					<p class="museo_font">Flickertagger allows you to upload your pictures to your own Flickr account, or to upload them to a public repository. All those observations will then be submmited to the Bioblitz database.</p>
+					<a class="install"></a>
+				</div>
+			</div>
+			<div id="footer">
+				<a class="logo" href="http://www.vizzuality.com" target="_blank"></a>
+				<p>proudly presented by</p>
+			</div>
+		</div>
+	</div>		
+	
+</body> 
+</html>
