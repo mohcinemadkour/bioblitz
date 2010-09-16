@@ -32,10 +32,20 @@
 				}
 				currentState="imagetagger";
 			}
+			
+			private function deleteAccount():void {
+				if (authorization!=null) {
+					authorization.currentState = "";
+				}
+				currentState = "authorizationFlickr";
+			}
+			
+			
 		]]>
 	</mx:Script>
 	
 	<mx:Style source="com/vizzuality/skin/components.css"/>
+	<mx:Button label="logout" click="deleteAccount()" right="13" top="10"/>
 	
 	<mx:states>
 		<mx:State name="imagetagger">
