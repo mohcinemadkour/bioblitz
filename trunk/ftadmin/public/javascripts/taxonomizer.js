@@ -3,6 +3,7 @@
 		var overMain = false;
 		var viewer = null;
 		var observation=null;
+		var animals = null;
 
 		function init() {
 				viewer = new Seadragon.Viewer("container");
@@ -157,10 +158,49 @@
 			$('div#carousel').fadeOut();
 		}
 
-		function getNext() {
+		function getNextImage() {
 			hideElements();
+			$('#text_input').focusout();
 			getNextObservationForIdentification();
 		}
+		
+		
+		function sendUnknownAnimal(event) {
+			
+			if (animals!=null && animals.length>0) {
+				$('#tooltip_title').html('Did you mean “<a href="javascript:void sendFirstOccurrence()">'+animals[0].data.s+'</a>”?');
+				$('#tooltip_button').text('Yes');
+				$('#tooltip_button').attr('href','javascript:void sendFirstOccurrence()');
+				$('#second_button').text("No, I mean “"+$('#text_input').attr('value')+"”");
+				$('#second_button').attr('href','javascript:void sendOwnScientificName()');
+				$('#tooltip').fadeTo("fast",1);
+			} else {
+				$('#tooltip_title').text('Do you want to send this?');
+				$('#tooltip_button').text('No');
+				$('#tooltip_button').attr('href','javascript:void hideTooltip()');
+				$('#second_button').text("Yes, It's my decision");
+				$('#second_button').attr('href','javascript:void sendOwnScientificName()');
+				$('#tooltip').fadeTo("fast",1);
+			}
+		}
+		
+		function hideTooltip() {
+			$('#tooltip').fadeTo("fast",0);
+		}
+		
+		
+		function sendOwnScientificName() {
+			$.get('/api/provide_identification?username='+escape($('#username').text())+'&rowid='+ observation.rowid + '&scientificName=' + $('#text_input').attr('value'), function(data) {});
+			getNextImage();
+			$('#tooltip').hide();
+		}
+		
+		function sendFirstOccurrence() {
+			$.get('/api/provide_identification?username='+escape($('#username').text())+'&rowid='+ observation.rowid + '&id=' + animals[0].data.id, function(data) {});
+			getNextImage();
+			$('#tooltip').hide();
+		}
+		
 
 
 

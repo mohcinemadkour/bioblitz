@@ -132,7 +132,7 @@
 		
 		//Next image
 		var next = document.createElement("a");
-   	next.href = "javascript:void getNext()";
+   	next.href = "javascript:void getNextImage()";
 	 	next.style.position = "absolute";
 	 	next.style.padding = "0";
 	 	next.style.margin = "0";
@@ -151,23 +151,23 @@
 		
 		
 		//Image info
-		var image_info = document.createElement("a");
-   	image_info.href = "#";
-	 	image_info.style.position = "absolute";
-	 	image_info.style.padding = "0";
-	 	image_info.style.margin = "0";
-	 	image_info.style.top = "0";
-	 	image_info.style.right = "60px";
-		image_info.style.zIndex = "100";
-	 	image_info.style.background = "url(../images/image_info.png) no-repeat 0 0";
-	 	image_info.style.height = "48px";
-	 	image_info.style.width = "48px";
-		$(image_info).hover(function(ev){
-			$(this).css('background-position','0 -48px');
-		},function(ev){
-			$(this).css('background-position','0 0');
-		});
-		image_info_container.appendChild(image_info);
+		// var image_info = document.createElement("a");
+		//    image_info.href = "#";
+		// 	 	image_info.style.position = "absolute";
+		// 	 	image_info.style.padding = "0";
+		// 	 	image_info.style.margin = "0";
+		// 	 	image_info.style.top = "0";
+		// 	 	image_info.style.right = "60px";
+		// 		image_info.style.zIndex = "100";
+		// 	 	image_info.style.background = "url(../images/image_info.png) no-repeat 0 0";
+		// 	 	image_info.style.height = "48px";
+		// 	 	image_info.style.width = "48px";
+		// 		$(image_info).hover(function(ev){
+		// 			$(this).css('background-position','0 -48px');
+		// 		},function(ev){
+		// 			$(this).css('background-position','0 0');
+		// 		});
+		// 		image_info_container.appendChild(image_info);
 		viewer.addControl(image_info_container);		
 		
 		
@@ -191,7 +191,8 @@
 			if (!first) {
 				$(this).stop().fadeTo(350,1);
 			} else {
-				$(this).stop().fadeTo("slow",0.5);
+				if (!$('.ac_results').is(':visible'))
+					$('#main_container').stop().fadeTo("slow",0.5);
 			}
 		});
 		
@@ -216,7 +217,7 @@
 		main_container.appendChild(title);
 		
 		var skip_image = document.createElement("a");
-   	skip_image.href = "javascript:void getNext()";
+   	skip_image.href = "javascript:void getNextImage()";
 		skip_image.innerHTML = "No, skip this image";
 	 	skip_image.style.position = "absolute";
 	 	skip_image.style.padding = "0";
@@ -242,8 +243,43 @@
 		form.style.position = "absolute";
 		form.style.right = "19px";
 		form.style.top = "41px";
+		form.action = "javascript:void sendUnknownAnimal()";
 		main_container.appendChild(form);
 		
+		//Confirmation tooltip
+		var tooltip = document.createElement("div");
+		tooltip.id = "tooltip";
+		tooltip.style.width = "277px";
+		tooltip.style.height = "84px";
+		tooltip.style.position = "absolute";
+		tooltip.style.float = "left";
+		tooltip.style.padding = "15px 15px 0 15px";
+		tooltip.style.right = "160px";
+		tooltip.style.bottom = "59px";
+		tooltip.style.zIndex = "10000";
+		tooltip.style.background = "url(../images/send_tooltip.png) no-repeat 0 0";
+		
+		
+		//Confirmation tooltip
+		var tooltip_title = document.createElement("p");
+		tooltip_title.id = "tooltip_title";
+		tooltip_title.innerHTML = "Did you mean “Luzula luzuloides”?";
+		tooltip.appendChild(tooltip_title);
+		
+		var tooltip_button = document.createElement("a");
+		tooltip_button.innerHTML = "Yes";
+		tooltip_button.id = "tooltip_button";
+		tooltip_button.href = "javascript: void alert('jamon')";
+		tooltip.appendChild(tooltip_button);
+		
+		var second_button = document.createElement("a");
+		second_button.innerHTML = 'No, I mean "Paco"';
+		second_button.id = "second_button";
+		second_button.href = "javascript: void alert('jamon')";
+		tooltip.appendChild(second_button);
+		
+		main_container.appendChild(tooltip);
+
 		
 		var spinning = document.createElement("img");
 		spinning.style.position = "absolute";
@@ -275,6 +311,8 @@
 		text_input.type = "text";
 		text_input.value = "Enter scientific name here";
 		form.appendChild(text_input);
+
+		
 		
 		var submit_input = document.createElement("input");
 		submit_input.style.position = "absolute";
@@ -354,12 +392,11 @@
 		$('#text_input').focus().autocomplete('http://bioblitz.ipq.co/api/taxonomy?',{
 					dataType: 'jsonp',
 					parse: function(data){
-											console.log(data);
-                      var animals = new Array();
+                      animals = new Array();
                       gbif_data = data;
 
                       for(var i=0; i<gbif_data.length; i++) {
-                        animals[i] = {k: gbif_data[i].k, c: gbif_data[i].c, o: gbif_data[i].o, f: gbif_data[i].f, data: gbif_data[i], value: gbif_data[i].s, result: gbif_data[i].s,  };
+                        animals[i] = {data: gbif_data[i], value: gbif_data[i].s, result: gbif_data[i].s };
                       }
 
                       return animals;
@@ -367,10 +404,11 @@
 					formatItem: function(row, i, n, value, term) {
 								
 						var menu_string = '<p style="float:left;width:100%;font:normal 15px Arial;">' + value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term.replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>") + '</p>';
+						menu_string += '<div class="taxonomy"><p class="first">'+row.k+'</p><p>'+row.p+'</p><p>'+row.c+'</p><p>'+row.o+'</p><p class="last">'+row.f+'</p></div>';
 						return menu_string;
 		      },					
 					width: 404,
-					height: 125,
+					height: 159,
 					minChars: 4,
 					max: 3,
 					selectFirst: false,
@@ -378,7 +416,8 @@
 					multiple: false,
 					scroll: false
 				}).result(function(event,row){
-					// location.href = '/editor/' + row.id + '/' + escape(row.scientificName);
+					$.get('/api/provide_identification?username='+escape($('#username').text())+'&rowid='+ observation.rowid + '&id=' + row.id, function(data) {});
+					getNextImage();
 				});
 				
 

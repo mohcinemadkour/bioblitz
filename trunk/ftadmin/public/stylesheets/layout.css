@@ -4,81 +4,28 @@ input:focus {outline:none;}
 .hidden {display:none;}
 
 /*autocomplete css*/
-.ac_results {padding:0 0 10px 0; width:390px; height:149px; background: url(../images/search_bkg_top.png) no-repeat 0 0; overflow:hidden; z-index: 99999;}
+.ac_results {padding:0 0 10px 0; width:390px; height:auto; background: url(../images/search_bkg_top.png) no-repeat 0 0; overflow:hidden; z-index: 99999;}
 .ac_results_small{ border: 1px solid #00334E; border-top:none;} 
-.ac_results ul {width: 100%; list-style-position:outside; background:url(../images/search_bkg.png) no-repeat 0 bottom; list-style:none; padding:0; border:none; margin:10px 0 0 0; max-height:150px; overflow-x:hidden; overflow-y:auto;}
-.ac_results li {margin: 0px; padding: 12px 12px; display: block; overflow: hidden; color:#999999;}
+.ac_results ul {width: 100%; list-style-position:outside; background:url(../images/search_bkg.png) no-repeat 0 bottom; list-style:none; padding:0; border:none; margin:10px 0 0 0; overflow-x:hidden; overflow-y:auto;}
+.ac_results li {margin: 0px; padding: 10px 12px; display: block; overflow: hidden; color:#666666;}
 .ac_results li.odd {background:#F1F1F1;}
 .ac_results li.last {border-bottom:none;}
-.ac_results li p {margin:0; padding:0; font-weight:normal;}
+.ac_results li p {margin:0; padding:0; font:normal 15px Arial;}
 .ac_results li p strong {text-decoration:underline; font-weight:bold;}
 .ac_results li.ac_over {cursor: pointer; color: #333333;}
 .ac_results li.empty.ac_over {cursor: default; color: black;}
+.ac_results li div.taxonomy {float:left; width:auto; margin:2px 0 0 0;}
+.ac_results li div.taxonomy p.first {float:left; width:auto; padding:0 10px 0 0; background:url(../images/taxonomy_list.png) no-repeat right 6px; font:normal 13px Arial; color:#666666;}
+.ac_results li div.taxonomy p {float:left; width:auto; padding:0 10px 0 6px; background:url(../images/taxonomy_list.png) no-repeat right 6px; font:normal 13px Arial; color:#666666;}
+.ac_results li div.taxonomy p.last {float:left; width:auto; padding:0 0 0 6px; background:none; font:normal 13px Arial; color:#666666;}
 
 
-/*scroll*/
-
-.jScrollPaneContainer {
-	position: relative;
-	overflow: hidden;
-	z-index: 1;
-}
-
-.jScrollPaneTrack {
-	position: absolute;
-	cursor: pointer;
-	right: 0;
-	top: 0;
-	height: 100%;
-	background: #aaa;
-}
-.jScrollPaneDrag {
-	position: absolute;
-	background: #666;
-	cursor: pointer;
-	overflow: hidden;
-}
-.jScrollPaneDragTop {
-	position: absolute;
-	top: 0;
-	left: 0;
-	overflow: hidden;
-}
-.jScrollPaneDragBottom {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	overflow: hidden;
-}
-a.jScrollArrowUp {
-	display: block;
-	position: absolute;
-	z-index: 1;
-	top: 0;
-	right: 0;
-	text-indent: -2000px;
-	overflow: hidden;
-	/*background-color: #666;*/
-	height: 9px;
-}
-a.jScrollArrowUp:hover {
-	/*background-color: #f60;*/
-}
-
-a.jScrollArrowDown {
-	display: block;
-	position: absolute;
-	z-index: 1;
-	bottom: 0;
-	right: 0;
-	text-indent: -2000px;
-	overflow: hidden;
-	/*background-color: #666;*/
-	height: 9px;
-}
-a.jScrollArrowDown:hover {
-	/*background-color: #f60;*/
-}
-a.jScrollActiveArrowButton, a.jScrollActiveArrowButton:hover {
-	/*background-color: #f00;*/
-}
+/*Tooltip*/
+div#tooltip {display:none;}
+p#tooltip_title {position:relative; width:100%; color:white; text-align:left; font:bold 15px Arial; margin:0; padding:0;}
+p#tooltip_title a {font-weight:bold; color:#FF4B1F; text-decoration:none;}
+p#tooltip_title a:hover {text-decoration:underline;}
+a#tooltip_button {position:relative; float:left; font:bold 15px Arial; color:#333333; text-align:center; width:80px; height:17px; padding:5px 0; margin:7px 12px 0 0; background:url(../images/confirmation_button.png) no-repeat 0 0; text-decoration:none;}
+a#tooltip_button:hover {background-position:0 -27px;}
+a#second_button {position:relative; float:left; background:none; font:normal 13px Arial; color:#999999; text-align:left; margin:12px 0 0 0; padding:0;}
+a#second_button:hover {color:#F7F7F7;}
