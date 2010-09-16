@@ -1,4 +1,5 @@
 $(document).ready(function() {
+		Cufon.replace('.museo_font');
 
 		Cufon.replace('h1', {textShadow: '0px 3px #4E97AD'});
 		Cufon.replace('.supertitle', {textShadow: '0px 3px #4E97AD'});
@@ -11,5 +12,5 @@ $(document).ready(function() {
 		Cufon.replace('a#schedule', {textShadow: '0px -1px #2B5866'});
 		Cufon.replace('h4'); // Works without a selector engine
 		Cufon.replace('a.download', {textShadow: '0px -1px #2B5866'});
-		
+
 });

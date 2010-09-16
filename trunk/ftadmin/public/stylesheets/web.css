@@ -10,7 +10,7 @@ div#container {width: 100%;}
 div.outer_block1 {position: relative; z-index: 100; width:100%; background:url(../images/header_background.png) repeat-x center 0; overflow: hidden;}
 div.block1 {position: relative; width: 1000px; margin: 0px auto; padding:0;  z-index:100; height:493px;}
 div.outer_illustration {float:left; width:100%; background:url(../images/illustration.png) no-repeat center 0;}
-div.block1 h1 {float: left; color: white; font-size: 45px; font-weight: bold; width: 100%; text-shadow: 2px 2px 2px #000;}
+div.block1 h1 {float: left; color: white; font-size: 45px; font-weight: bold; width: 100%; text-shadow:2px 2px 6px #3E798A;}
 div.block1 p {float: left; font: normal 19px Arial; color:white; width:400px; text-shadow: 0px -1px 0px #386876; clear: both;}
 div.block1 p.supertitle {float: left; width: 100%; margin-top:79px; color: white; font-weight: bold; font-size: 23px;}
 div.block1 p.location {float: left; font: normal 15px Arial; margin:25px 0 0 0; padding:3px 0 23px 50px; color: #366775; width: 200px; height: 42px; text-shadow:none; background:url(../images/location_marker.png) no-repeat 0 0; clear: both;}
@@ -24,11 +24,11 @@ div.outer_block2 {position: relative; float:left; z-index:100; width: 100%; back
 div.block2 {position:relative; width: 1000px; margin: 0px auto;}
 div.separator1 {position: absolute;  bottom: 0px; z-index: 20; width: 100%; height: 9px; background: url(../images/separator1.png) repeat-x center 0;}
 div.explanation {float: left; width:450px; margin-bottom: 30px; height:420px;}
-div.explanation h3 {color: #509FBA; font-size: 27px; font-weight: normal; text-shadow: 2px 2px 2px #000; margin-top: 35px; clear: both; overflow: hidden;}
+div.explanation h3 {color: #509FBA; font-size: 27px; font-weight: normal; text-shadow:0px 2px 2px #FFFFFF; margin-top: 35px; clear: both; overflow: hidden;}
 div.explanation p {margin-top: 20px; font: normal 17px Arial; color: #666666;}
 div.explanation p a.link {text-decoration:underline; font:normal 17px Arial; color:#50A1BA; height:auto; padding:0; margin:0; float:none;} 	
 div.explanation p a.link:hover {color:#366D7E;}
-div.explanation a#schedule {float:left; width:158px; height:35px; background:url(../images/schedule_button.png) no-repeat top left; text-align:center; color:white; padding:10px 0 0 25px; margin:20px 0 0 0; font:normal 17px Arial;}
+div.explanation a#schedule {float:left; width:158px; height:33px; background:url(../images/schedule_button.png) no-repeat top left; text-align:center; color:white; padding:12px 0 0 25px; margin:20px 0 0 0; font:normal 17px Arial; text-decoration:none;}
 div.explanation a#schedule:hover {background-position:0 -46px;}
 div.goals {position:absolute; left:470px; top:-88px; z-index:1000; width: 540px; height: 505px; background:url(../images/goals_background.png) no-repeat top right;}
 div.goals h3 {font-size: 27px; color: #333333; margin-top: 90px; margin-left: 80px;}
@@ -46,11 +46,22 @@ div.tool img.img_tool {width: 220px; height: 165px; background:url(../images/img
 div.tool h4 {font-size: 19px; color: #333333;}
 div.tool p.tool_author {font: normal 13px Arial; color: #999999; margin-top: 0px;}
 div.tool p.tool_author a {color: #999999;}
+div.tool p.tool_author a:hover {color: #666666;}
 div.tool p.tool_explanation {font: normal 15px Arial; color: #999999; width: 220px; margin-top: 10px;}
-div.tool a.download {width: 111px; height: 22px; background:url(../images/download_button.png) no-repeat top left; float: left; margin:20px 10px 0 0; text-decoration: none; text-align: center; font-size: 18px; padding:4px 0 0 10px; font:normal 13px Arial; color:white;}
+div.tool a.download {width: 111px; height: 21px; background:url(../images/download_button.png) no-repeat top left; float: left; margin:20px 10px 0 0; text-decoration: none; text-align: center; font-size: 18px; padding:5px 0 0 10px; font:normal 13px Arial; color:white;}
+div.tool a.download.go {width: 150px; height:21px; background:url(../images/go_button.png) no-repeat top left; float: left;}
 div.tool a.download:hover {background-position:0 -26px;}
-div.outer_footer { width: 100%; background: url(../images/footer_bkg.jpg) repeat 0 0; height:262px; margin:30px 0 0 0; padding:0;}
-div.outer_footer div.footer {margin:0 auto; width:1000px; padding:47px 0 0 0;}
+
+div.developer_info {width:100%; background: url('../images/bkg_devinfo_repeaty.jpg') repeat-x; height:123px; margin:30px 0 0 0; padding:0;}
+div.developer_info div.content {width: 1000px; margin:0 auto; padding:0;}
+div.developer_info div.content div.text {float:left; width:694px;} 
+div.developer_info div.content div.text h3 {float:left; font:normal 27px Arial; color:white; text-shadow:0px 2px 1px #316575; width:100%; margin:36px 0 0 0;}
+div.developer_info div.content div.text p {float:left; font:normal 15px Arial; color:white; text-shadow:0px 1px 1px #316575; width:100%; margin:2px 0 0 0;}
+div.developer_info div.content a.dev_info {float:right; background:url('../images/bttn_devinfo.png') no-repeat 0 0; width:266px; height:62px; margin:33px 0 0 0;}
+div.developer_info div.content a.dev_info:hover {background-position:0 -62px;}
+
+div.outer_footer { width:100%; background: url(../images/footer_bkg.jpg) repeat-x; height:258px; margin:0; padding:0;}
+div.outer_footer div.footer {margin:0 auto; width:1000px; margin:0 auto; padding:47px 0 0 0;}
 div.outer_footer div.footer div.left {float:left; width:auto;}
 div.outer_footer div.footer ul {float:left; width:auto;}
 div.outer_footer div.footer ul li {float:left; width:auto; padding:0 15px 0 10px; background:url(../images/list_separator.png) no-repeat right -2px;}
