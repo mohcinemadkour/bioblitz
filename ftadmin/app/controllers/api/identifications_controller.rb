@@ -38,7 +38,8 @@ class Api::IdentificationsController < ApplicationController
         class='#{taxonomy[0]['c']}',
         'order'='#{taxonomy[0]['o']}',
         family='#{taxonomy[0]['f']}',
-        genus='#{taxonomy[0]['g']}'
+        genus='#{taxonomy[0]['g']}',
+        identifiedBy='#{params[:username]}'
       WHERE ROWID='#{params[:rowid]}'"
     else
       sql="UPDATE 225363 SET scientificName = #{params[:scientificName]}, colId='failed' WHERE ROWID=#{params[:rowid]}"
