@@ -2,16 +2,18 @@
 <html> 
 <head> 
 	<title>TDWG2010 Techno/BioBlitz</title> 
+    <link rel="shortcut icon" href="./images/favicon.ico"/>
+
 	<link href="/stylesheets/web.css" media="screen" rel="stylesheet" type="text/css" /> 
 	<meta name="csrf-param" content="authenticity_token"/> 
 	<meta name="csrf-token" content="hGbr5JdHXI+vqL5u7n/Mft4y1Ie9m+Qes2pfD062wWs="/> 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
  
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
-	<script src="/javascript/cufon-yui.js" type="text/javascript" charset="utf-8"></script> 
-	<script src="/javascript/Museo_Sans_500_400.font.js" type="text/javascript" charset="utf-8"></script> 
-	<script src="/javascript/jquery.scrollTo-1.4.2-min.js" type="text/javascript" charset="utf-8"></script> 
-	<script src="/javascript/web.js" type="text/javascript" charset="utf-8"></script> 
+	<script src="/javascripts/cufon-yui.js" type="text/javascript" charset="utf-8"></script> 
+	<script src="/javascripts/Museo_Sans_500_400.font.js" type="text/javascript" charset="utf-8"></script> 
+	<script src="/javascripts/jquery.scrollTo-1.4.2-min.js" type="text/javascript" charset="utf-8"></script> 
+	<script src="/javascripts/web.js" type="text/javascript" charset="utf-8"></script> 
 </head> 
  
 <body> 
@@ -20,11 +22,11 @@
 		<div class="outer_illustration"> 
 			<div class="block1"> 
 				<p class="supertitle">TDWG2010</p> 
-				<h1>Techno/Bioblitz</h1> 
+				<h1 class="museo_font">Techno/Bioblitz</h1> 
 				<p class="location"> September 29th, Woods Hole, Massachussets USA</p> 
 				<p>Discover and explore an array of natural habitats in and around the village of Woods Hole while providing opportunities for those with technical skills to participate in the capture, processing and presentation of data.</p> 
 				<div class="links"> 
-					<a href="javascript:void $.scrollTo('div.block4',400)" id="howto">How to contribute</a> 
+					<a href="javascript:void $.scrollTo('div.block4',400)" id="howto" class="museo_font">How to contribute</a> 
 					<a href="http://wiki.tdwg.org/twiki/bin/view/Main/BioBlitz2010FieldTrips#Schedule" id="signup">Sign up now</a> 
 				</div> 
 			</div> 
@@ -35,14 +37,14 @@
 	<div class="outer_block2"> 
 		<div class="block2"> 
 			<div class="explanation"> 
-				<h3>This is not a traditional bioblitz</h3> 
+				<h3 class="museo_font">This is not a traditional bioblitz</h3> 
 				<p>The event is not intended to cover the strict scope of a formal bioblitz, which generally consists of a 24-hour intensive inventory of a rather tightly constrained location. <br/><br/> 
-				Instead, this event will combine casual, <a href="#" class="link">guided field</a> trips within the Woods Hole village and some select locations in the area, with a support facility at the TDWG venue for identification, imaging, and computer support.<br/><br/> 
+				Instead, this event will combine casual, <a href="http://wiki.tdwg.org/twiki/bin/view/Main/BioBlitz2010" class="link">guided field</a> trips within the Woods Hole village and some select locations in the area, with a support facility at the TDWG venue for identification, imaging, and computer support.<br/><br/> 
 				TDWG participants have a chance to attend both Bioblitz-related activities as well as other side events that may be scheduled on Wednesday, 29 September.</p> 
 				<a href="http://wiki.tdwg.org/twiki/bin/view/Main/BioBlitz2010" id="schedule">View schedule</a> 
 			</div> 
 			<div class="goals">	
-				<h3>The goals</h3> 
+				<h3 class="museo_font">The goals</h3> 
 				<ul> 
 					<li>Enable observational data to be captured in a manner to develop and promote standards for recording data about organisms.</li> 
 					<li>Provide an opportunity to demonstrate these standards in action and evaluate their potential for uptake and use in a real world event.</li> 
@@ -60,39 +62,47 @@
 	</div>	
 	<div class="separator2"></div> 
 	<div class="outer_block4"> 
-		<div class="block4"> 
+		<div class="block4"> 			
 			<div class="tool"> 
-					<img class="img_tool" src="./images/flickrtaggr.png" width="" height="" alt="flickr tagger"/> 
-					<h4>FlickrTagger</h4> 
-					<p class="tool_author">by <a href="">vizzuality</a></p> 
-					<p class="tool_explanation">Tag and upload your taken images to flickr in only 5 clicks. Also you will be able to syncronize your GPX file with your recorded photographs.</p> 
+					<a href=""><img class="img_tool" src="./images/flickrtaggr.png" alt="flickr tagger"/></a>
+					<h4 class="museo_font">Taxxonomizer</h4> 
+					<p class="tool_author">by <a href="http://www.vizzuality.com" target="_blank">vizzuality</a></p> 
+					<p class="tool_explanation">If you know a lot about species, you can help identifying images which has not been identify. You will get lot of karma!</p> 
+					<a href="download_flickrtaggr" class="download go">Go to Taxonomizer</a>	
+			</div> 
+			<div class="tool"> 
+					<a href=""><img class="img_tool" src="./images/flickrtaggr.png" alt="flickr tagger"/></a>
+					<h4 class="museo_font">FlickrTagger</h4> 
+					<p class="tool_author">by <a href="http://www.vizzuality.com" target="_blank">vizzuality</a></p> 
+					<p class="tool_explanation">If you want to use your own camera, you can use this app to geotag and provide identifications after you come back from the trip.</p> 
 					<a href="download_flickrtaggr"class="download">Download it</a>	
+			</div>			
+			<div class="tool"> 
+					<a href="http://ereleve.codeplex.com/" target="_blank"><img class="img_tool" src="./images/pocket_eReleve.png" alt="pocket eReleve"/></a>
+					<h4 class="museo_font">Pocket eReleve</h4> 
+					<p class="tool_author">by <a href="http://www.natural-solutions.eu/" target="_blank">natural solutions</a></p> 
+					<p class="tool_explanation">Pocket eRelevé is an application intended for naturalists and ecologists conducting field surveys.</p> 
+					<a href="http://ereleve.codeplex.com/" class="download">Download it</a>	
 			</div> 
 			<div class="tool"> 
-					<img class="img_tool" src="./images/flickrtaggr.png" width="" height="" alt="flickr tagger"/> 
-					<h4>Taxxonomizer</h4> 
-					<p class="tool_author">by <a href="">vizzuality</a></p> 
-					<p class="tool_explanation">Propose to taxonomist and volunteers to identify specimenes in your taken photographs.
-					Spread your work!</p> 
-					<a href="download_flickrtaggr" class="download">Download it</a>	
-			</div> 
-			<div class="tool"> 
-					<img class="img_tool" src="./images/flickrtaggr.png" width="" height="" alt="flickr tagger"/> 
-					<h4>FlickrTagger</h4> 
-					<p class="tool_author">by <a href="">vizzuality</a></p> 
-					<p class="tool_explanation">Tag and upload your taken images to flickr in only 5 clicks. Also you will be able to syncronize your GPX file with your recorded photographs.</p> 
-					<a href="download_flickrtaggr" class="download">Download it</a>	
-			</div> 
-			<div class="tool"> 
-					<img class="img_tool" src="./images/flickrtaggr.png" width="" height="" alt="flickr tagger"/> 
-					<h4>FlickrTagger</h4> 
-					<p class="tool_author">by <a href="">vizzuality</a></p> 
-					<p class="tool_explanation">ag and upload your taken images to flickr in only 5 clicks. Also you will be able to syncronize your GPX file with your recorded photographs.</p> 
-					<a href="download_flickrtaggr" class="download">Download it</a>	
+					<a href="http://groups.google.com/group/tdwg-bioblitz/web/simple-spotter?pli=1" target="_blank"><img class="img_tool" src="./images/simple_spotter.png" alt="simple spotter"/></a>
+					<h4 class="museo_font">Simple Spotter</h4> 
+					<p class="tool_author">by <a href="http://www.hyam.net/blog/" target="_blank">Roger Hyam</a></p> 
+					<p class="tool_explanation">Simple Spotter is a proof of concept HTML5 / WebKit based data collection utility that will run on all WebKit based browsers.</p> 
+					<a href="http://groups.google.com/group/tdwg-bioblitz/web/simple-spotter?pli=1" class="download">Download it</a>	
 			</div>		
 		</div>						
 	</div> 
-	<div class="outer_footer"> 
+	<div class="developer_info">
+		<div class="content">
+			<div class="text">
+				<h3 class="museo_font">Developer information</h3>
+				<p>Are you going to develop something? Do you have any geek questions? </p>
+			</div>
+			<a class="dev_info" href="http://wiki.tdwg.org/twiki/bin/view/Main/BioBlitz2010ProgrammerGuidelines"></a>
+		</div>
+	</div>
+	<div class="outer_footer">		 
 		<div class="footer"> 
 			<div class="left"> 
 				<ul> 
