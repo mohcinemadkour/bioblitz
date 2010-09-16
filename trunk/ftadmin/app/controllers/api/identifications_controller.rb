@@ -29,26 +29,53 @@ class Api::IdentificationsController < ApplicationController
     
     if (params[:id])
       taxonomy=resolve_taxonomy(params[:id])
-    
-      sql="UPDATE 225363 SET 
-        colId='#{taxonomy[0]['id_col']}',
-        colLsid='#{taxonomy[0]['lsid']}',
-        kingdom='#{taxonomy[0]['k']}',
-        phylum='#{taxonomy[0]['p']}',
-        class='#{taxonomy[0]['c']}',
-        'order'='#{taxonomy[0]['o']}',
-        family='#{taxonomy[0]['f']}',
-        genus='#{taxonomy[0]['g']}',
-        identifiedBy='#{params[:username]}',
-        identificationReferences='Taxonomizer',
-        scientificName='#{taxonomy[0]['s']'
-      WHERE ROWID='#{params[:rowid]}'"
+      
+      sql="INSERT INTO 254492(observationRowId,scientificName,identificationTime,author,application,colId,colLsid,kingdom
+      ,phylum,class,'order',family,genus) VALUES(
+        '#{params[:rowid]}',
+        '#{taxonomy[0]['s']}',
+        '#{Time.now.strftime("%m-%d-%Y %H:%M:%S")}',
+        '#{params[:username]}',
+        'Taxonomizer',
+        '#{taxonomy[0]['id_col']}',
+        '#{taxonomy[0]['lsid']}',
+        '#{taxonomy[0]['k']}',
+        '#{taxonomy[0]['p']}',
+        '#{taxonomy[0]['c']}',
+        '#{taxonomy[0]['o']}',
+        '#{taxonomy[0]['f']}',
+        '#{taxonomy[0]['g']}'
+      )"
+      
+      # sql="UPDATE 225363 SET 
+      #   colId='#{taxonomy[0]['id_col']}',
+      #   colLsid='#{taxonomy[0]['lsid']}',
+      #   kingdom='#{taxonomy[0]['k']}',
+      #   phylum='#{taxonomy[0]['p']}',
+      #   class='#{taxonomy[0]['c']}',
+      #   'order'='#{taxonomy[0]['o']}',
+      #   family='#{taxonomy[0]['f']}',
+      #   genus='#{taxonomy[0]['g']}',
+      #   identifiedBy='#{params[:username]}',
+      #   identificationReferences='Taxonomizer',
+      #   scientificName='#{taxonomy[0]['s']}'
+      # WHERE ROWID='#{params[:rowid]}'"
     else
-      sql="UPDATE 225363 SET scientificName = #{params[:scientificName]},
-            identifiedBy='#{params[:username]}', 
-            identificationReferences='Taxonomizer',
-            colId='failed' 
-        WHERE ROWID=#{params[:rowid]}"
+      
+      sql="INSERT INTO 254492(observationRowId,scientificName,identificationTime,author,application) VALUES(
+        '#{params[:rowid]}',
+        '#{params[:scientificName]}',
+        '#{Time.now.strftime("%m-%d-%Y %H:%M:%S")}',
+        '#{params[:username]}',
+        'Taxonomizer',             
+      )"
+      
+      # sql="UPDATE 225363 SET scientificName = #{params[:scientificName]},
+      #       identifiedBy='#{params[:username]}', 
+      #       identificationReferences='Taxonomizer',
+      #       colId='failed' 
+      #   WHERE ROWID=#{params[:rowid]}"
+        
     end
     
     ft.sql_post(sql)
