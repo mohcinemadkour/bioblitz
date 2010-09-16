@@ -59,7 +59,7 @@
 	 	vizzuality.style.margin = "0";
 	 	vizzuality.style.bottom = "10px";
 	 	vizzuality.style.left = "10px";
-	 	vizzuality.style.background = "url(../images/vizzuality.png) no-repeat 0 0";
+	 	vizzuality.style.background = "url(../images/vizzuality_color.png) no-repeat 0 0";
 	 	vizzuality.style.height = "40px";
 	 	vizzuality.style.width = "75px";
 		viewer.addControl(vizzuality);
@@ -186,11 +186,13 @@
 		main_container.style.display = "none";
 		main_container.id = "main_container";
 		$(main_container).hover(function(ev){
-			over_main = true;
 			$(this).stop().fadeTo("fast",1);
 		},function(ev){
-			over_main = false;
-			$(this).stop().fadeTo("slow",0.5);
+			if (!first) {
+				$(this).stop().fadeTo(350,1);
+			} else {
+				$(this).stop().fadeTo("slow",0.5);
+			}
 		});
 		
 		var logo = document.createElement('img');
@@ -349,14 +351,15 @@
 
 
 
-		$('#text_input').focus().autocomplete('/api/taxonomy',{
+		$('#text_input').focus().autocomplete('http://bioblitz.ipq.co/api/taxonomy?',{
 					dataType: 'jsonp',
 					parse: function(data){
+											console.log(data);
                       var animals = new Array();
                       gbif_data = data;
 
                       for(var i=0; i<gbif_data.length; i++) {
-                        animals[i] = { data: gbif_data[i], value: gbif_data[i].scientificName, result: gbif_data[i].scientificName };
+                        animals[i] = {k: gbif_data[i].k, c: gbif_data[i].c, o: gbif_data[i].o, f: gbif_data[i].f, data: gbif_data[i], value: gbif_data[i].s, result: gbif_data[i].s,  };
                       }
 
                       return animals;

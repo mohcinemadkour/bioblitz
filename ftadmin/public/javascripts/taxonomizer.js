@@ -23,6 +23,11 @@
 				Seadragon.Config.proxyUrl = "/api/proxy?url=";
 		    viewer.openDzi('http://cache.zoom.it/content/'+zoomitId+'.dzi');
 				viewer.addEventListener("animationfinish", setTimeout("showElements('Loading...')",2000));
+				if (!first) {
+					setTimeout(function(ev){
+						if (!first) first=true;
+					},8000);
+				}
 		}
 
 
@@ -130,12 +135,10 @@
 					createCarousel(observation.zoomitId);
 				}
 			});
-			if (!first) {
-				$('div#main_container').fadeIn();
-				first = !first;
-				if (!overMain) $('div#main_container').delay(5000).fadeTo("slow",0.5);
+			if (first) {
+				$('div#main_container').fadeTo("fast",0.5);
 			} else {
-				$('div#main_container').fadeTo("slow",0.5);
+				$('div#main_container').fadeTo("fast",1);
 			}
 			$('a#vizzuality').fadeIn();
 			$('div#image_info_container').fadeIn();
