@@ -26,4 +26,11 @@ task :run_migrations, :roles => [:app] do
   CMD
 end
 
-after  "deploy:update_code", :run_migrations
+after  "deploy:update_code", :run_migrations, :db_symlink
+
+task :db_symlink, :roles => [:app] do
+  run <<-CMD
+    ln -s #{shared_path}/db/production.sqlite3 #{release_path}/db;
+  CMD
+end
+
