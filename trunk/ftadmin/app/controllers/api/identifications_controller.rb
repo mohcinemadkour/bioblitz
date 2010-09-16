@@ -67,7 +67,7 @@ class Api::IdentificationsController < ApplicationController
         '#{params[:scientificName]}',
         '#{Time.now.strftime("%m-%d-%Y %H:%M:%S")}',
         '#{params[:username]}',
-        'Taxonomizer',             
+        'Taxonomizer',
       )"
       
       # sql="UPDATE 225363 SET scientificName = #{params[:scientificName]},
@@ -79,6 +79,11 @@ class Api::IdentificationsController < ApplicationController
     end
     
     ft.sql_post(sql)
+    
+    #TODO
+    # sql="SELECT numIdentifications FROM 225363 WHERE ROWID=#{params[:rowid]}"
+    # sql="UPDATE 225363 SET numIdentifications=numIdentifications+1 WHERE ROWID=#{params[:rowid]}"
+    # ft.sql_post(sql)
     
     #/api/provide_identification?rowid=2323&id=232323
     #/api/provide_identification?rowid=2323&scientificName=Pepito
