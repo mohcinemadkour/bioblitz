@@ -1,8 +1,13 @@
 Ftadmin::Application.routes.draw do |map|
 
   root :to =>'web#show'
-  
-  
+
+  resources :users
+  resource :session, :only => [:create, :destroy]
+  match 'auth' => 'users#new', :as => :auth
+  match 'register' => 'users#create', :as => :register
+  match 'logout' => 'sessions#destroy', :as => :logout
+
   namespace :api do
     get "identification_request" => "identifications#new", :format => :json
     get "dwca_to_fusion_tables" => "dwc_archive#new", :format => :json
@@ -10,10 +15,10 @@ Ftadmin::Application.routes.draw do |map|
     get "taxonomy" => "taxonomy#index", :format => :json
     get "proxy" => "proxy#show"
   end
-  
+
   get "taxonomizer" => "taxonomizer#show"
   get "admin" => "main#show"
-  
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

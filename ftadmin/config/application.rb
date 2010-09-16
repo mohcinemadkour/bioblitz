@@ -41,3 +41,5 @@ module Ftadmin
     config.filter_parameters += [:password]
   end
 end
+
+require 'authenticated_system'
