@@ -36,25 +36,25 @@
 		    //Here we need to do some loading while we retrieve the next identification
     
 		      //First we get the total amount of pending identifications
-		      var sql="select COUNT() from 225363 WHERE zoomitId not equal to ''";
+		      var sql="select COUNT() from 225363 WHERE scientificName='' AND zoomitId not equal to ''";
 		      $.ajax({
 		        url: "http://tables.googlelabs.com/api/query?sql="+escape(sql),
 		        dataType: "jsonp",
 		        jsonp: "jsonCallback",
 		        error: function(msg) {
-		            console.log(msg);
+		            //console.log(msg);
 		        },
 		        success: function(data) {
 		            //Here we have to check if there is no pending images and tell them THANKS but come back later.
 		            var numObserv=data.table.rows[0][0];            
 		            var randomRecord = Math.floor(Math.random()*numObserv)
-		            sql="select ROWID,observedBy,dateTime,latitude,longitude,occurrenceRemarks,verbatimLocality,zoomitId from 225363 WHERE zoomitId not equal to '' OFFSET "+randomRecord +" LIMIT 1";
+		            sql="select ROWID,observedBy,dateTime,latitude,longitude,occurrenceRemarks,verbatimLocality,zoomitId from 225363 WHERE scientificName='' AND zoomitId not equal to '' OFFSET "+randomRecord +" LIMIT 1";
 		              $.ajax({
 		      	        url: "http://tables.googlelabs.com/api/query?sql="+escape(sql),
 		      	        dataType: "jsonp",
 		      	        jsonp: "jsonCallback",
 		      	        error: function(msg) {
-		      	            console.log(msg);
+		      	            //console.log(msg);
 		      	        },
 		      	        success: function(data) {
 		      	            var da = data.table.rows[0];
