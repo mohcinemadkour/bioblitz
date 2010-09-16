@@ -1,9 +1,3 @@
-GIT
-  remote: http://github.com/rails/exception_notification.git
-  revision: 192a49a
-  specs:
-    exception_notification (1.0.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -96,7 +90,6 @@ PLATFORMS
 
 DEPENDENCIES
   capistrano
-  exception_notification!
   fastercsv
   gdata_19
   json

@@ -37,5 +37,3 @@ gem 'rubyzip'
 gem 'fastercsv'
 gem 'pg'
 gem 'capistrano'
-
-gem 'exception_notification', :require => 'exception_notifier', :git => 'http://github.com/rails/exception_notification.git'
