@@ -3586,3 +3586,4 @@ Started GET "/api/taxonomy?callback=jsonp1284565004969&query=luzul&limit=3&times
   Processing by Api::TaxonomyController#index as JSON
   Parameters: {"timestamp"=>"1284565037735", "callback"=>"jsonp1284565004969", "limit"=>"3", "query"=>"luzul"}
 Completed 200 OK in 9ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+DEPRECATION WARNING: You are using the old router DSL which will be removed in Rails 3.1. Please check how to update your routes file at: http://www.engineyard.com/blog/2010/the-lowdown-on-routes-in-rails-3/. (called from /Users/fernando/proyectos/ftadmin/config/routes.rb:1)

@@ -39,5 +39,12 @@ module Ftadmin
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    # Exception Notification
+    config.middleware.use ExceptionNotifier,
+        :email_prefix => "[Bioblitz] ",
+        :sender_address => %{"ubuntu" <ubuntu@li198-149.members.linode.com>},
+        :exception_recipients => %w{jatorre@vizzuality.com}
+
   end
 end
