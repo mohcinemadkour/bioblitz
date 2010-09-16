@@ -69,8 +69,12 @@
 		  	                    verbatimLocality:da[6],
 														zoomitId: pics
 		  	                };
-												$('p#observedBy').text('Image by '+ observation.observedBy);
-												$('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com/?q='+observation.latitude+','+observation.longitude+'" style="color:white;">'+Number(observation.latitude).toFixed(4)+', '+Number(observation.longitude).toFixed(4)+'</a>');
+												if (observation.observedBy != '') {
+													$('p#observedBy').text('Image by '+ observation.observedBy);
+												}
+												if (observation.latitude!='') {
+$('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com/?q='+observation.latitude+','+observation.longitude+'" style="color:white;">'+Number(observation.latitude).toFixed(4)+', '+Number(observation.longitude).toFixed(4)+'</a>');
+												}
 		  	                displayObservation(pics[0]);
 		  	            }
 		  	        });
@@ -166,21 +170,23 @@
 		
 		
 		function sendUnknownAnimal(event) {
-			
-			if (animals!=null && animals.length>0) {
-				$('#tooltip_title').html('Did you mean “<a href="javascript:void sendFirstOccurrence()">'+animals[0].data.s+'</a>”?');
-				$('#tooltip_button').text('Yes');
-				$('#tooltip_button').attr('href','javascript:void sendFirstOccurrence()');
-				$('#second_button').text("No, I mean “"+$('#text_input').attr('value')+"”");
-				$('#second_button').attr('href','javascript:void sendOwnScientificName()');
-				$('#tooltip').fadeTo("fast",1);
-			} else {
-				$('#tooltip_title').text('Do you want to send this?');
-				$('#tooltip_button').text('No');
-				$('#tooltip_button').attr('href','javascript:void hideTooltip()');
-				$('#second_button').text("Yes, It's my decision");
-				$('#second_button').attr('href','javascript:void sendOwnScientificName()');
-				$('#tooltip').fadeTo("fast",1);
+			var animal = $('#text_input').attr('value');
+			if (animal!='Enter scientific name here' && animal!='') {
+					if (animals!=null && animals.length>0) {
+						$('#tooltip_title').html('Did you mean “<a href="javascript:void sendFirstOccurrence()">'+animals[0].data.s+'</a>”?');
+						$('#tooltip_button').text('Yes');
+						$('#tooltip_button').attr('href','javascript:void sendFirstOccurrence()');
+						$('#second_button').text("No, I mean “"+$('#text_input').attr('value')+"”");
+						$('#second_button').attr('href','javascript:void sendOwnScientificName()');
+						$('#tooltip').fadeTo("fast",1);
+					} else {
+						$('#tooltip_title').text('Do you want to send this?');
+						$('#tooltip_button').text('No');
+						$('#tooltip_button').attr('href','javascript:void hideTooltip()');
+						$('#second_button').text("Yes, It's my decision");
+						$('#second_button').attr('href','javascript:void sendOwnScientificName()');
+						$('#tooltip').fadeTo("fast",1);
+					}
 			}
 		}
 		

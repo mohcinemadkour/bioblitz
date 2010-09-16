@@ -344,7 +344,6 @@
 		var image_by = document.createElement("p");
 		image_by.style.position = "absolute";
 		image_by.id = "observedBy";
-		image_by.innerHTML = "Image by Raúl Barroso";
 		image_by.style.bottom = "10px";
 		image_by.style.left = "222px";
 	 	image_by.style.padding = "0";
