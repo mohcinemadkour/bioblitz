@@ -5,8 +5,11 @@ class Api::TaxonomyController < ApplicationController
     conn = PGconn.connect( :dbname => 'col',:user=>'postgres' )
     limit = (params[:limit])?params[:limit]:3
     
-    result =conn.exec("select id,lsid,k,c,o,p,f,id_col,g,s from taxonomy where s like '#{escape_sql(params[:query]).capitalize}%'  limit #{escape_sql(limit)}")
-    
+    if(params[:query])
+      result =conn.exec("select id,lsid,k,c,o,p,f,id_col,g,s from taxonomy where s like '#{escape_sql(params[:query]).capitalize}%'  limit #{escape_sql(limit)}")
+    else 
+      result=Array.new
+    end
     respond_to do |format|
       format.json do 
         render :json => result.to_json, :callback => params[:callback]
