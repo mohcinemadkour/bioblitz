@@ -1,6 +1,7 @@
 #container {position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%; background-color:black; color:white; z-index:1;}
 a:focus {outline:none;}
 input:focus {outline:none;}
+.hidden {display:none;}
 
 /*autocomplete css*/
 .ac_results {padding:0 0 10px 0; width:390px; height:149px; background: url(../images/search_bkg_top.png) no-repeat 0 0; overflow:hidden; z-index: 99999;}
