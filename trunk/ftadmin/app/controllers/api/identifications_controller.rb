@@ -39,10 +39,16 @@ class Api::IdentificationsController < ApplicationController
         'order'='#{taxonomy[0]['o']}',
         family='#{taxonomy[0]['f']}',
         genus='#{taxonomy[0]['g']}',
-        identifiedBy='#{params[:username]}'
+        identifiedBy='#{params[:username]}',
+        identificationReferences='Taxonomizer',
+        scientificName='#{taxonomy[0]['s']'
       WHERE ROWID='#{params[:rowid]}'"
     else
-      sql="UPDATE 225363 SET scientificName = #{params[:scientificName]}, colId='failed' WHERE ROWID=#{params[:rowid]}"
+      sql="UPDATE 225363 SET scientificName = #{params[:scientificName]},
+            identifiedBy='#{params[:username]}', 
+            identificationReferences='Taxonomizer',
+            colId='failed' 
+        WHERE ROWID=#{params[:rowid]}"
     end
     
     ft.sql_post(sql)
