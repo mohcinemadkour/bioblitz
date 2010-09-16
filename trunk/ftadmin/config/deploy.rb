@@ -26,7 +26,7 @@ task :run_migrations, :roles => [:app] do
   CMD
 end
 
-after  "deploy:update_code", :run_migrations, :db_symlink
+after  "deploy:update_code", :db_symlink, :run_migrations
 
 task :db_symlink, :roles => [:app] do
   run <<-CMD
