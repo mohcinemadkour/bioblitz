@@ -31,6 +31,7 @@ after  "deploy:update_code", :db_symlink, :run_migrations
 task :db_symlink, :roles => [:app] do
   run <<-CMD
     ln -s #{shared_path}/db/production.sqlite3 #{release_path}/db;
+    ln -s #{shared_path}/config/credentials.yml #{release_path}/config;
   CMD
 end
 
