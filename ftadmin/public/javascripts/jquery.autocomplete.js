@@ -241,7 +241,7 @@ $.Autocompleter = function(input, options) {
 			select.hide();
 			return;
 		}
-		
+		$('#tooltip').fadeTo("fast",0);
 		var currentValue = $input.val();
 		
 		if ( !skipPrevCheck && currentValue == previousValue )
