@@ -16,3 +16,14 @@ desc "Restart Application"
 deploy.task :restart, :roles => [:app] do
   run "touch #{current_path}/tmp/restart.txt"
 end
+
+desc "Migraciones"
+task :run_migrations, :roles => [:app] do
+  run <<-CMD
+    export RAILS_ENV=production &&
+    cd #{release_path} &&
+    rake db:migrate
+  CMD
+end
+
+after  "deploy:update_code", :run_migrations
