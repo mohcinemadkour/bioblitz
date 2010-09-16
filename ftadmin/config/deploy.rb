@@ -1,5 +1,7 @@
+require "bundler/capistrano"
+
 set :application, "bioblitz"
-set :repository,  "http://bioblitz.googlecode.com/svn/trunk/"
+set :repository,  "http://bioblitz.googlecode.com/svn/trunk/ftadmin"
 set :scm, :subversion
 
 default_run_options[:pty] = true
