@@ -17,7 +17,7 @@ Ftadmin::Application.routes.draw do |map|
   end
 
   get "taxonomizer" => "taxonomizer#show"
-  get "flickertagger" => "flickertagger#show"
+  get "flickrtagger" => "flickertagger#show"
   get "admin" => "main#show"
 
   # The priority is based upon order of creation:
