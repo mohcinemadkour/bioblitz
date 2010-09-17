@@ -23,16 +23,22 @@
 		function checkForm(ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
-			if ($('#user_name').attr('value').length<5 || $('#reg_mail').attr('value').length<5 || $('#user_password_confirmation').attr('value').length<5 || $('#user_password').attr('value').length<5) {
+			if ($('#user_name').attr('value').length==0 || $('#reg_mail').attr('value').length<5 || $('#user_password_confirmation').attr('value').length<5 || $('#user_password').attr('value').length<5) {
 				$('p#error_msg').text('There are fields empty or too short');
 				return false;
 			}
 		
-			if (!echeck($('#reg_mail').text())) {
+			if (!echeck($('#reg_mail').attr('value'))) {
 				$('p#error_msg').text('Email is incorrect');
+				return false;
 			}
 			
-			$('div.register form input').submit();
+			if ($('#user_password_confirmation').attr('value')!=$('#user_password').attr('value')) {
+				$('p#error_msg').text('Passwords are different');
+				return false;
+			}
+			
+			$('div.register form').submit();
 			
 		}
 		

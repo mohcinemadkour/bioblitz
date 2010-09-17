@@ -33,5 +33,5 @@ body {background:url(../images/user_bkg_no.jpg) repeat 0 0; color:white;}
 #container div.main div.log div.register form label.first {padding:5px 0 5px 0;}
 #container div.main div.log div.register form label.short {width:147px;}
 #container div.main div.log div.register form input.long {width:312px; height:20px; background:url(../images/long_text_input.png) no-repeat 0 0;}
-#container div.main div.log div.register form input[type="submit"] {float:right; margin:20px 0 0 0;}
+#container div.main div.log div.register form input[type="submit"] {margin:20px 0 0 0; float:right;}
 #container div.main div.log div.register p#error_msg {position:absolute; bottom:20px; left:34px; font:normal 14px Arial; color:red; width:auto;}

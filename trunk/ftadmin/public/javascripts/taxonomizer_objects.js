@@ -410,7 +410,7 @@
 		      },					
 					width: 404,
 					height: 159,
-					minChars: 4,
+					minChars: 1,
 					max: 3,
 					selectFirst: false,
 					loadingClass: 'loader',

@@ -197,15 +197,17 @@ $('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com
 		
 		
 		function sendOwnScientificName() {
-			$.get('/api/provide_identification?username='+escape($('#username').text())+'&rowid='+ observation.rowid + '&scientificName=' + $('#text_input').attr('value'), function(data) {});
-			getNextImage();
-			$('#tooltip').hide();
+			$.get('/api/provide_identification?username='+escape($('#username').text())+'&rowid='+ observation.rowid + '&scientificName=' + $('#text_input').attr('value'), function(data) {
+				getNextImage();
+				$('#tooltip').hide();
+			});
 		}
 		
 		function sendOccurrence(index) {
-			$.get('/api/provide_identification?username='+escape($('#username').text())+'&rowid='+ observation.rowid + '&id=' + animals[index].data.id, function(data) {});
-			getNextImage();
-			$('#tooltip').hide();
+			$.get('/api/provide_identification?username='+escape($('#username').text())+'&rowid='+ observation.rowid + '&id=' + animals[index].data.id, function(data) {
+				getNextImage();
+				$('#tooltip').hide();	
+			});
 		}
 		
 		
