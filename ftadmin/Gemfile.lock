@@ -53,6 +53,8 @@ GEM
     fastercsv (1.5.3)
     ffi (0.6.3)
       rake (>= 0.8.7)
+    flickraw (0.8.3)
+      json (>= 1.1.1)
     gdata_19 (1.1.2)
     highline (1.6.1)
     i18n (0.4.1)
@@ -128,6 +130,7 @@ DEPENDENCIES
   capybara
   database_cleaner
   fastercsv
+  flickraw
   gdata_19
   json
   launchy
