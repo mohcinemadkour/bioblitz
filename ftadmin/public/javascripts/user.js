@@ -39,7 +39,7 @@
 			ev.stopPropagation();
 			ev.preventDefault();
 			if ($('#user_name').attr('value').length==0 || $('#reg_mail').attr('value').length<5 || $('#user_password_confirmation').attr('value').length<5 || $('#user_password').attr('value').length<5) {
-				$('p#error_msg').text('There are fields empty or too short');
+				$('p#error_msg').text('Hey! There are empty fields');
 				return false;
 			}
 		
