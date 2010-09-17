@@ -58,6 +58,45 @@ namespace :workers do
       ft.sql_post("UPDATE 225363 SET zoomitId='#{ids.join(" ")}' WHERE ROWID='#{rowid}'")
     end 
   end
+  
+  
+  desc 'Import EOL Flickr pics'
+  task :import_eol => :environment do
+    
+    config = YAML::load_file("#{Rails.root}/config/credentials.yml")
+    ft = GData::Client::FusionTables.new
+    ft.clientlogin(config["ft_username"],config["ft_password"])
+        
+    FlickRaw.api_key="1a8e02e2fbbe211e0c03c9c7b648d5ab"
+    FlickRaw.shared_secret="55852420f91848dd"
+    
+    flickrpics = flickr.photos.search(
+                            :privacy_filter=>"1",
+                            :accuracy=>"1",
+                            :safe_search=>"1",
+                            :content_type=>"1",
+                            :machine_tags=>"taxonomy:binomial=",
+                            :group_id=>"806927@N20",
+                            :per_page=>500,
+                            :has_geo=>"1")
+                            
+    flickrpics.each do |pic|
+      pic_url=FlickRaw.url_b(pic)
+      info = flickr.photos.getInfo :photo_id => pic['id']
+      scientificName=''
+      info.tags.each do |tag|
+        if(tag.raw.include?("taxonomy:binomial"))
+          scientificName = tag.raw.gsub("taxonomy:binomial=","")
+        end
+      end 
+      puts scientificName
+      
+      sql="INSERT INTO 225363(scientificName,associatedMedia) VALUES('#{scientificName}','#{pic_url}')"
+      ft.sql_post(sql)
+    end                        
+    
+  end
+  
 end
 
 def resolve_taxonomy(name)
