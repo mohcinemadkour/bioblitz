@@ -185,18 +185,7 @@
 		main_container.style.background = "url(../images/main_bkg.png) no-repeat 0 0";
 		main_container.style.display = "none";
 		main_container.id = "main_container";
-		$(main_container).hover(function(ev){
-			overMain = true;
-			$(this).stop().fadeTo("fast",1);
-		},function(ev){
-			if (!first) {
-				$(this).stop().fadeTo("fast",1);
-			} else {
-				if (!$('.ac_results').is(':visible') && !overMain) {
-					$('#main_container').stop().fadeTo("slow",0.5);
-				}
-			}
-		});
+
 		
 		var logo = document.createElement('img');
 		logo.src = "../images/taxonomizer.png";
@@ -269,15 +258,13 @@
 		tooltip.appendChild(tooltip_title);
 		
 		var tooltip_button = document.createElement("a");
-		tooltip_button.innerHTML = "Yes";
 		tooltip_button.id = "tooltip_button";
-		tooltip_button.href = "javascript: void alert('jamon')";
+		tooltip_button.href = "#";
 		tooltip.appendChild(tooltip_button);
 		
 		var second_button = document.createElement("a");
-		second_button.innerHTML = 'No, I mean "Paco"';
 		second_button.id = "second_button";
-		second_button.href = "javascript: void alert('jamon')";
+		second_button.href = "#";
 		tooltip.appendChild(second_button);
 		
 		main_container.appendChild(tooltip);
