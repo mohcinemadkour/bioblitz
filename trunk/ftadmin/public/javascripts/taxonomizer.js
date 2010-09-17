@@ -18,6 +18,12 @@
 						$(this).attr('value','');
 					}
 				});
+				$('#text_input').focusin(function(){
+					overMain = true;
+				});
+				$('#text_input').focusout(function(){
+					overMain = false;
+				});
 		}
 
 		function displayObservation(zoomitId) {
@@ -34,37 +40,37 @@
 
 		function getNextObservationForIdentification() {
 
-            //Here we have to check if there is no pending images and tell them THANKS but come back later.
-            sql="select ROWID,observedBy,dateTime,latitude,longitude,occurrenceRemarks,verbatimLocality,zoomitId from 225363 WHERE zoomitId not equal to '' ORDER BY numIdentifications ASC LIMIT 1";
-              $.ajax({
-      	        url: "http://tables.googlelabs.com/api/query?sql="+escape(sql),
-      	        dataType: "jsonp",
-      	        jsonp: "jsonCallback",
-      	        error: function(msg) {
-      	            //console.log(msg);
-      	        },
-      	        success: function(data) {
-      	            var da = data.table.rows[0];
-      	            var pics = da[7].split(" ");
-  	                observation = {
-  	                    rowid:da[0],
-  	                    observedBy:da[1],
-  	                    dateTime:da[2],
-  	                    latitude:da[3],
-  	                    longitude:da[4],
-  	                    occurrenceRemarks:da[5],
-  	                    verbatimLocality:da[6],
-												zoomitId: pics
-  	                };
-										if (observation.observedBy != '') {
-											$('p#observedBy').text('Image by '+ observation.observedBy);
-										}
-										if (observation.latitude!='') {
+        //Here we have to check if there is no pending images and tell them THANKS but come back later.
+        sql="select ROWID,observedBy,dateTime,latitude,longitude,occurrenceRemarks,verbatimLocality,zoomitId from 225363 WHERE zoomitId not equal to '' ORDER BY numIdentifications ASC LIMIT 1";
+          $.ajax({
+  	        url: "http://tables.googlelabs.com/api/query?sql="+escape(sql),
+  	        dataType: "jsonp",
+  	        jsonp: "jsonCallback",
+  	        error: function(msg) {
+  	            //console.log(msg);
+  	        },
+  	        success: function(data) {
+  	            var da = data.table.rows[0];
+  	            var pics = da[7].split(" ");
+               observation = {
+                   rowid:da[0],
+                   observedBy:da[1],
+                   dateTime:da[2],
+                   latitude:da[3],
+                   longitude:da[4],
+                   occurrenceRemarks:da[5],
+                   verbatimLocality:da[6],
+								zoomitId: pics
+               };
+						if (observation.observedBy != '') {
+							$('p#observedBy').text('Image by '+ observation.observedBy);
+						}
+						if (observation.latitude!='') {
 $('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com/?q='+observation.latitude+','+observation.longitude+'" style="color:white;">'+Number(observation.latitude).toFixed(4)+', '+Number(observation.longitude).toFixed(4)+'</a>');
-										}
-  	                displayObservation(pics[0]);
-  	            }
-  	        });
+						}
+               displayObservation(pics[0]);
+           }
+       });
 		}
 
 
@@ -126,7 +132,11 @@ $('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com
 				}
 			});
 			if (first) {
-				$('div#main_container').fadeTo("fast",0.5);
+				if (overMain) {
+					$('div#main_container').fadeTo("fast",1);
+				} else {
+					$('div#main_container').fadeTo("fast",0.5);
+				}
 			} else {
 				$('div#main_container').fadeTo("fast",1);
 			}
@@ -158,12 +168,18 @@ $('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com
 			var animal = $('#text_input').attr('value');
 			if (animal!='Enter scientific name here' && animal!='') {
 					if (animals!=null && animals.length>0) {
-						$('#tooltip_title').html('Did you mean “<a href="javascript:void sendFirstOccurrence()">'+animals[0].data.s+'</a>”?');
-						$('#tooltip_button').text('Yes');
-						$('#tooltip_button').attr('href','javascript:void sendFirstOccurrence()');
-						$('#second_button').text("No, I mean “"+$('#text_input').attr('value')+"”");
-						$('#second_button').attr('href','javascript:void sendOwnScientificName()');
-						$('#tooltip').fadeTo("fast",1);
+						var indexAnimalResults = sameAsResult($('#text_input').attr('value'));
+						if (indexAnimalResults != null) {
+							$('.ac_results').hide();
+							sendOccurrence(indexAnimalResults);
+						} else {
+							$('#tooltip_title').html('Did you mean “<a href="javascript:void sendOccurrence(0)">'+animals[0].data.s+'</a>”?');
+							$('#tooltip_button').text('Yes');
+							$('#tooltip_button').attr('href','javascript:void sendOccurrence(0)');
+							$('#second_button').text("No, I mean “"+$('#text_input').attr('value')+"”");
+							$('#second_button').attr('href','javascript:void sendOwnScientificName()');
+							$('#tooltip').fadeTo("fast",1);
+						}
 					} else {
 						$('#tooltip_title').text('Do you want to send this?');
 						$('#tooltip_button').text('No');
@@ -186,10 +202,21 @@ $('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com
 			$('#tooltip').hide();
 		}
 		
-		function sendFirstOccurrence() {
-			$.get('/api/provide_identification?username='+escape($('#username').text())+'&rowid='+ observation.rowid + '&id=' + animals[0].data.id, function(data) {});
+		function sendOccurrence(index) {
+			$.get('/api/provide_identification?username='+escape($('#username').text())+'&rowid='+ observation.rowid + '&id=' + animals[index].data.id, function(data) {});
 			getNextImage();
 			$('#tooltip').hide();
+		}
+		
+		
+		function sameAsResult(name) {
+			for (var i=0; i<animals.length; i++) {
+				if (animals[i].data.s == name) {
+					return i;
+				}
+			}
+			
+			return null;
 		}
 		
 

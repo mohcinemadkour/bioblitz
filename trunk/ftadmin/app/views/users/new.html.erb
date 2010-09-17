@@ -1,38 +1,59 @@
-<h1>Sign up as a new user</h1>
-<% @user.password = @user.password_confirmation = nil %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+	<head> 
+		<title>Taxonomizer by Vizzuality || New user</title> 
+		<link rel="stylesheet" href="/stylesheets/user.css" type="text/css" media="screen" title="no title" charset="utf-8"> 
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script> 
+		<script src="/javascripts/user.js" type="text/javascript" charset="utf-8"></script> 
+	</head> 
+  <body>
+			
+			<div id="container">
+				<%= error_messages_for :user %>
+				
+				<div class="main">
+					<div class="bubble">
+						<p>
+							If you know a lot about species, you can help identifying images which has not been identify.
+							<br/><br/>
+							You will get lot of karma!
+						</p>
+					</div>
+					<div class="log">
+						<div class="login selected">
+							<a href="javascript:void checkLoginOption('login')">I already have username and password</a>
+							<%= form_tag session_path do -%>
+								<%= text_field_tag 'email', 'email' %>
+								<%= password_field_tag 'password', 'password' %>
+								<%= submit_tag 'Log in' %>
+							<% end -%>
+						</div>
+						<div class="register">
+							<a href="javascript:void checkLoginOption('register')">I don’t have account yet. Please give me one</a>
+							<%= form_for :user, :url => users_path do |f| -%>
+								<p class="long"><%= label_tag 'Your name', nil, :class => 'first' %><br/>
+								<%= f.text_field :name, :class=>"long" %></p>	
+															
+								<p class="long"><%= label_tag 'Your email' %><br/>
+								<%= f.text_field :email, :id=>"reg_mail" %></p>
 
-<%= error_messages_for :user %>
-<%= form_for :user, :url => users_path do |f| -%>
-<p><%= label_tag 'email' %><br/>
-<%= f.text_field :email %></p>
+								<p class="margin"><%= label_tag 'Your password', nil, :class => 'short' %><br/>
+								<%= f.password_field :password %></p>
 
-<p><%= label_tag 'name' %><br/>
-<%= f.text_field :name %></p>
+								<p><%= label_tag 'password_confirmation', 'Confirm your password', :class=>"short" %><br/>
+								<%= f.password_field :password_confirmation %></p>
+                
+                <p id="error_msg"></p>
+                
+								<p class="long"><%= submit_tag 'Log in', :onclick=>"javascript:void checkForm(event)" %></p>
+							<% end -%>
+						</div>
+					</div>
+				</div>
+			</div>
+	</body> 
+</html>
 
-<p><%= label_tag 'password' %><br/>
-<%= f.password_field :password %></p>
 
-<p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
-<%= f.password_field :password_confirmation %></p>
-
-<p><%= submit_tag 'Sign up' %></p>
-<% end -%>
-
-
-<h1>Log In</h1>
-
-<%= form_tag session_path do -%>
-<p><%= label_tag 'email' %><br />
-<%= text_field_tag 'email', @email %></p>
-
-<p><%= label_tag 'password' %><br/>
-<%= password_field_tag 'password', nil %></p>
-
-<!-- Uncomment this if you want this functionality
-<p><%= label_tag 'remember_me', 'Remember me' %>
-<%= check_box_tag 'remember_me', '1', @remember_me %></p>
--->
-
-<p><%= submit_tag 'Log in' %></p>
-<% end -%>
 

@@ -179,27 +179,29 @@
 		main_container.style.bottom = "170px";
 		main_container.style.left = "50%";
 		main_container.style.margin = "0 0 0 -373px";	
-		main_container.style.height = "108px";
+		main_container.style.height = "125px";
 		main_container.style.width = "746px";
 		main_container.style.padding = "0";
 		main_container.style.background = "url(../images/main_bkg.png) no-repeat 0 0";
 		main_container.style.display = "none";
 		main_container.id = "main_container";
 		$(main_container).hover(function(ev){
+			overMain = true;
 			$(this).stop().fadeTo("fast",1);
 		},function(ev){
 			if (!first) {
-				$(this).stop().fadeTo(350,1);
+				$(this).stop().fadeTo("fast",1);
 			} else {
-				if (!$('.ac_results').is(':visible'))
+				if (!$('.ac_results').is(':visible') && !overMain) {
 					$('#main_container').stop().fadeTo("slow",0.5);
+				}
 			}
 		});
 		
 		var logo = document.createElement('img');
 		logo.src = "../images/taxonomizer.png";
 		logo.style.position = "absolute";
-		logo.style.top = "27px";
+		logo.style.top = "34px";
 		logo.style.left = "20px";
 		main_container.appendChild(logo);
 		
@@ -212,7 +214,7 @@
 		title.style.font = "normal 17px Arial";
 		title.style.color = "white";
 		title.style.textShadow = "#000000 0 -1px";
-		title.style.top = "13px";
+		title.style.top = "20px";
 		title.style.left = "222px";		
 		main_container.appendChild(title);
 		
@@ -223,7 +225,7 @@
 	 	skip_image.style.padding = "0";
 	 	skip_image.style.margin = "0";
 	 	skip_image.style.textDecoration = "underline";
-	 	skip_image.style.top = "14px";
+	 	skip_image.style.top = "18px";
 	 	skip_image.style.right = "20px";
 		skip_image.style.zIndex = "100";
 		skip_image.style.font = "normal 13px Arial";
@@ -242,7 +244,7 @@
 		form.style.height = "38px";
 		form.style.position = "absolute";
 		form.style.right = "19px";
-		form.style.top = "41px";
+		form.style.top = "48px";
 		form.action = "javascript:void sendUnknownAnimal()";
 		main_container.appendChild(form);
 		
@@ -344,7 +346,7 @@
 		var image_by = document.createElement("p");
 		image_by.style.position = "absolute";
 		image_by.id = "observedBy";
-		image_by.style.bottom = "10px";
+		image_by.style.bottom = "13px";
 		image_by.style.left = "222px";
 	 	image_by.style.padding = "0";
 	 	image_by.style.margin = "0";
@@ -397,7 +399,7 @@
                       for(var i=0; i<gbif_data.length; i++) {
                         animals[i] = {data: gbif_data[i], value: gbif_data[i].s, result: gbif_data[i].s };
                       }
-
+											console.log(animals);
                       return animals;
 					}, 
 					formatItem: function(row, i, n, value, term) {
