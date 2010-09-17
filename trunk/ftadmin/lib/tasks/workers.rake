@@ -77,22 +77,25 @@ namespace :workers do
                             :content_type=>"1",
                             :machine_tags=>"taxonomy:binomial=",
                             :group_id=>"806927@N20",
-                            :per_page=>500,
+                            :per_page=>200,
+                            :extras=>"url_l",
                             :has_geo=>"1")
                             
     flickrpics.each do |pic|
-      pic_url=FlickRaw.url_b(pic)
-      info = flickr.photos.getInfo :photo_id => pic['id']
-      scientificName=''
-      info.tags.each do |tag|
-        if(tag.raw.include?("taxonomy:binomial"))
-          scientificName = tag.raw.gsub("taxonomy:binomial=","")
-        end
-      end 
-      puts scientificName
+      if(pic.respond_to?(:url_l))
+        pic_url=pic.url_l
+        info = flickr.photos.getInfo :photo_id => pic['id']
+        scientificName=''
+        info.tags.each do |tag|
+          if(tag.raw.include?("taxonomy:binomial"))
+            scientificName = tag.raw.gsub("taxonomy:binomial=","")
+          end
+        end 
+        puts scientificName
       
-      sql="INSERT INTO 225363(scientificName,associatedMedia) VALUES('#{scientificName}','#{pic_url}')"
-      ft.sql_post(sql)
+        sql="INSERT INTO 225363(scientificName,associatedMedia) VALUES('#{scientificName}','#{pic_url}')"
+        ft.sql_post(sql)
+      end
     end                        
     
   end
