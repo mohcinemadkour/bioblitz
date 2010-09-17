@@ -24,6 +24,18 @@
 				$('#text_input').focusout(function(){
 					overMain = false;
 				});
+				
+				$('#main_container').hover(function(ev){
+					$(this).stop().fadeTo("fast",1);
+				},function(ev){
+					if (!first) {
+						$(this).stop().fadeTo("fast",1);
+					} else {
+						if (!$('.ac_results').is(':visible') && !overMain) {
+							$('#main_container').stop().fadeTo("slow",0.5);
+						}
+					}
+				});
 		}
 
 		function displayObservation(zoomitId) {
