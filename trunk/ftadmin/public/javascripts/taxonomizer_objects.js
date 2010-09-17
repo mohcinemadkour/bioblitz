@@ -390,7 +390,7 @@
 
 
 
-		$('#text_input').focus().autocomplete('http://bioblitz.ipq.co/api/taxonomy?',{
+		$('#text_input').focus().autocomplete('/api/taxonomy?',{
 					dataType: 'jsonp',
 					parse: function(data){
                       animals = new Array();

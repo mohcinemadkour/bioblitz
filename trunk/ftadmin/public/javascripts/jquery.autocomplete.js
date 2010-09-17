@@ -370,7 +370,7 @@ $.Autocompleter = function(input, options) {
 				url: options.url,
 				data: $.extend({
 					query: lastWord(term),
-					limit: options.max
+					limit: 10
 				}, extraParams),
 				success: function(data) {
 					var parsed = options.parse && options.parse(data) || parse(data);

@@ -46,20 +46,6 @@ class Api::IdentificationsController < ApplicationController
         '#{taxonomy[0]['f']}',
         '#{taxonomy[0]['g']}'
       )"
-      
-      # sql="UPDATE 225363 SET 
-      #   colId='#{taxonomy[0]['id_col']}',
-      #   colLsid='#{taxonomy[0]['lsid']}',
-      #   kingdom='#{taxonomy[0]['k']}',
-      #   phylum='#{taxonomy[0]['p']}',
-      #   class='#{taxonomy[0]['c']}',
-      #   'order'='#{taxonomy[0]['o']}',
-      #   family='#{taxonomy[0]['f']}',
-      #   genus='#{taxonomy[0]['g']}',
-      #   identifiedBy='#{params[:username]}',
-      #   identificationReferences='Taxonomizer',
-      #   scientificName='#{taxonomy[0]['s']}'
-      # WHERE ROWID='#{params[:rowid]}'"
     else
       
       sql="INSERT INTO 254492(observationRowId,scientificName,identificationTime,author,application) VALUES(
@@ -67,26 +53,23 @@ class Api::IdentificationsController < ApplicationController
         '#{params[:scientificName]}',
         '#{Time.now.strftime("%m-%d-%Y %H:%M:%S")}',
         '#{params[:username]}',
-        'Taxonomizer',
+        'Taxonomizer'
       )"
-      
-      # sql="UPDATE 225363 SET scientificName = #{params[:scientificName]},
-      #       identifiedBy='#{params[:username]}', 
-      #       identificationReferences='Taxonomizer',
-      #       colId='failed' 
-      #   WHERE ROWID=#{params[:rowid]}"
         
     end
     
     ft.sql_post(sql)
     
-    #TODO
-    # sql="SELECT numIdentifications FROM 225363 WHERE ROWID=#{params[:rowid]}"
-    # sql="UPDATE 225363 SET numIdentifications=numIdentifications+1 WHERE ROWID=#{params[:rowid]}"
-    # ft.sql_post(sql)
+    sql="SELECT numIdentifications FROM 225363 WHERE ROWID=#{params[:rowid]}"
+    data = GData::Client::FusionTables::Data.parse(ft.sql_get(sql)).body
+
+    numIdentifications=(data[0][:numidentifications].to_i) + 1
     
-    #/api/provide_identification?rowid=2323&id=232323
-    #/api/provide_identification?rowid=2323&scientificName=Pepito
+
+
+    sql="UPDATE 225363 SET numIdentifications=#{numIdentifications} WHERE ROWID='#{params[:rowid]}'"
+    ft.sql_post(sql)
+        
     result ="ok"
     
     
