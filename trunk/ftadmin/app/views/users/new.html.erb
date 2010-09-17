@@ -1,12 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-	"http://www.w3.org/TR/html4/loose.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
-	<head> 
-		<title>Taxonomizer by Vizzuality || New user</title> 
-		<link rel="stylesheet" href="/stylesheets/user.css" type="text/css" media="screen" title="no title" charset="utf-8"> 
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script> 
-		<script src="/javascripts/user.js" type="text/javascript" charset="utf-8"></script> 
-		<script type="text/javascript">
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Taxonomizer by Vizzuality || New user</title>
+    <link rel="stylesheet" href="/stylesheets/user.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/javascripts/user.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
 
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-18595465-1']);
@@ -19,57 +19,57 @@
       })();
 
     </script>
-	</head> 
+  </head>
   <body>
-			
-			<div id="container">
-				<%= error_messages_for :user %>
-				
-				<div class="main">
-					<div class="bubble">
-						<p>
-							If you know a lot about the scientific names of species, you can help us identify images without names.
-							<br/><br/>
-							You will get lot of karma!
-						</p>
-					</div>
-					<div class="log">
-						<div class="login selected">
-							<a href="javascript:void checkLoginOption('login')">I already have username and password</a>
-							<%= form_tag session_path do -%>
-								<%= text_field_tag 'email', 'email' %>
-								<%= password_field_tag 'password', 'password' %>
-								<%= submit_tag 'Log in' %>
-							<% end -%>
-						</div>
-						<div class="register">
-							<a href="javascript:void checkLoginOption('register')">I don’t have account yet. Please give me one</a>
-							<%= form_for :user, :url => users_path do |f| -%>
-								<p class="long"><%= label_tag 'Your name', nil, :class => 'first' %><br/>
-								<%= f.text_field :name, :class=>"long" %></p>	
-															
-								<p class="long"><%= label_tag 'Your email' %><br/>
-								<%= f.text_field :email, :id=>"reg_mail" %></p>
 
-								<p class="margin"><%= label_tag 'Your password', nil, :class => 'short' %><br/>
-								<%= f.password_field :password %></p>
+      <div id="container">
+        <%= error_messages_for :user %>
 
-								<p><%= label_tag 'password_confirmation', 'Confirm your password', :class=>"short" %><br/>
-								<%= f.password_field :password_confirmation %></p>
-                
+        <div class="main">
+          <div class="bubble">
+            <p>
+              If you know a lot about the scientific names of species, you can help us identify images without names.
+              <br/><br/>
+              You will get lot of karma!
+            </p>
+          </div>
+          <div class="log">
+            <div class="login selected">
+              <a href="javascript:void checkLoginOption('login')">I already have username and password</a>
+              <%= form_tag session_path do -%>
+                <%= text_field_tag 'email', 'email', :class => (flash[:error] ? 'error' : '') %>
+                <%= password_field_tag 'password', 'password', :class => (flash[:error] ? 'error' : '') %>
+                <%= submit_tag 'Log in' %>
+              <% end -%>
+            </div>
+            <div class="register">
+              <a href="javascript:void checkLoginOption('register')">I don’t have account yet. Please give me one</a>
+              <%= form_for :user, :url => users_path do |f| -%>
+                <p class="long"><%= label_tag 'Your name', nil, :class => 'first' %><br/>
+                <%= f.text_field :name, :class=>"long", :class => (@user.errors[:name].blank? ? '' : 'error') %></p>
+
+                <p class="long"><%= label_tag 'Your email' %><br/>
+                <%= f.text_field :email, :id=>"reg_mail", :class => (@user.errors[:email].blank? ? '' : 'error') %></p>
+
+                <p class="margin"><%= label_tag 'Your password', nil, :class => 'short' %><br/>
+                <%= f.password_field :password , :class => (@user.errors[:password].blank? ? '' : 'error')%></p>
+
+                <p><%= label_tag 'password_confirmation', 'Confirm your password', :class=>"short" %><br/>
+                <%= f.password_field :password_confirmation, :class => (@user.errors[:password_confirmation].blank? ? '' : 'error') %></p>
+
                 <p id="error_msg"></p>
-                
-								<p class="long"><%= submit_tag 'Log in', :onclick=>"javascript:void checkForm(event)", :id=>"register_submit" %></p>
-							<% end -%>
-						</div>
-					</div>
-					<div id="footer">
-    				<a class="logo" href="http://www.vizzuality.com" target="_blank"></a>
-    				<p>developed by</p>
-    			</div>
-				</div>
-			</div>
-	</body> 
+
+                <p class="long"><%= submit_tag 'Log in', :onclick=>"javascript:void checkForm(event)", :id=>"register_submit" %></p>
+              <% end -%>
+            </div>
+          </div>
+          <div id="footer">
+            <a class="logo" href="http://www.vizzuality.com" target="_blank"></a>
+            <p>developed by</p>
+          </div>
+        </div>
+      </div>
+  </body>
 </html>
 
 
