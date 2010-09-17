@@ -196,7 +196,7 @@
 		
 		
 		var title = document.createElement('h1');
-		title.innerHTML = "Can you recognize this specie?";
+		title.innerHTML = "Can you recognize this species?";
 		title.style.position = "absolute";
 		title.style.padding = "0";
 		title.style.margin = "0";
