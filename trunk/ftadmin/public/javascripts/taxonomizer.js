@@ -52,8 +52,9 @@
 
 		function getNextObservationForIdentification() {
 
+        var randomRecord = Math.floor(Math.random()*6)
         //Here we have to check if there is no pending images and tell them THANKS but come back later.
-        sql="select ROWID,observedBy,dateTime,latitude,longitude,occurrenceRemarks,verbatimLocality,zoomitId from 225363 WHERE zoomitId not equal to '' ORDER BY numIdentifications ASC LIMIT 1";
+        sql="select ROWID,observedBy,dateTime,latitude,longitude,occurrenceRemarks,verbatimLocality,zoomitId from 225363 WHERE zoomitId not equal to '' ORDER BY numIdentifications ASC OFFSET "+randomRecord+" LIMIT 1";
           $.ajax({
   	        url: "http://tables.googlelabs.com/api/query?sql="+escape(sql),
   	        dataType: "jsonp",
