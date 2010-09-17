@@ -150,24 +150,24 @@
 		image_info_container.appendChild(next);
 		
 		
-		//Image info
-		// var image_info = document.createElement("a");
-		//    image_info.href = "#";
-		// 	 	image_info.style.position = "absolute";
-		// 	 	image_info.style.padding = "0";
-		// 	 	image_info.style.margin = "0";
-		// 	 	image_info.style.top = "0";
-		// 	 	image_info.style.right = "60px";
-		// 		image_info.style.zIndex = "100";
-		// 	 	image_info.style.background = "url(../images/image_info.png) no-repeat 0 0";
-		// 	 	image_info.style.height = "48px";
-		// 	 	image_info.style.width = "48px";
-		// 		$(image_info).hover(function(ev){
-		// 			$(this).css('background-position','0 -48px');
-		// 		},function(ev){
-		// 			$(this).css('background-position','0 0');
-		// 		});
-		// 		image_info_container.appendChild(image_info);
+		//Log out
+		var log_out = document.createElement("a");
+		log_out.href = "/logout";
+		log_out.style.position = "absolute";
+		log_out.style.padding = "0";
+		log_out.style.margin = "0";
+		log_out.style.top = "0";
+		log_out.style.right = "60px";
+		log_out.style.zIndex = "100";
+		log_out.style.background = "url(../images/log_out.png) no-repeat 0 0";
+		log_out.style.height = "48px";
+		log_out.style.width = "48px";
+		$(log_out).hover(function(ev){
+			$(this).css('background-position','0 -48px');
+		},function(ev){
+			$(this).css('background-position','0 0');
+		});
+		image_info_container.appendChild(log_out);
 		viewer.addControl(image_info_container);		
 		
 		

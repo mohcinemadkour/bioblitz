@@ -191,6 +191,7 @@ $('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com
 			}
 		}
 		
+		
 		function hideTooltip() {
 			$('#tooltip').fadeTo("fast",0);
 		}
@@ -201,6 +202,7 @@ $('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com
 				getNextImage();
 				$('#tooltip').hide();
 			});
+			hideElements();
 		}
 		
 		function sendOccurrence(index) {
@@ -208,6 +210,7 @@ $('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com
 				getNextImage();
 				$('#tooltip').hide();	
 			});
+			hideElements();
 		}
 		
 		

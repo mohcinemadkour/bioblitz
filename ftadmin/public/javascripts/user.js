@@ -1,6 +1,22 @@
 
-		function checkLoginOption(element) {
+		$(document).ready(function() {
+			$('#email').click(function(){
+				if ($(this).attr('value')=="email") $(this).attr('value','');
+			});
+			$('#password').click(function(){
+				if ($(this).attr('value')=="password") $(this).attr('value','');
+			});
+			$('#email').focusout(function(){
+				if ($(this).attr('value')=="") $(this).attr('value','email');
+			});
+			$('#password').focusout(function(){
+				if ($(this).attr('value')=="") $(this).attr('value','password');
+			});
 			
+		});
+
+
+		function checkLoginOption(element) {
 			if (element=='login') {
 				if (!$('div.login').hasClass('selected')) {
 					$('div.register').css('height','auto');
@@ -16,7 +32,6 @@
 					$('div.register').addClass('selected');
 				}
 			}
-			
 		}
 		
 		
@@ -39,7 +54,6 @@
 			}
 			
 			$('div.register form').submit();
-			
 		}
 		
 		
