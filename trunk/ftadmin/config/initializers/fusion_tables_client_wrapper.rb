@@ -1,0 +1,1 @@
+require "#{Rails.root}/lib/fusion_tables_client_wrapper.rb"

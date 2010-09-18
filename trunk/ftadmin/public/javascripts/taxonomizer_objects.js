@@ -386,7 +386,7 @@
                       for(var i=0; i<gbif_data.length; i++) {
                         animals[i] = {data: gbif_data[i], value: gbif_data[i].s, result: gbif_data[i].s };
                       }
-											console.log(animals);
+                      // console.log(animals);
                       return animals;
 					}, 
 					formatItem: function(row, i, n, value, term) {
