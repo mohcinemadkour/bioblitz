@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" >
+	<mx:Script >
+		<![CDATA[
+			private function overEvent():void {
+				canvasButton.styleName='authOptionBtnOver';
+			}
+			private function outEvent():void {
+				canvasButton.styleName='authOptionBtnUp';
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:String id="clickEventBtn"/>
+	<mx:String id="authText" />
+	
+	<mx:Canvas id="canvasButton" width="100%" height="100%" top="0" left="0" styleName="authOptionBtnUp">
+		<mx:Label verticalCenter="1" horizontalCenter="0" styleName="authOptionBtnLabelShadow" text="{authText}"/>
+		<mx:Label verticalCenter="0" horizontalCenter="0" styleName="authOptionBtnLabel" text="{authText}"/>
+	</mx:Canvas>
+	<mx:Canvas top="0" left="0" width="100%" height="100%" backgroundColor="#ffffff" alpha="0.01" useHandCursor="true" mouseChildren="false" buttonMode="true"
+		rollOver="overEvent()" rollOut="outEvent()"/>
+</mx:Canvas>

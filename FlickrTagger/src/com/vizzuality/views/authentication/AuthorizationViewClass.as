@@ -186,19 +186,52 @@
 		onCloseClick();
 	}
 	
+	private function cleanInput():void {
+		if (textInput.text =='Insert your name') {
+			textInput.text = '';
+		} else {
+			textInput.text = textInput.text;
+		}
+	}
+
+	private function infoInput():void {
+		if (textInput.text =='') {
+			textInput.text = 'Insert your name';
+		} else {
+			textInput.text = textInput.text;
+		}
+	}
+	
 	
 	private function toggleOptions(element:String):void {
 		if (element=='option1') {
-			option1.setStyle('backgroundColor','green');
-			option2.setStyle('backgroundColor','none');
+			option1.styleName = 'bkgAuthOption';
+			radioOption1.useHandCursor = false;
+			radioOption1.buttonMode = false;
+			option2.styleName = '';
+			option2.y = 349;
+			radioOption2.useHandCursor = true;
+			radioOption2.buttonMode = true;
+			radioTextOption1.styleName = 'authOptionRadioLabelSelected';
+			radioTextOption2.styleName = 'authOptionRadioLabelUnselected';
 			auth_button.visible = true;
 			start_button.visible = false;
+			textInput.visible = false;
 			
 		} else {
-			option1.setStyle('backgroundColor','none');
-			option2.setStyle('backgroundColor','green');
+			option1.styleName = '';
+			radioOption1.useHandCursor = true;
+			radioOption1.buttonMode = true;
+			option2.styleName = 'bkgAuthOption';
+			option2.y = 301;
+			radioOption2.useHandCursor = false;
+			radioOption2.buttonMode = false;
+			radioTextOption1.styleName = 'authOptionRadioLabelUnselected';
+			radioTextOption2.styleName = 'authOptionRadioLabelSelected';
 			auth_button.visible = false;
 			start_button.visible = true;
+			textInput.visible = true;
+			
 		}
 	}
 	
