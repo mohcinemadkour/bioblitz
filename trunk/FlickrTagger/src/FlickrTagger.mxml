@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" height="720" width="509" creationComplete="	currentState='checkingtoken'" 
-	title="FlickrTagger" xmlns:auth="com.vizzuality.views.authentication.*" xmlns:main="com.vizzuality.views.main.*" xmlns:auth_comps="com.vizzuality.views.authentication.components.*"  minHeight="720" minWidth="509" borderColor="#B6ABAB" 
->
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" height="704" width="490" creationComplete="	currentState='checkingtoken'" 
+	title="FlickrTagger" xmlns:auth="com.vizzuality.views.authentication.*" xmlns:main="com.vizzuality.views.main.*" xmlns:auth_comps="com.vizzuality.views.authentication.components.*">
 	
 	<mx:Script>
 		<![CDATA[
@@ -32,7 +31,7 @@
 				}
 				currentState="imagetagger";
 			}
-			
+
 			private function deleteAccount():void {
 				if (authorization!=null) {
 					authorization.currentState = "";
@@ -45,14 +44,16 @@
 	</mx:Script>
 	
 	<mx:Style source="com/vizzuality/skin/components.css"/>
-	<mx:Button label="logout" click="deleteAccount()" right="13" top="10"/>
 	
 	<mx:states>
 		<mx:State name="imagetagger">
 			<mx:AddChild>
-				<main:PrincipalView id="principalView" left="0" right="0" top="0" bottom="0"/>
+				<main:PrincipalView id="principalView"/>
 			</mx:AddChild>
-			<mx:SetProperty name="height" value="674"/>
+			<mx:AddChild>
+				<mx:Button label="logout" click="deleteAccount()" right="13" bottom="10"/>
+			</mx:AddChild>
+			<!--<mx:SetProperty name="height" value="674"/>-->
 		</mx:State>
 		<mx:State name="checkingtoken">
 			<mx:AddChild>
@@ -62,7 +63,7 @@
 		</mx:State>
 		<mx:State name="authorizationFlickr">
 			<mx:AddChild>
-				<auth:AuthorizationView id="authorization" color="#F6F8F9" horizontalCenter="0" width="100%" top="0" bottom="0"/>
+				<auth:AuthorizationView id="authorization" />
 			</mx:AddChild>
 			<mx:SetStyle name="backgroundColor" value="#2E2E2E"/>
 		</mx:State>
