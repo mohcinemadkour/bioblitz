@@ -1,5 +1,14 @@
 
 		$(document).ready(function() {
+			
+			if ($('div.register').find('.error').length) {
+				$('div.register').addClass('selected');
+				$('div.login').css('height','auto');
+			} else {
+				$('div.login').addClass('selected');
+			}
+			
+			
 			$('#email').click(function(){
 				if ($(this).attr('value')=="email") $(this).attr('value','');
 			});

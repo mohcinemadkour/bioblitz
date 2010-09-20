@@ -95,7 +95,7 @@ $('p#observedBy').append(' at '+'<a target="_blank" href="http://maps.google.com
 				if (i!=1) {
 					margin = '0 0 0 5px';
 				}
-				$('#inner_carousel').append('<a href="javascript:void visualize(\''+pics_array[i]+'\')" style="float:left; position:relative; height:95px; overflow:hidden; padding:4px; background:white; margin:'+margin+'; border:1px solid gray"><div style="float:left; height:95px; overflow:hidden;"><img src="http://cache.zoom.it/content/'+pics_array[i]+'_files/8/0_0.jpg"/></div></a>');
+				$('#inner_carousel').append('<a href="javascript:void visualize(\''+pics_array[i]+'\')" style="float:left; position:relative; height:95px; overflow:hidden; padding:4px; background:white; margin:'+margin+'; border:1px solid gray; text-decoration:none"><div style="float:left; height:95px; overflow:hidden;"><img src="http://cache.zoom.it/content/'+pics_array[i]+'_files/8/0_0.jpg"/></div></a>');
 			}
 			setTimeout(function(ev){
 				var carousel_long = $('div#carousel').width();

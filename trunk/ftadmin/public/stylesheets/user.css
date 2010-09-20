@@ -9,7 +9,6 @@ ul {list-style:none;}
 body {background:url(../images/user_bkg_no.jpg) repeat 0 0; color:white; overflow:hidden;}
 #container {position:absolute; top:0; left:0; width:100%; height:100%; background:url(../images/user_bkg.jpg) repeat-x 0 bottom;}
 #container div.main {position:absolute; width:790px; height:500px; left:50%; top:50%; margin:-200px 0 0 -395px;}
-#container div.errorExplanation {display:none;}
 #container div.main div.bubble {position:relative; float:left; width:288px; height:309px; background:url(../images/user_bubble.png) no-repeat 0 0; margin:0 30px 0 0;}
 #container div.main div.bubble p {float:left; margin:150px 0 0 28px; width:233px; height:95px; text-align:center; font:normal 15px Arial; color:#3F3F3F; text-shadow:#FFFFFF 0 1px; line-height:19px;}
 #container div.main div.log {float:left; padding:65px 0 0 0; margin:0; width:460px;}
@@ -24,18 +23,22 @@ body {background:url(../images/user_bkg_no.jpg) repeat 0 0; color:white; overflo
 #container div.main div.log div form input[type="password"] {margin:0;}
 #container div.main div.log div form input[type="submit"] {float:left; width:78px; height:28px; margin:1px 0 0 9px; background:url(../images/login_button.png) no-repeat 0 0; text-align:center; font:bold 15px Arial; color:#333333; text-shadow:white 0 1px;}
 #container div.main div.log div form input[type="submit"]:hover {background-position:0 -28px; cursor:pointer;}
+#container div.main div.log div.login form input.error {background-position:0 -30px;}
 
 #container div.main div.log div.register {position:relative; float:left; padding:14px; margin:10px 0 0; width:430px; height:258px;}
 #container div.main div.log div.register.selected {background:url(../images/register_bkg.png) no-repeat 0 0;}
 #container div.main div.log div.register form p.long {float:left; width:410px;}
 #container div.main div.log div.register form p {float:left; width:157px;}
-#container div.main div.log div.register form p.margin {margin:0 10px 0 0;}
+#container div.main div.log div.register form p.margin {margin:0 8px 0 0;}
 #container div.main div.log div.register form label {float:left; width:410px; font:normal 13px Arial; color:#868686; padding:15px 0 5px 0;}
 #container div.main div.log div.register form label.first {padding:5px 0 5px 0;}
 #container div.main div.log div.register form label.short {width:147px;}
 #container div.main div.log div.register form input.long {width:312px; height:20px; background:url(../images/long_text_input.png) no-repeat 0 0;}
+#container div.main div.log div.register form div.field_with_errors input.long {background-position:0 -30px;} 
+
+
 #container div.main div.log div.register form input[type="submit"] {margin:20px 0 0 0; float:right;}
-#container div.main div.log div.register p#error_msg {position:absolute; bottom:20px; left:34px; font:normal 14px Arial; color:red; width:auto;}
+#container div.main div.log div.register p#error_msg {position:absolute; bottom:20px; left:34px; font:normal 14px Arial; color:#9E0505; width:auto;}
 
 div#footer {bottom:-30px; right:0; z-index:3; width:500px; position:absolute; }
 div#footer p {float:right; font:normal 13px Geneva; color:white; width:85px; height:auto; margin:25px 5px 0 0;}
