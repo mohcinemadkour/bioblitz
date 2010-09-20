@@ -40,6 +40,15 @@ body {background:url(../images/user_bkg_no.jpg) repeat 0 0; color:white; overflo
 #container div.main div.log div.register form input[type="submit"] {margin:20px 0 0 0; float:right;}
 #container div.main div.log div.register p#error_msg {position:absolute; bottom:20px; left:34px; font:normal 14px Arial; color:#9E0505; width:auto;}
 
-div#footer {bottom:-30px; right:0; z-index:3; width:500px; position:absolute; }
+div#footer {position:absolute; bottom:-30px; right:0; z-index:3; width:800px;}
+div#footer div.stats {position:relative; float:left; width:283px; height:10px; background:url(../images/bar_bkg.png) no-repeat 0 0; margin:31px 0 0 25px;}
+div#footer div.stats p {float:left; padding:0 0 0 10px; margin:0; height:10px; width:auto; background:url(../images/bar_left.png) no-repeat 0 0;}
+div#footer div.stats p span {float:left; background:url(../images/bar_right.png) no-repeat right 0; width:15px; padding:0; height:10px;}
+div#footer div.stats div.tooltip {position:absolute; width:97px; height:60px; padding:8px 8px 0 8px; background:url(../images/taxo_stats_bkg.png) no-repeat 0 0; bottom:12px; left:20px; z-index:1000;}
+div#footer div.stats div.tooltip h2 {float:left; width:100%; font:bold 35px Arial; color:#333333; padding:0; margin:0; letter-spacing:-1px; line-height:27px;}
+div#footer div.stats div.tooltip p {float:left; width:100%; font:normal 14px Arial; color:#333333; padding:2px 0 0 0; margin:0; background:none; letter-spacing:-1px; word-spacing:0px;}
+div#footer div.stats div.numbers {position:absolute; width:120px; height:60px; padding:0; background:none; bottom:12px; right:0; z-index:1000; text-align:right;}
+div#footer div.stats div.numbers h2 {float:right; font:bold 25px Arial; color:#333333;}
+div#footer div.stats div.numbers p {float:right; font:normal 13px Arial; color:#333333; background:none; letter-spacing:0;}
 div#footer p {float:right; font:normal 13px Geneva; color:white; width:85px; height:auto; margin:25px 5px 0 0;}
 div#footer a.logo {float:right; background:url('../images/flickrtagger/vizz_logo.png') no-repeat 0 0; width:78px; height:41px; margin:1px 5px 0 0;}

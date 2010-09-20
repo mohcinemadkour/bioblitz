@@ -392,7 +392,7 @@
 					formatItem: function(row, i, n, value, term) {
 								
 						var menu_string = '<p style="float:left;width:100%;font:normal 15px Arial;">' + value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term.replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>") + '</p>';
-						menu_string += '<div class="taxonomy"><p class="first">'+row.k+'</p><p>'+row.p+'</p><p>'+row.c+'</p><p>'+row.o+'</p><p class="last">'+row.f+'</p></div>';
+						menu_string += '<div class="taxonomy"><p class="first">'+row.k+'</p><p>'+row.p+'</p><p>'+row.c+'</p><p class="last">'+row.f+'</p></div>';
 						return menu_string;
 		      },					
 					width: 404,
