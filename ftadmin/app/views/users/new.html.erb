@@ -22,9 +22,8 @@
   </head>
   <body>
 
-      <div id="container">
-        <%= error_messages_for :user %>
 
+      <div id="container">
         <div class="main">
           <div class="bubble">
             <p>
@@ -34,7 +33,7 @@
             </p>
           </div>
           <div class="log">
-            <div class="login selected">
+            <div class="login">
               <a href="javascript:void checkLoginOption('login')">I already have username and password</a>
               <%= form_tag session_path do -%>
                 <%= text_field_tag 'email', 'email', :class => (flash[:error] ? 'error' : '') %>
@@ -49,7 +48,7 @@
                 <%= f.text_field :name, :class=>"long", :class => (@user.errors[:name].blank? ? '' : 'error') %></p>
 
                 <p class="long"><%= label_tag 'Your email' %><br/>
-                <%= f.text_field :email, :id=>"reg_mail", :class => (@user.errors[:email].blank? ? '' : 'error') %></p>
+                <%= f.text_field :email, :id=>"reg_mail", :class => (@user.errors[:email].blank? ? 'long' : 'error long') %></p>
 
                 <p class="margin"><%= label_tag 'Your password', nil, :class => 'short' %><br/>
                 <%= f.password_field :password , :class => (@user.errors[:password].blank? ? '' : 'error')%></p>
@@ -57,7 +56,7 @@
                 <p><%= label_tag 'password_confirmation', 'Confirm your password', :class=>"short" %><br/>
                 <%= f.password_field :password_confirmation, :class => (@user.errors[:password_confirmation].blank? ? '' : 'error') %></p>
 
-                <p id="error_msg"></p>
+                <p id="error_msg"><%= @user.errors.full_messages %></p>
 
                 <p class="long"><%= submit_tag 'Log in', :onclick=>"javascript:void checkForm(event)", :id=>"register_submit" %></p>
               <% end -%>
