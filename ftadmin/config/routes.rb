@@ -1,5 +1,6 @@
 Ftadmin::Application.routes.draw do |map|
 
+
   root :to =>'web#show'
 
   resources :users
@@ -19,6 +20,8 @@ Ftadmin::Application.routes.draw do |map|
   get "taxonomizer" => "taxonomizer#show"
   get "flickrtagger" => "flickertagger#show"
   get "admin" => "main#show"
+  get "visualization" => "visualization#index"
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
