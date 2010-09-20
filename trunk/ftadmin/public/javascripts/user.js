@@ -1,3 +1,9 @@
+var total;
+var identified;
+
+//http://tables.googlelabs.com/api/query?sql=select sum(numIdentifications) from 225363 WHERE numIdentifications>0 -- TOTAL
+//http://tables.googlelabs.com/api/query?sql=select count() from 225363 WHERE zoomitId not equal to '' and scientificName=''  -- IDENTIFIED
+
 
 		$(document).ready(function() {
 			
@@ -21,6 +27,37 @@
 			$('#password').focusout(function(){
 				if ($(this).attr('value')=="") $(this).attr('value','password');
 			});
+			
+			
+			
+      var sql="select sum(numIdentifications) from 225363 WHERE numIdentifications>0";
+      $.ajax({
+	        url: "http://tables.googlelabs.com/api/query?sql="+escape(sql),
+	        dataType: "jsonp",
+	        jsonp: "jsonCallback",
+	        error: function(msg) {
+	            //console.log(msg);
+	        },
+	        success: function(data) {
+						total = data.table.rows[0][0];
+	          var sql="select count() from 225363 WHERE zoomitId not equal to '' and scientificName=''";
+			      $.ajax({
+				        url: "http://tables.googlelabs.com/api/query?sql="+escape(sql),
+				        dataType: "jsonp",
+				        jsonp: "jsonCallback",
+				        error: function(msg) {
+				            //console.log(msg);
+				        },
+				        success: function(result) {
+									identified = result.table.rows[0][0];
+									createStats(total,identified);
+			         }
+			     }); 
+         }
+     });
+			
+			
+			
 			
 		});
 
@@ -63,6 +100,17 @@
 			}
 			
 			$('div.register form').submit();
+		}
+		
+		
+		
+		function createStats(total_obs,identified_obs) {
+			var bar_length = ((identified_obs*283)/total_obs) - 10;
+			$('div.stats p span').css('width',bar_length + 'px');
+			$('div.tooltip').css('left',bar_length-46 + 'px');
+			$('div.tooltip h2').text(identified_obs);
+			$('div.numbers h2').text(Number(total_obs).toFixed(0));
+			$('div.stats').fadeIn();
 		}
 		
 		
