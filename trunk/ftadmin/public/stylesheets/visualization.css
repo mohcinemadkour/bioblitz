@@ -1,0 +1,14 @@
+body,div,ul,li,ol,h1,h2,h3,h4,h5,h6,form,fieldset,p{margin:0; padding:0; font-weight:normal}
+img,fieldset{border:none; padding:0; margin:0;}
+body{font:normal 12px Arial; background:white;}
+span.clear{clear:both;}
+a:focus{outline:none}
+input:focus{outline:none;}
+ul {list-style:none;}
+
+div#map {position:relative; float:left; width:100%; height:100%; margin:0; padding:0; overflow:hidden; border:none;}
+div.content {position:absolute; left:50%; margin:0 0 0 -406px; width:812px;}
+div.content div.header {position:relative; width:812px; height:62px; background:url(../images/visualization/header.png) no-repeat 0 0;}
+div.content h1.title {position:relative; float:left; width:812px; height:165px; background:url(../images/visualization/title.png) no-repeat 0 0;}
+
+
