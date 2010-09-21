@@ -95,7 +95,11 @@
 					<mx:Text id="radioTextOption1" text="Yes I have it and I want to upload the photos to it" styleName="authOptionRadioLabelSelected" />
 				</mx:HBox>
 				<mx:Canvas width="100%" >
-					<components:authBtn id="auth_button" width="175" height="33" right="0" click="onAuthorizationStartClick()" authText="Authorize your account"/>
+					<components:CanvasBtn id="auth_button" width="175" height="33" right="0" click="onAuthorizationStartClick()" btnText="Authorize your account"
+						styleBtnOver="authOptionBtnOver"
+						styleBtnUp="authOptionBtnUp"
+						styleLabel="authOptionBtnLabel"
+						styleLabelShadow="authOptionBtnLabelShadow"/>
 				</mx:Canvas>
 			</mx:VBox>
 			
@@ -109,7 +113,11 @@
 				<mx:HBox width="100%" horizontalAlign="right">
 					<mx:TextInput id="textInput" textAlign="left" left="21" width="200" height="33" visible="false" styleName="authTxtInput" text="Insert your name"
 						mouseDown="cleanInput()" focusOut="infoInput()"/>
-					<components:authBtn id="start_button" width="175" height="33" right="0" click="getAnonymousToken()" visible="false" authText="Authorize your account"/>
+					<components:CanvasBtn id="start_button" width="175" height="33" click="getAnonymousToken()" visible="false" btnText="Authorize your account"
+						styleBtnOver="authOptionBtnOver"
+						styleBtnUp="authOptionBtnUp"
+						styleLabel="authOptionBtnLabel"
+						styleLabelShadow="authOptionBtnLabelShadow"/>
 				</mx:HBox>
 			</mx:VBox>
         </mx:Canvas>

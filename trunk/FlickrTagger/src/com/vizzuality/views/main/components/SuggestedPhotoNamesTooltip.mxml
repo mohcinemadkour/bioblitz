@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" minWidth="208" minHeight="174" styleName="tooltipGreyBkg" filters="{[glowTooltip]}">
+
+	<mx:GlowFilter id="glowTooltip" alpha="0.7" color="#000000" blurX="8" blurY="8" />
+		
+	<mx:Label text="Suggested species" styleName="txtSuggestedNamesShadow" top="11" left="6"/>
+	<mx:Label text="Suggested species" styleName="txtSuggestedNames" top="10" left="5"/>
+	
+	<mx:VBox top="31" left="5" right="19" bottom="6" mask="{listMask}" verticalGap="0" backgroundColor="#00ff00">
+				
+	</mx:VBox>
+	
+	<mx:Canvas id="listMask" top="31" left="5" right="19" bottom="6" borderStyle="solid" borderThickness="0" cornerRadius="3" backgroundColor="#000000"/>
+</mx:Canvas>
