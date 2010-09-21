@@ -10,12 +10,13 @@
  
   	<link href="/stylesheets/visualization.css" media="screen" rel="stylesheet" type="text/css" /> 
  
+ 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script> 
     <script type="text/javascript" src="/javascripts/visualization/modernizr.min.js"></script> 
     <script type="text/javascript" src="/javascripts/visualization/polymaps.min.js"></script> 
     <script type="text/javascript" src="/javascripts/visualization/nns.min.js"></script> 
     <script type="text/javascript" src="/javascripts/visualization/kmeans.js"></script> 
- 
-  	<script src="/javascripts/visualization.js" type="text/javascript" charset="utf-8"></script> 
+    <script src="/javascripts/visualization/highcharts.js" type="text/javascript" charset="utf-8"></script> 
+    <script src="/javascripts/visualization/visualization.js" type="text/javascript" charset="utf-8"></script> 
   	<script type="text/javascript"> 
  
       var _gaq = _gaq || [];
@@ -38,18 +39,188 @@
       <div class="header"></div>
       <h1 class="title"></h1>
     </div>
-    <script type="text/javascript"> 
-
-    var po=org.polymaps,map=po.map().container(document.getElementById("map").appendChild(po.svg("svg"))).center({lat:37.787,lon:-122.228}).zoom(14).zoomRange([12,16]).add(po.interact());map.add(po.image().url(po.url("http://{S}tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/20760/256/{Z}/{X}/{Y}.png").hosts(["a.","b.","c.",""])));map.add(po.geoJson().url(crimespotting("http://oakland.crimespotting.org/crime-data?count=1000&format=json&bbox={B}&dstart=2010-04-01&dend=2010-05-01")).on("load",load).clip(false).zoom(14));
-    map.add(po.compass().pan("none"));function crimespotting(c){return function(a){var d=1<<a.zoom,b=a.column%d;if(b<0)b+=d;return c.replace(/{(.)}/g,function(f,e){switch(e){case "B":var g=map.coordinateLocation({row:a.row,column:b,zoom:a.zoom}),h=map.coordinateLocation({row:a.row+1,column:b+1,zoom:a.zoom}),i=Math.ceil(Math.log(a.zoom)/Math.LN2);return g.lon.toFixed(i)+","+h.lat.toFixed(i)+","+h.lon.toFixed(i)+","+g.lat.toFixed(i)}return e})}}
-    function load(c){for(var a=c.tile.cluster||(c.tile.cluster=kmeans().iterations(16).size(64)),d=0;d<c.features.length;d++){var b=c.features[d];a.add({x:Number(b.element.getAttribute("cx")),y:Number(b.element.getAttribute("cy"))})}c=c.tile;for(b=c.element;b.lastChild;)b.removeChild(b.lastChild);a=a.means();a.sort(function(g,h){return h.size-g.size});for(d=0;d<a.length;d++){var f=a[d],e=b.appendChild(po.svg("circle"));e.setAttribute("cx",f.x);e.setAttribute("cy",f.y);e.setAttribute("r",Math.pow(2,c.zoom-
-    11)*Math.sqrt(f.size))}};
-
-    (function(){function d(){if(b=!b){c.style("position","fixed").style("border-width",0).style("width","100%").style("height","100%").style("top",0).style("left",0);a.style("position","fixed").style("right","16px").style("top","16px");e.attr("transform","translate(16,16)rotate(135)scale(5)translate(-1.85,0)");f.style("visibility","hidden").style("overflow","hidden")}else{c.style("position",null).style("border-width",null).style("width",null).style("height",null).style("top",null).style("left",null);
-    a.style("position","absolute").style("right","-16px").style("top","-16px");e.attr("transform","translate(16,16)rotate(-45)scale(5)translate(-1.85,0)");f.style("visibility",null).style("overflow",null)}map.resize()}var f=n$(document.body),c=n$("#map").style("visibility","visible"),b=false,a=c.add("svg:svg").attr("width",32).attr("height",32).style("position","absolute").style("right","-16px").style("top","-16px").style("visibility","visible").on("mousedown",d);a.add("svg:circle").attr("cx",16).attr("cy",
-    16).attr("r",14).attr("fill","#fff").attr("stroke","#ccc").attr("stroke-width",4).add("svg:title").text("Toggle fullscreen. (ESC)");var e=a.add("svg:path").attr("transform","translate(16,16)rotate(-45)scale(5)translate(-1.85,0)").attr("d","M0,0L0,.5 2,.5 2,1.5 4,0 2,-1.5 2,-.5 0,-.5Z").attr("pointer-events","none").attr("fill","#aaa");window.addEventListener("keydown",function(g){g.keyCode==27&&b&&d()},false)})();
-
-
-          </script>
+    <div class="main">
+      <div class="main_top">
+        <div class="stats">
+        </div>
+        <div class="main_bottom">
+          <div class="main_center">
+            
+            <div class="info">
+              <div class="left">
+                <div class="list">
+                  <h3>OBSERVATIONS FEED</h3>
+                  <ul>
+                    <li>
+                      <div class="image">
+                        <img src="../images/visualization/example.jpg" alt="bird" title="bird" />
+                        <img class="kind" src="../images/visualization/purple.png" />
+                      </div>
+                      <div class="data">
+                        <h2>Eurasian Eagle Owl</h2>
+                        <p>Photo by <a href="#">Al Roggers.</a> Recognized by <a href="#">Al Roggers.</a></p>
+                        <span><a class="map"></a><a class="recognize"></a></span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="image">
+                        <img src="../images/visualization/example.jpg" alt="bird" title="bird" />
+                        <img class="kind" src="../images/visualization/purple.png" />
+                      </div>
+                      <div class="data">
+                        <h2>Eurasian Eagle Owl</h2>
+                        <p>Photo by <a href="#">Al Roggers.</a> Recognized by <a href="#">Al Roggers.</a></p>
+                        <span><a class="map"></a><a class="recognize"></a></span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="image">
+                        <img src="../images/visualization/example.jpg" alt="bird" title="bird" />
+                        <img class="unknown" src="../images/visualization/unknown.png" />
+                      </div>
+                      <div class="data">
+                        <h2>Eurasian Eagle Owl</h2>
+                        <p>Photo by <a href="#">Al Roggers.</a> Recognized by <a href="#">Al Roggers.</a></p>
+                        <span><a class="map"></a><a class="recognize"></a></span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="image">
+                        <img src="../images/visualization/example.jpg" alt="bird" title="bird" />
+                        <img class="unknown" src="../images/visualization/unknown.png" />
+                      </div>
+                      <div class="data">
+                        <h2>Eurasian Eagle Owl</h2>
+                        <p>Photo by <a href="#">Al Roggers.</a> Recognized by <a href="#">Al Roggers.</a></p>
+                        <span><a class="map"></a><a class="recognize"></a></span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="image">
+                        <img src="../images/visualization/example.jpg" alt="bird" title="bird" />
+                        <img class="kind" src="../images/visualization/purple.png" />
+                      </div>
+                      <div class="data">
+                        <h2>Eurasian Eagle Owl</h2>
+                        <p>Photo by <a href="#">Al Roggers.</a> Recognized by <a href="#">Al Roggers.</a></p>
+                        <span><a class="map"></a><a class="recognize"></a></span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="image">
+                        <img src="../images/visualization/example.jpg" alt="bird" title="bird" />
+                        <img class="kind" src="../images/visualization/black.png" />
+                      </div>
+                      <div class="data">
+                        <h2>Eurasian Eagle Owl</h2>
+                        <p>Photo by <a href="#">Al Roggers.</a> Recognized by <a href="#">Al Roggers.</a></p>
+                        <span><a class="map"></a><a class="recognize"></a></span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="image">
+                        <img src="../images/visualization/example.jpg" alt="bird" title="bird" />
+                        <img class="kind" src="../images/visualization/orange.png" />
+                      </div>
+                      <div class="data">
+                        <h2>Eurasian Eagle Owl</h2>
+                        <p>Photo by <a href="#">Al Roggers.</a> Recognized by <a href="#">Al Roggers.</a></p>
+                        <span><a class="map"></a><a class="recognize"></a></span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="image">
+                        <img src="../images/visualization/example.jpg" alt="bird" title="bird" />
+                        <img class="kind" src="../images/visualization/blue.png" />
+                      </div>
+                      <div class="data">
+                        <h2>Eurasian Eagle Owl</h2>
+                        <p>Photo by <a href="#">Al Roggers.</a> Recognized by <a href="#">Al Roggers.</a></p>
+                        <span><a class="map"></a><a class="recognize"></a></span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="image">
+                        <img src="../images/visualization/example.jpg" alt="bird" title="bird" />
+                        <img class="kind" src="../images/visualization/fuchsia.png" />
+                      </div>
+                      <div class="data">
+                        <h2>Eurasian Eagle Owl</h2>
+                        <p>Photo by <a href="#">Al Roggers.</a> Recognized by <a href="#">Al Roggers.</a></p>
+                        <span><a class="map"></a><a class="recognize"></a></span>
+                      </div>
+                    </li>
+                    <li class="last">
+                      <div class="image">
+                        <img src="../images/visualization/example.jpg" alt="bird" title="bird" />
+                        <img class="kind" src="../images/visualization/green.png" />
+                      </div>
+                      <div class="data">
+                        <h2>Eurasian Eagle Owl</h2>
+                        <p>Photo by <a href="#">Al Roggers.</a> Recognized by <a href="#">Al Roggers.</a></p>
+                        <span><a class="map"></a><a class="recognize"></a></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="final">
+                  <a href="#">view more</a>
+                </div>
+              </div>
+              <div class="right">
+                <h3>OBSERVATIONS BY KINGDOM</h3>
+                <div class="block" id="stats">
+                </div>
+                <h3 class="top">MOST ACTIVE USERS</h3>
+                <ul>
+                  <li>
+                    <div class="image">
+                      <img src="../images/visualization/gravatar.png" alt="User" />
+                    </div>
+                    <div class="data">
+                      <h4>John Smith</h4>
+                      <p><strong>67</strong> Observations</p>
+                      <p><strong>123</strong> Recognitions</p>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="image">
+                      <img src="../images/visualization/gravatar.png" alt="User" />
+                    </div>
+                    <div class="data">
+                      <h4>John Smith</h4>
+                      <p><strong>67</strong> Observations</p>
+                      <p><strong>123</strong> Recognitions</p>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="image">
+                      <img src="../images/visualization/gravatar.png" alt="User" />
+                    </div>
+                    <div class="data">
+                      <h4>John Smith</h4>
+                      <p><strong>67</strong> Observations</p>
+                      <p><strong>123</strong> Recognitions</p>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="image">
+                      <img src="../images/visualization/gravatar.png" alt="User" />
+                    </div>
+                    <div class="data">
+                      <h4>John Smith</h4>
+                      <p><strong>67</strong> Observations</p>
+                      <p><strong>123</strong> Recognitions</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+     
   </body> 
 </html>
