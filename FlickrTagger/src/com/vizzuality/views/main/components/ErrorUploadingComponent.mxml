@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="136" height="119" styleName="tooltipRedBkg" xmlns:components="com.vizzuality.views.authentication.components.*">
+	<mx:VBox horizontalCenter="0" top="13" verticalGap="0">
+		<mx:Canvas >
+			<mx:Text selectable="false" text="There is an error uploading your file" styleName="txtRetryShadow" width="108" top="1" left="1" alpha="0.4"/>
+			<mx:Text selectable="false" text="There is an error uploading your file" styleName="txtRetry" width="108"/>
+		</mx:Canvas>
+		<mx:HBox horizontalGap="8" >
+			<components:CanvasBtn width="55" height="25"
+				styleBtnOver="retryBtnOver"
+				styleBtnUp="retryBtnUp"
+				styleLabel="txtRetryTooltipBtn"
+				styleLabelShadow="txtRetryTooltipBtnShadow"
+				btnText="retry?"/>
+				
+			<mx:Button styleName="btnCancelUploading" label="cancel" useHandCursor="true" buttonMode="true"/>
+		</mx:HBox>
+	</mx:VBox>
+</mx:Canvas>

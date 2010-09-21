@@ -1,4 +1,30 @@
 /*New code*/
+/*Embed fonts*/
+@font-face {
+    src: url(components_skin.swf);
+    fontFamily: "Arial";
+    fontWeight: normal;
+}
+
+@font-face {
+    src: url(components_skin.swf);
+    fontFamily: "Arial Bold";
+    fontWeight: normal;
+}
+
+@font-face {
+    src: url(components_skin.swf);
+    fontFamily: "Arial Bold Italic";
+    fontWeight: normal;
+}
+
+@font-face {
+    src: url(components_skin.swf);
+    fontFamily: "Arial Italic";
+    fontWeight: normal;
+}
+
+
 /* class */
 WindowedApplication {    
     background-image:   Embed("com/vizzuality/assets/header_bkg.png");
@@ -52,26 +78,32 @@ VBox.auth {
 
 .infoUpGreenBkg {
 	background-image:Embed(source="components_skin.swf", symbol="infoUpGreenBkg");
+ 	background-size: '100%';
 }
 
 .infoUpRedBkg {
  	background-image:Embed(source="components_skin.swf", symbol="infoUpRedBkg");
+ 	background-size: '100%';
 }
 
 .infoUpOrangeBkg {
  	background-image:Embed(source="components_skin.swf", symbol="infoUpOrangeBkg");
+ 	background-size: '100%';
 }
 
 .infoUpGreyBkg {
  	background-image:Embed(source="components_skin.swf", symbol="infoUpGreyBkg");
+ 	background-size: '100%';
 }
 
 .tooltipRedBkg {
  	background-image:Embed(source="components_skin.swf", symbol="tooltipRedBkg");
+ 	background-size: '100%';
 }
 
 .tooltipGreyBkg {
  	background-image:Embed(source="components_skin.swf", symbol="tooltipGreyBkg");
+ 	background-size: '100%';
 }
 	
 .photoGroupBkg {
@@ -91,24 +123,24 @@ Text.authText {
 }
 
 Text.authQuestion {
-	fontFamily: "Arial";
+	fontFamily: "Arial Bold";
 	fontSize: 15;
 	color: white; 
-	font-weight: bold;
+	font-weight: normal;
 }
 
 Label.authOptionBtnLabel {
-	fontFamily: "Arial";
+	fontFamily: "Arial Bold";
 	fontSize: 13;
 	color: #333333; 
-	font-weight: bold;
+	font-weight: normal;
 }
 
 Label.authOptionBtnLabelShadow {
-	fontFamily: "Arial";
+	fontFamily: "Arial Bold";
 	fontSize: 13;
 	color: #ffffff; 
-	font-weight: bold;
+	font-weight: normal;
 }
 
 Label.authOptionRadioLabelSelected {
@@ -120,6 +152,68 @@ Label.authOptionRadioLabelSelected {
 Label.authOptionRadioLabelUnselected {
 	fontSize: 15;
 	color: #ffffff; 
+	font-weight: normal;
+}
+
+Label.txtInfoUp {
+	font-family: "Arial Bold";
+	fontSize: 13;
+	color: #333333; 
+	font-weight: normal;
+}
+
+Label.txtInfoUpShadow {
+	font-family: "Arial Bold";
+	fontSize: 13;
+	color: #ffffff;
+	font-weight: normal;
+}
+
+Label.txtEmptySectionLabel {
+	font-family: "Arial";
+	fontSize: 15;
+	color: #454545;
+	font-weight: normal;
+}
+
+Label.txtRetryTooltipBtn {
+	font-family: "Arial Bold";
+	fontSize: 13;
+	color: #ffffff;
+	font-weight: normal;
+}
+
+Label.txtRetryTooltipBtnShadow {
+	font-family: "Arial Bold";
+	fontSize: 13;
+	color: #4f1100;
+	font-weight: normal;
+}
+
+Label.txtRetry {
+	font-family: "Arial Bold";
+	fontSize: 13;
+	color: #ffffff;
+	font-weight: normal;
+}
+
+Label.txtRetryShadow {
+	font-family: "Arial Bold";
+	fontSize: 13;
+	color: #000000;
+	font-weight: normal;
+}
+
+Label.txtSuggestedNames {
+	font-family: "Arial Bold";
+	fontSize: 13;
+	color: #666666;
+	font-weight: normal;
+}
+Label.txtSuggestedNamesShadow {
+	font-family: "Arial Bold";
+	fontSize: 13;
+	color: #ffffff;
 	font-weight: normal;
 }
 
@@ -136,12 +230,37 @@ Label.authOptionRadioLabelUnselected {
 	background-image:Embed(source="components_skin.swf", symbol="authOptionBtn_over");
 }
 
-.sectionBtnUp {
-	background-image:Embed(source="components_skin.swf", symbol="sectionBtn_up");
+.sectionUpBtnPhoto {
+	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_up");
+	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_up");
+	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
 }
 
-.sectionBtnOver {
-	background-image:Embed(source="components_skin.swf", symbol="sectionBtn_over");
+.sectionUpBtnGpx {
+	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_up");
+	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_up");
+	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+}
+
+.sectionUpBtnHelp {
+	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_up");
+	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_up");
+	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
 }
 
 .retryBtnUp {
@@ -166,6 +285,51 @@ Label.authOptionRadioLabelUnselected {
 	disabled-skin: Embed(source="components_skin.swf", symbol="deleteRedBtn_disabled");
 }
 
+.btnEmptySection{	
+	skin: ClassReference(null);
+	up-skin: ClassReference(null);
+	over-skin: ClassReference(null);
+	down-skin: ClassReference(null);
+	disabled-skin : ClassReference(null);
+	backgroundAlpha:0;
+	borderThickness: 0;
+	borderStyle: none; 
+	fontFamily: "Arial";
+	fontSize: 15;
+	fontWeight: bold;
+	font-anti-alias-type: normal;
+	textDecoration: underline;
+	verticalCenter: 0;
+	color: #ffffff;
+	textRollOverColor: #cccccc;
+	textSelectedColor: #cccccc;
+	focusAlpha: 0;
+	paddingLeft: 0;
+	paddingRight: 0;
+}
+
+.btnCancelUploading {	
+	skin: ClassReference(null);
+	up-skin: ClassReference(null);
+	over-skin: ClassReference(null);
+	down-skin: ClassReference(null);
+	disabled-skin : ClassReference(null);
+	backgroundAlpha:0;
+	borderThickness: 0;
+	borderStyle: none; 
+	fontFamily: "Arial";
+	fontSize: 13;
+	fontWeight: normal;
+	font-anti-alias-type: normal;
+	textDecoration: underline;
+	verticalCenter: 0;
+	color: #4f1100;
+	textRollOverColor: #ffffff;
+	textSelectedColor: #ffffff;
+	focusAlpha: 0;
+	paddingLeft: 0;
+	paddingRight: 0;
+}
 
 /*form items */
 
@@ -188,7 +352,6 @@ Label.authOptionRadioLabelUnselected {
 	border-thickness: 1;
 	corner-radius: 5;
 	color: #b3c38e;
-	font-family: "Arial";
 	font-weight: normal;
 	font-size: 13;
 	padding-top: 5;

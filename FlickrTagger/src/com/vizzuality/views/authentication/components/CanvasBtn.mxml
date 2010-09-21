@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" >
+	<mx:Script >
+		<![CDATA[
+			private function overEvent():void {
+				canvasButton.styleName= styleBtnOver;
+			}
+			private function outEvent():void {
+				canvasButton.styleName= styleBtnUp;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:String id="btnText" />
+	<mx:String id="styleLabel" />
+	<mx:String id="styleLabelShadow" />
+	<mx:String id="styleBtnUp" />
+	<mx:String id="styleBtnOver" />
+	
+	
+	<mx:Canvas id="canvasButton" width="100%" height="100%" top="0" left="0" styleName="{styleBtnUp}">
+		<mx:Label verticalCenter="1" horizontalCenter="0" styleName="{styleLabelShadow}" text="{btnText}"/>
+		<mx:Label verticalCenter="0" horizontalCenter="0" styleName="{styleLabel}" text="{btnText}"/>
+	</mx:Canvas>
+	<mx:Canvas top="0" left="0" width="100%" height="100%" backgroundColor="#ffffff" alpha="0.01" useHandCursor="true" mouseChildren="false" buttonMode="true"
+		rollOver="overEvent()" rollOut="outEvent()"/>
+</mx:Canvas>
