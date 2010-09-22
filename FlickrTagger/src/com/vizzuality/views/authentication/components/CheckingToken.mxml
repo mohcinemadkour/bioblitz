@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-	height="98" width="138" borderStyle="solid" borderThickness="0" cornerRadius="10" 
-	backgroundColor="#FEFCFC" backgroundAlpha="1.0" themeColor="#000000" borderColor="#382513" creationComplete="onCreationComplete()">
+	height="100" width="130" borderStyle="solid" borderThickness="0" cornerRadius="10" horizontalScrollPolicy="off" verticalScrollPolicy="off"
+	backgroundColor="#000000" backgroundAlpha="0.2" themeColor="#000000" borderColor="#000000" creationComplete="onCreationComplete()">
 	
 	<mx:states>
 		<mx:State name="httpError">
@@ -135,6 +135,6 @@
 		    [Event(name="onGetTokenOK", type="com.vizzuality.event.GetTokenEvent")]
 		    [Event(name="onGetTokenKO", type="com.vizzuality.event.GetTokenEvent")]
 	</mx:Metadata>
-	<mx:SWFLoader source="/com/vizzuality/assets/loading.swf" x="53" y="16" id="swfloader1"/>
-	<mx:Label id="bar" text="Checking..." y="56" color="#596161" fontSize="12" height="23" horizontalCenter="0" fontWeight="bold"/>
+	<mx:SWFLoader source="/com/vizzuality/assets/loading.swf" y="20" id="swfloader1" horizontalCenter="0"/>
+	<mx:Label id="bar" text="Checking..." y="66" color="#f9f9f9" fontSize="13" height="23" horizontalCenter="0" fontWeight="bold" fontFamily="Arial"/>
 </mx:Canvas>

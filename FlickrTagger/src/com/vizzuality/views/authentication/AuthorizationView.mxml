@@ -109,7 +109,6 @@
 						useHandCursor="true" buttonMode="true"/>
 					<mx:Text id="radioTextOption2" width="324" text="No I have not / I want to upload the photos to the TDWG2010 account" styleName="authOptionRadioLabelUnselected"/>
 				</mx:HBox>
-				<!--<mx:Spacer height="100%" />-->
 				<mx:HBox width="100%" horizontalAlign="right">
 					<mx:TextInput id="textInput" textAlign="left" left="21" width="200" height="33" visible="false" styleName="authTxtInput" text="Insert your name"
 						mouseDown="cleanInput()" focusOut="infoInput()"/>

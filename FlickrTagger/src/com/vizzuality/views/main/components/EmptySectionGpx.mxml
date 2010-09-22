@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="345" height="190">
 
-	<mx:Image id="emptyImage" source="@Embed('com/vizzuality/assets/emptySectionImage_gpx.png')" verticalCenter="0" horizontalCenter="0" />
-	<mx:HBox horizontalGap="0" horizontalCenter="0" y="{emptyImage.y + emptyImage.height + 30}" verticalAlign="middle">
-		<mx:Label text="Drag here your GPX file or" styleName="txtEmptySectionLabel"/>
+	<mx:Image id="emptyImage" source="@Embed('com/vizzuality/assets/emptySectionImage_gpx.png')" verticalCenter="-30" horizontalCenter="0" />
+	<mx:HBox horizontalGap="0" horizontalCenter="0" y="{emptyImage.y + emptyImage.height + 30}" verticalAlign="middle" bottom="15">
+		<mx:Label text="Drag here your GPX file or " styleName="txtEmptySectionLabel"/>
 		<mx:Button label="browse your system" styleName="btnEmptySection" useHandCursor="true" buttonMode="true"/>
 	</mx:HBox>
 </mx:Canvas>

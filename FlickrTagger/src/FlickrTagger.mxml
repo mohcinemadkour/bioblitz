@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" height="704" width="490" creationComplete="	currentState='checkingtoken'" 
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" height="704" width="520" minHeight="704" minWidth="520" creationComplete="	currentState='checkingtoken'" verticalScrollPolicy="off" horizontalScrollPolicy="off"
 	title="FlickrTagger" xmlns:auth="com.vizzuality.views.authentication.*" xmlns:main="com.vizzuality.views.main.*" xmlns:auth_comps="com.vizzuality.views.authentication.components.*">
 	
 	<mx:Script>
@@ -9,11 +9,9 @@
 			import com.vizzuality.dao.DataAccessObject;
 			
 
-			public var gpx: GPX = new GPX(); 
 			public var count: int = 0;
 			
-			public var uploadingAllPictures:Boolean=false;
-			public var deletingAllPictures: Boolean=false;
+
 			[Bindable] public var taxon: String = "";
 			[Bindable] public var tagSequence: String = "";
 			public var croppedImagesDictionary : Dictionary = new Dictionary();
@@ -53,7 +51,6 @@
 			<mx:AddChild>
 				<mx:Button label="logout" click="deleteAccount()" right="13" bottom="10"/>
 			</mx:AddChild>
-			<!--<mx:SetProperty name="height" value="674"/>-->
 		</mx:State>
 		<mx:State name="checkingtoken">
 			<mx:AddChild>
