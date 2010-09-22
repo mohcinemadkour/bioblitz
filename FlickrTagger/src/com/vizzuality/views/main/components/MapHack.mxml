@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="50" height="50" xmlns:maps="com.google.maps.*">
+	<maps:Map key="ABQIAAAAtDJGVn6RztUmxjnX5hMzjRTlgNwHccSvWwZGaOrPR5JguxSloxRLQb8iPFvjar21x70RCFpHWU1zvQ" 
+			  url="http://bioblitz.tdwg.org/flickrtagger" 
+			  sensor="false" />
+</mx:Window>

@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:components="com.vizzuality.views.main.components.*">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+		   xmlns:components="com.vizzuality.views.main.components.*" xmlns:maps="com.google.maps.*" creationComplete="onCreationComplete()">
 	
 	<mx:states>
-		<mx:State name="gpxAdded"/>
+		<mx:State name="gpxAdded">
+			<mx:RemoveChild target="{emptySectionGpx}"/>
+			<mx:AddChild relativeTo="{vbox1}" position="lastChild">
+				<maps:Map id="map" mapevent_mapready="onMapReady()" sensor="false" width="100%" height="100%" url="http://bioblitz.tdwg.org/flickrtagger" key="ABQIAAAAtDJGVn6RztUmxjnX5hMzjRTlgNwHccSvWwZGaOrPR5JguxSloxRLQb8iPFvjar21x70RCFpHWU1zvQ"/>
+			</mx:AddChild>
+		</mx:State>
 	</mx:states>
 	
 	<mx:Script>
 		<![CDATA[
 			import com.adobe.gpslib.GPX;
-			import mx.core.Application;
-			import com.adobe.gpslib.gpx.events.ParseEvent;
-			import com.adobe.gpslib.GPX;
 			import com.adobe.gpslib.GPXService;
-			import mx.events.FileEvent;
+			import com.adobe.gpslib.gpx.events.ParseEvent;
+			
 			import mx.controls.Alert;
+			import mx.core.Application;
+			import mx.core.Window;
+			import mx.events.FileEvent;
 			private var gpxFile:File = File.documentsDirectory;
 				
-
+			
+			private function onCreationComplete():void {
+ 				
+				var hackWindow:Window=new Window();
+				var hackMap:Map = new Map();
+				hackMap.url ="http://bioblitz.tdwg.org/flickrtagger";
+				hackMap.key="ABQIAAAAtDJGVn6RztUmxjnX5hMzjRTlgNwHccSvWwZGaOrPR5JguxSloxRLQb8iPFvjar21x70RCFpHWU1zvQ";
+				hackMap.sensor="false";
+				hackWindow.addChild(hackMap);
+				hackWindow.visible=false;
+				hackWindow.open();
+				hackWindow.close();
+			}
+			private function onMapReady():void {
+				
+			}
 				
 			private function selectGPXFile(gpx:File):void {
 				var imgFilter:FileFilter = new FileFilter("GPX Files", "*.gpx");
@@ -39,15 +61,18 @@
 			protected function onGpxParse(event:ParseEvent):void {
 				var len:int = event.gpx.arrWaypoints.length;
 				//gpx_data.text = event.gpx.time.day + '/' + event.gpx.time.month + '/' + event.gpx.time.fullYear + ' --> ' + event.gpx.name;
+			
+				currentState="gpxAdded";
 			}
 			
 			private var gpx: GPX = new GPX(); 
+			
 			
 		]]>
 	</mx:Script>
 
 	<mx:DropShadowFilter id="headerShadow" alpha="0.3" color="#000000" angle="90" blurY="10" distance="8"/>
-	<mx:VBox width="100%" height="100%" verticalGap="0">
+	<mx:VBox width="100%" height="100%" verticalGap="0" id="vbox1">
 		<mx:Canvas height="37" width="100%" styleName="infoUpGreenBkg" filters="{[headerShadow]}" backgroundSize="100%">
 	    	<mx:Label text="This is the journey that you GPS has recorded. 12 photos were geotagged" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" horizontalCenter="0"/>
 	    	<mx:Label text="This is the journey that you GPS has recorded. 12 photos were geotagged" x="10" verticalCenter="0" styleName="txtInfoUp" horizontalCenter="0"/>

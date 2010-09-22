@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" height="704" width="520" minHeight="704" minWidth="520" creationComplete="	currentState='checkingtoken'" verticalScrollPolicy="off" horizontalScrollPolicy="off"
-	title="FlickrTagger" xmlns:auth="com.vizzuality.views.authentication.*" xmlns:main="com.vizzuality.views.main.*" xmlns:auth_comps="com.vizzuality.views.authentication.components.*">
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" height="704" width="520" minHeight="704" minWidth="520" verticalScrollPolicy="off" horizontalScrollPolicy="off"
+	title="FlickrTagger" xmlns:auth="com.vizzuality.views.authentication.*" xmlns:main="com.vizzuality.views.main.*" xmlns:auth_comps="com.vizzuality.views.authentication.components.*" creationComplete="onCreationComplete()">
 	
 	<mx:Script>
 		<![CDATA[
-			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
 			import com.adobe.gpslib.GPX;
+			import com.google.maps.Map;
 			import com.vizzuality.dao.DataAccessObject;
+			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
+			
+			import mx.core.Window;
 			
 
 			public var count: int = 0;
@@ -16,6 +19,13 @@
 			[Bindable] public var tagSequence: String = "";
 			public var croppedImagesDictionary : Dictionary = new Dictionary();
 				
+			
+			private function onCreationComplete():void {
+
+				currentState='checkingtoken'
+			}
+			
+			
 			public function onAuthorizationComplete():void {
 				var dao: DataAccessObject = new DataAccessObject();
 				
