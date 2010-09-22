@@ -20,15 +20,23 @@ package com.vizzuality.dao
 		private var imageData : ArrayCollection;
 		private var taxon : String;
 		private var dir : String;
+		private var arrayImages: Array = new Array();
+		private var tag:String = "";
 		
 		
-		public function FlickrUploadService() {
-			
-		}
+		public function FlickrUploadService() {}
 		
 		
 		public function resolveTagsFlickr(path:String,name:String):void {
-			var tag : String = "";
+			taxon = name;
+			dir = path;
+			tag = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
+			tag = tag + ",bioblitz2010:scientificName=\""+taxon+"\"";
+			sendImageFlickr(tag);
+		}
+		
+		
+		public function resolveGroupTagsFlickr(path:String,name:String):void {
 			taxon = name;
 			dir = path;
 			tag = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
@@ -87,10 +95,8 @@ package com.vizzuality.dao
 	    		flickr.addEventListener(FlickrResultEvent.SET_LOCATION_RESULT,onFlickrSetLocationResult);
 	    		flickr.photos.setLocation(photoID,imageData[0].lat,imageData[0].lon,imageData[0].zoom);		
     		}
-    		
-    		dao.openConnection("SELECT id FROM photos WHERE path='"+path+"' AND group_id is NULL");
-    		
-    		Application.application.principalView.system.deleteImage(path,1);
+
+    		Application.application.principalView.imagesState.deleteImage(path,1);
 			DockIcon(NativeApplication.nativeApplication.icon).bounce();
 		}	
 		

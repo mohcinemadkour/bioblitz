@@ -11,10 +11,7 @@
 			
 			import mx.core.Window;
 			
-
-			public var count: int = 0;
-			
-
+			public var count: int = 0;			
 			[Bindable] public var taxon: String = "";
 			[Bindable] public var tagSequence: String = "";
 			public var croppedImagesDictionary : Dictionary = new Dictionary();
@@ -27,6 +24,7 @@
 			
 			
 			public function onAuthorizationComplete():void {
+				currentState="imagetagger";
 				var dao: DataAccessObject = new DataAccessObject();
 				
 				if (count==1) {
@@ -37,13 +35,18 @@
 					dao.openConnection("INSERT INTO user (alias, token) VALUES ('"+ FlickrAuthorizationSettings.accountName +"','"+ FlickrAuthorizationSettings.authToken +"')");
 					dao.showTable(dao.dbResult);
 				}
-				currentState="imagetagger";
 			}
 
 			private function deleteAccount():void {
+				var images:File = File.applicationStorageDirectory.resolvePath("images");
+				var database:File = File.applicationStorageDirectory.resolvePath("DBV.db");
+				images.deleteDirectory();
+				database.deleteFile();
 				if (authorization!=null) {
 					authorization.currentState = "";
 				}
+				var dao: DataAccessObject = new DataAccessObject();
+				dao.createTables();
 				currentState = "authorizationFlickr";
 			}
 			
