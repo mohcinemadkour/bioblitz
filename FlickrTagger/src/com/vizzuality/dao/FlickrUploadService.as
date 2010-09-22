@@ -48,11 +48,10 @@ package com.vizzuality.dao
 			service.token = FlickrAuthorizationSettings.authToken;
 			var uploader:Upload = new Upload(service);
 			uploader.upload(imageFile,taxon,"Image uploaded at TDWGBioBlitz 2010",tag);
-			
 		}
 		
 		
-		private function saveFusionTable():void {
+		private function saveToFusionTable():void {
 			
 		}
 		
@@ -63,9 +62,7 @@ package com.vizzuality.dao
 		   	for each( var id:XML in xml..photoid ) {
 				 photoID = id;					
 			}
-			//trace(photoID);
 			setImageLocation(photoID,"file://" + escape(ev.currentTarget.nativePath.toString()));
-			//trace(ev.currentTarget.nativePath.toString());
 		}
 		
 		
@@ -89,7 +86,10 @@ package com.vizzuality.dao
 	    		
 	    		flickr.addEventListener(FlickrResultEvent.SET_LOCATION_RESULT,onFlickrSetLocationResult);
 	    		flickr.photos.setLocation(photoID,imageData[0].lat,imageData[0].lon,imageData[0].zoom);		
-    		}	
+    		}
+    		
+    		dao.openConnection("SELECT id FROM photos WHERE path='"+path+"' AND group_id is NULL");
+    		
     		Application.application.principalView.system.deleteImage(path,1);
 			DockIcon(NativeApplication.nativeApplication.icon).bounce();
 		}	
