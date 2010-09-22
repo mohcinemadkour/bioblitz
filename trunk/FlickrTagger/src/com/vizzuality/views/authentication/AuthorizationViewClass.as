@@ -97,7 +97,7 @@
 	private function onGetFrob(e:FlickrResultEvent):void {
 	        frob = e.data.frob;
 	        authorizationURL = flickr.getLoginURL(frob, "write");
-	        currentState = URL_AUTHORIZATION_STATE;
+	        currentState = 'webBrowser';
 	}
 	
 	
@@ -129,18 +129,18 @@
 	
 
 	private function onGetToken(e:FlickrResultEvent):void {
-	        if(e.data.auth == null) {
-	        	setError(e.data.error.errorMessage);
-	            return;
-	        }
-	        
-	        if (e.data.auth.user.username == "TDWBioBlitz 2010") {
-	        	Alert.show(e.data.auth.token,"BioBlitz Flickr token account");
-	        }
-	        
-	        FlickrAuthorizationSettings.accountName = e.data.auth.user.username;
-	        FlickrAuthorizationSettings.authToken = e.data.auth.token;
-	        currentState = AUTHORIZATION_COMPLETE_STATE;
+        if(e.data.auth == null) {
+        	setError(e.data.error.errorMessage);
+            return;
+        }
+        
+        if (e.data.auth.user.username == "TDWBioBlitz 2010") {
+        	Alert.show(e.data.auth.token,"BioBlitz Flickr token account");
+        }
+        
+        FlickrAuthorizationSettings.accountName = e.data.auth.user.username;
+        FlickrAuthorizationSettings.authToken = e.data.auth.token;
+        Application.application.onAuthorizationComplete();
 	}
 	
 	

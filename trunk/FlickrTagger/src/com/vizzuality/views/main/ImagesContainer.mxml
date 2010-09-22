@@ -100,14 +100,6 @@
 
 		 			 
 		 			 	
-		    public function uploadPhoto(path: String,name:String):void {
-		   		var tag:String;
-		   		if (taxonomyResolutionService==null)
-		   			taxonomyResolutionService= new TaxonomyResolutionService();
-		   		
-				//taxonomyResolutionService.resolveTaxonomy(path,name);
-		   	            		
-		    }
 		 	
 		 	public function deleteImage(path:String,num:int):void {
 	 			var file:File = new File;
