@@ -10,7 +10,6 @@ Ftadmin::Application.routes.draw do |map|
   match 'logout' => 'sessions#destroy', :as => :logout
 
   namespace :api do
-    get "identification_request" => "identifications#new", :format => :json
     get "dwca_to_fusion_tables" => "dwc_archive#new", :format => :json
     get "provide_identification" => "identifications#update", :format => :json
     get "taxonomy" => "taxonomy#index", :format => :json
