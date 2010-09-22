@@ -1,27 +1,12 @@
 class Api::IdentificationsController < ApplicationController
-
-  #Provide a new Identification Request Object
-  def new
-    
-    config = YAML::load_file("#{Rails.root}/config/credentials.yml")
-    ft = GData::Client::FusionTables.new
-    ft.clientlogin(config["ft_username"], config["ft_password"])
-    tables = ft.show_tables
-    ft_observations  = tables.select{|t| t.id == "225363"}.first
-    
-    observs = ft_observations.select("ROWID,observedBy,dateTime,latitude,longitude,occurrenceRemarks,verbatimLocality,associatedMedia", "WHERE identificationRequested='Yes' LIMIT 1").first
-    result = observs
-    
-    respond_to do |format|
-      format.json do 
-        render :json => result.to_json
-      end
-    end
-    
-  end
   
   #Provide an identification
   def update
+    
+    #get clients location
+    user_location= get_ip_location(request.remote_ip)
+    
+    
     
     config = YAML::load_file("#{Rails.root}/config/credentials.yml")
     ft = GData::Client::FusionTables.new
@@ -30,8 +15,8 @@ class Api::IdentificationsController < ApplicationController
     if (params[:id])
       taxonomy=resolve_taxonomy(params[:id])
       
-      sql="INSERT INTO 254492(observationRowId,scientificName,identificationTime,author,application,colId,colLsid,kingdom
-      ,phylum,class,'order',family,genus) VALUES(
+      sql="INSERT INTO #{config['ft_identifications_table']}(observationRowId,scientificName,identificationTime,author,application,colId,colLsid,kingdom
+      ,phylum,class,'order',family,genus,lat,lon) VALUES(
         '#{params[:rowid]}',
         '#{taxonomy[0]['s']}',
         '#{Time.now.strftime("%m-%d-%Y %H:%M:%S")}',
@@ -44,30 +29,34 @@ class Api::IdentificationsController < ApplicationController
         '#{taxonomy[0]['c']}',
         '#{taxonomy[0]['o']}',
         '#{taxonomy[0]['f']}',
-        '#{taxonomy[0]['g']}'
+        '#{taxonomy[0]['g']}',
+        #{user_location['latitude']},
+        #{user_location['longitude']}
       )"
     else
       
-      sql="INSERT INTO 254492(observationRowId,scientificName,identificationTime,author,application) VALUES(
+      sql="INSERT INTO #{config['ft_identifications_table']}(observationRowId,scientificName,identificationTime,author,application,lat,lon) VALUES(
         '#{params[:rowid]}',
         '#{params[:scientificName]}',
         '#{Time.now.strftime("%m-%d-%Y %H:%M:%S")}',
         '#{params[:username]}',
-        'Taxonomizer'
+        'Taxonomizer',
+        #{user_location['latitude']},
+        #{user_location['longitude']}        
       )"
         
     end
     
     ft.sql_post(sql)
     
-    sql="SELECT numIdentifications FROM 225363 WHERE ROWID=#{params[:rowid]}"
+    sql="SELECT numIdentifications FROM #{config['ft_occurrence_table']} WHERE ROWID=#{params[:rowid]}"
     data = GData::Client::FusionTables::Data.parse(ft.sql_get(sql)).body
 
     numIdentifications=(data[0][:numidentifications].to_i) + 1
     
 
 
-    sql="UPDATE 225363 SET numIdentifications=#{numIdentifications} WHERE ROWID='#{params[:rowid]}'"
+    sql="UPDATE #{config['ft_occurrence_table']} SET numIdentifications=#{numIdentifications} WHERE ROWID='#{params[:rowid]}'"
     ft.sql_post(sql)
         
     result ="ok"
@@ -82,6 +71,11 @@ class Api::IdentificationsController < ApplicationController
 
 end
 
+def get_ip_location(ip)
+  conn = PGconn.connect( :dbname => 'ipinfo',:user=>'postgres' )
+  result = conn.exec("SELECT * FROM geo_ips where ip_start <= inetmi('#{ip}','0.0.0.0') order by ip_start desc limit 1")
+  return result[0]
+end
 
 def resolve_taxonomy(id)
   conn = PGconn.connect( :dbname => 'col',:user=>'postgres' )

@@ -10,13 +10,13 @@ namespace :workers do
     ft = GData::Client::FusionTables.new
     ft.clientlogin(config["ft_username"],config["ft_password"])
     
-    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,scientificName from 225363 WHERE colId='' and scientificName not equal to ''"))
+    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,scientificName from #{config['ft_occurrence_table']} WHERE colId='' and scientificName not equal to ''"))
     res.body.each do |rec|
       rowid = rec[:rowid]      
       taxonomy=resolve_taxonomy(rec[:scientificname])
       if(taxonomy.any?)
         puts taxonomy[0]['id_col']
-        ft.sql_post("UPDATE 225363 SET 
+        ft.sql_post("UPDATE #{config['ft_occurrence_table']} SET 
           colId='#{taxonomy[0]['id_col']}',
           colLsid='#{taxonomy[0]['lsid']}',
           kingdom='#{taxonomy[0]['k']}',
@@ -28,7 +28,7 @@ namespace :workers do
         WHERE ROWID='#{rowid}'")
       else
         puts "not found:#{rec[:scientificname]}"
-        ft.sql_post("UPDATE 225363 SET colId='failed' WHERE ROWID='#{rowid}'")
+        ft.sql_post("UPDATE #{config['ft_occurrence_table']} SET colId='failed' WHERE ROWID='#{rowid}'")
       end
       
     end
@@ -39,7 +39,7 @@ namespace :workers do
     config = YAML::load_file("#{Rails.root}/config/credentials.yml")
     ft = GData::Client::FusionTables.new
     ft.clientlogin(config["ft_username"],config["ft_password"])    
-    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,associatedMedia from 225363 WHERE zoomitId='' and associatedMedia not equal to ''"))
+    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,associatedMedia from #{config['ft_occurrence_table']} WHERE zoomitId='' and associatedMedia not equal to ''"))
     res.body.each do |rec|
       rowid = rec[:rowid] 
       #Loop over the images on the observation
@@ -55,7 +55,7 @@ namespace :workers do
         ids << response['id']
         puts response['id']
       }
-      ft.sql_post("UPDATE 225363 SET zoomitId='#{ids.join(" ")}' WHERE ROWID='#{rowid}'")
+      ft.sql_post("UPDATE #{config['ft_occurrence_table']} SET zoomitId='#{ids.join(" ")}' WHERE ROWID='#{rowid}'")
     end 
   end
   
@@ -93,7 +93,7 @@ namespace :workers do
         end 
         puts scientificName
       
-        sql="INSERT INTO 225363(scientificName,associatedMedia) VALUES('#{scientificName}','#{pic_url}')"
+        sql="INSERT INTO #{config['ft_occurrence_table']}(scientificName,associatedMedia) VALUES('#{scientificName}','#{pic_url}')"
         ft.sql_post(sql)
       end
     end                        
