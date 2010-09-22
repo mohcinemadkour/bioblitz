@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="225" height="200" color="#040404" creationComplete="{initRenderer()}" verticalScrollPolicy="off" 
-	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0" top="3" dragEnter="onDragEnter(event)"
-	dragDrop="onDragDrop(event)" dragComplete="onDragDrop(event)"  mouseDown="onMouseDown(event)">
+	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0" top="3">
         
         <mx:Script>
                 <![CDATA[
@@ -33,6 +32,7 @@
                     
                     [Bindable]private var inputColor: uint;
                     [Bindable]private var path: String;
+                    [Bindable]private var canvasBkg: uint;
                     [Bindable]private var enabling: Boolean;  
                     [Bindable]private var textButton: String; 
                     [Bindable]private var textInput: String;   
@@ -41,6 +41,7 @@
                     override public function set data(value:Object):void{
 
 						  if (value != null) {
+						  	 canvasBkg = (value.group_total!=undefined)?0xFF7700:0xFFFFFF;
 						     path = value.path;
 						     if (value.scientific == null || value.scientific == "") {						
 						     	textInput = 'Not recognized';
@@ -117,14 +118,10 @@
                     }
                     
                     private function uploadImage():void {
-                            if (textInput == "" || textInput == "Tag this image!") {
-                                    Alert.show("Tag this image first!","Error uploading")
-                            } else {
-                                    textButton = "Uploading now";
-                                    enabling = false;
-                                    var upFlick: FlickrUploadService = new FlickrUploadService();
-                                    upFlick.resolveTagsFlickr(data.path,scientificNameInput.text);
-                            }
+                        textButton = "Uploading now";
+                        enabling = false;
+                        var upFlick: FlickrUploadService = new FlickrUploadService();
+                        upFlick.resolveTagsFlickr(data.path,scientificNameInput.text);
                     }
                     
                     private function eraseImage():void {
@@ -162,7 +159,7 @@
 		            
 		            
 		            /*  Drop and drag functions  */
-		            
+		            /* 
 		            private function onMouseDown(event:MouseEvent):void {
 					    var dragInitiator:IUIComponent = event.currentTarget as IUIComponent;
 					    var dragSource:DragSource = new DragSource();
@@ -181,7 +178,7 @@
       					var dragInitiator:IUIComponent = event.dragInitiator as IUIComponent;
       					var dropTarget:Object = event.currentTarget;
       					Alert.show( "Dragged ("+dragInitiator['path']+") to ("+dropTarget['path']+") and Dropped" );
-		            }
+		            } */
 		            
 		            
                 ]]>
@@ -189,14 +186,16 @@
         
                       
         
-        <mx:Canvas id="itemSpace" height="136" width="180" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" verticalCenter="0" backgroundColor="white">
+        <mx:Canvas id="itemSpace" height="136" width="180" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" verticalCenter="0" backgroundColor="{canvasBkg}">
 			<components:CroppedImage pathImage="{path}" verticalCenter="0" horizontalCenter="0"/>
         </mx:Canvas>
         <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="142" horizontalCenter="0"/>
         <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName()" textAlign="center" width="180" 
         	creationComplete="changeColorInput()" height="24" enter="changeTaxonomy()" fontFamily="Arial" fontSize="13" x="22" y="169" color="#BBBBBB" fontWeight="bold"/>
-		<mx:Button label="{textButton}" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" enabled="{enabling}" x="10" y="20" alpha="0"/>
-        <mx:Button label="x" fontSize="10" click="eraseImage()" width="28" id="deleteButton" height="28" enabled="{enabling}" x="189" y="20" alpha="0"/>          	
+		<mx:Button label="" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" enabled="{enabling}" x="10" y="20" alpha="0" styleName="uploadGreenBtn"
+			buttonMode="true" mouseChildren="false" useHandCursor="true"/>
+        <mx:Button label="" fontSize="10" click="eraseImage()" width="28" id="deleteButton" height="28" enabled="{enabling}" x="189" y="20" alpha="0" styleName="deleteRedBtn"
+        	buttonMode="true" mouseChildren="false" useHandCursor="true"/>          	
         	
         
 </mx:Canvas>

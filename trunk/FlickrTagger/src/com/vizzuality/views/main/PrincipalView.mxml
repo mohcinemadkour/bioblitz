@@ -1,72 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" backgroundAlpha="0" 
-	xmlns:main="com.vizzuality.views.main.*" xmlns:components="com.vizzuality.views.main.components.*">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" backgroundAlpha="0" width="100%" height="100%"
+	xmlns:main="com.vizzuality.views.main.*" xmlns:components="com.vizzuality.views.main.components.*" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<mx:states>
+			<mx:State name="Gpx">
+				<mx:RemoveChild target="{imagesState}"/>
+				<mx:AddChild relativeTo="{vbox1}" position="lastChild">
+					<main:GPXContainer>
+					</main:GPXContainer>
+				</mx:AddChild>
+			</mx:State>
+			<mx:State name="Help">
+				<mx:RemoveChild target="{imagesState}"/>
+				<mx:AddChild relativeTo="{vbox1}" position="lastChild">
+					<main:HelpContainer>
+					</main:HelpContainer>
+				</mx:AddChild>
+			</mx:State>
+		</mx:states>
 	
-	
-	
-		<mx:Script>
-			<![CDATA[
-				import mx.core.Application;
-				import com.adobe.gpslib.gpx.events.ParseEvent;
-				import com.adobe.gpslib.GPX;
-				import com.adobe.gpslib.GPXService;
-				import mx.events.FileEvent;
-				import mx.controls.Alert;
-				private var gpxFile:File = File.documentsDirectory;
-				
-				private function selectGPXFile(gpx:File):void {
-					var imgFilter:FileFilter = new FileFilter("GPX Files", "*.gpx");
-			  		gpx.addEventListener(Event.SELECT, fileSelected);
-					gpx.browseForOpen("Open", [imgFilter]);
-				}
-				
-				private function fileSelected(event:Event):void {
-    				var stream:FileStream = new FileStream();
-					stream.open(gpxFile,FileMode.READ);
-					var fileData:String = stream.readUTFBytes(stream.bytesAvailable);
-					stream.close();
-					var xmlData:XML = new XML(fileData);
-    				
-					var gpxSrv:GPXService = new GPXService();
-					gpxSrv.addEventListener(ParseEvent.PARSE_COMPLETE,onGpxParse);
-					gpxSrv.load(xmlData);	
-				}
-				
-			protected function onGpxParse(event:ParseEvent):void {
-				var len:int = event.gpx.arrWaypoints.length;
-				Application.application.gpx = event.gpx;
-				//gpx_data.text = event.gpx.time.day + '/' + event.gpx.time.month + '/' + event.gpx.time.fullYear + ' --> ' + event.gpx.name;
-			}
-				
-				
-			]]>
-		</mx:Script>
+
 		
-		<mx:DropShadowFilter id="headerShadow" alpha="0.3" color="#000000" angle="90" blurY="10" distance="8"/>
-		
-      	<mx:VBox height="100%" width="100%" verticalGap="0">
-	        <mx:HBox height="70" width="100%" horizontalAlign="center" verticalAlign="bottom" horizontalGap="0">
-        		<mx:Button width="162" height="70" styleName="sectionUpBtnPhoto"
+      	<mx:VBox height="100%" width="100%" verticalGap="0" id="vbox1">
+	        <mx:HBox height="70" width="100%" horizontalAlign="center" verticalAlign="bottom" horizontalGap="0" horizontalCenter="0">
+        		<mx:Button width="162" height="70" styleName="sectionUpBtnPhoto" click="currentState=''"
         			useHandCursor="true" buttonMode="true"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#111111"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#3c3c3c"/>
-        		<mx:Button width="162" height="70" styleName="sectionUpBtnGpx"
+        		<mx:Button width="162" height="70" styleName="sectionUpBtnGpx" click="currentState='Gpx'"
         			useHandCursor="true" buttonMode="true"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#111111"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#3c3c3c"/>
-        		<mx:Button width="162" height="70" styleName="sectionUpBtnHelp"
+        		<mx:Button width="162" height="70" styleName="sectionUpBtnHelp" click="currentState='Help'"
         			useHandCursor="true" buttonMode="true"/>
 	        </mx:HBox>
-	        <mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}">
-	        	<mx:Label text="Drag or select multiple photos (alt+click) to create groups" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3"/>
-	        	<mx:Label text="Drag or select multiple photos (alt+click) to create groups" x="10" verticalCenter="0" styleName="txtInfoUp"/>
-	        </mx:Canvas>
-	        <components:SuggestedPhotoNamesTooltip />
-	       <!-- <main:ImagesContainer id="system" label="Search" width="100%" height="100%"/>-->
-	        <!--<mx:HBox width="100%">
-	        	<mx:Button label="Add GPX file" left="0" click="selectGPXFile(gpxFile)" styleName="JamCreation"/>
-	        	<mx:Label id="gpx_data" text="GPX File data" right="0" width="298" height="26" color="#FFFFFF" fontSize="12" fontFamily="Verdana" fontWeight="bold" textAlign="left" paddingTop="3"/>	
-	        </mx:HBox>-->
+	       	<main:ImagesContainer id="imagesState" label="Search" width="100%" height="100%"/>
      	</mx:VBox>  
 </mx:Canvas>
+
+
+	        <!--<components:SuggestedPhotoNamesTooltip />-->
+	        
 

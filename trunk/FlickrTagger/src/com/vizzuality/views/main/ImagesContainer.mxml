@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="com.vizzuality.components.*" creationComplete="onCreationComplete()" backgroundColor="#4a4a4a">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="com.vizzuality.components.*" creationComplete="onCreationComplete()" backgroundColor="#4a4a4a" xmlns:components="com.vizzuality.views.main.components.*">
+	<mx:states>
+		<mx:State name="imagesAdded">
+			<mx:RemoveChild target="{emptySelectionPhoto}"/>
+			<mx:SetProperty target="{label1}" name="text">
+				<mx:value>Drag or select multiple photos (shift+click) or (ctrl/cmd+click) to create groups</mx:value>
+			</mx:SetProperty>
+			<mx:SetProperty target="{label2}" name="text">
+				<mx:value>Drag or select multiple photos (shift+click) or (ctrl/cmd+click) to create groups</mx:value>
+			</mx:SetProperty>
+		</mx:State>
+		<mx:State name="multipleSelection">
+			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpYellowBkg"/>
+			<mx:RemoveChild target="{emptySelectionPhoto}"/>
+			<mx:AddChild relativeTo="{headerHBox}" position="lastChild">
+				<mx:Button x="315" y="10" label="GROUP" useHandCursor="true" buttonMode="true" mouseChildren="false" click="createGroup()"/>
+			</mx:AddChild>
+			<mx:SetProperty target="{label1}" name="text" value="You have selected "/>
+			<mx:SetProperty target="{label2}" name="text" value="You have selected "/>
+			<mx:SetStyle target="{headerHBox}" name="horizontalGap" value="4"/>
+		</mx:State>
+		<mx:State name="banSelection">
+			<mx:RemoveChild target="{emptySelectionPhoto}"/>
+			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpRedBkg"/>
+			<mx:SetProperty target="{label1}" name="text" value="You can't join two groups"/>
+			<mx:SetProperty target="{label2}" name="text" value="You can't join two groups"/>
+		</mx:State>
+	</mx:states>
+
 	
 		
 	<mx:Script>
@@ -46,10 +74,21 @@
 			
 			private var path: String;
 			private var scientific: String;
-			//public var uploadedImage: Boolean = false;
 			
 			private var taxonomyResolutionService:TaxonomyResolutionService;
 			
+			
+			
+		 	public function refreshTilelist():void {
+		 		//GEt first images not grouped
+		 		dao.openConnection("SELECT scientific,path,id, (select count(id) from photos where group_id=g.id) AS group_total FROM groups as g");
+				sqlArray = dao.dbResult;
+
+		 		//GEt second images not grouped
+				dao.openConnection("SELECT scientific,path,id FROM photos WHERE group_id is NULL");
+				sqlArray = new ArrayCollection(sqlArray.source.concat(dao.dbResult.source));
+				chooseState();
+		 	}
 			
 						
 			private function onCreationComplete():void {
@@ -89,68 +128,224 @@
 	 			}
 	 			
 	 			//lines for reusing Tilelist!! and delete path reference to Dicciontary
-	 			delete Application.application.croppedImagesDictionary[file.url];
+	 			//delete Application.application.croppedImagesDictionary[file.url];
 	 			tilelist.indexToItemRenderer(i).data=null;
 	 			sqlArray.removeItemAt(i);
-	 			
-	 			
-	 			if (Application.application.deletingAllPictures) {
-					Application.application.principalView.system.deleteAll();
-				}
+	 			chooseState();
+		 	}
+		 	
+		 	
+		 	private function removeImageTilelist(image_id:int):void {
+		 		for (var i:int=0; i<sqlArray.length; i++) {
+		 			if (sqlArray[i].id == image_id && sqlArray[i].group_total==undefined ) {
+		 				tilelist.indexToItemRenderer(i).data=null;
+	 					sqlArray.removeItemAt(i);
+	 					break;
+		 			}
+		 		}
 		 	}
 
+		 	
 		 	
 		 	public function updateName(scientificName:String,path:String):void {
 			 	dao.openConnection("UPDATE photos SET scientific='"+scientificName+"' WHERE path='"+path+"'");
 		 	}
 		 	
 		 	
-		 	public function refreshTilelist():void {
-				dao.openConnection("SELECT scientific,path FROM photos");
-				sqlArray = dao.dbResult;
-				var arrayTestRenderers: Array = tilelist.renderers;
-		 	}
-		 	
-			private function insertSQL():void {				 
-	    		var sqlArrayColl : ArrayCollection = new ArrayCollection();
-	    		dao.openConnection("INSERT INTO photos (login) VALUES ('"+ FlickrAuthorizationSettings.accountName +"')");
-	    		dao.openConnection("SELECT id FROM photos");
-	    		sqlArrayColl = dao.dbResult;
-	    		identification = dao.countHandler(sqlArrayColl).toString();
+
+	
+	
+
+			
+			private function insertImage(object:Object):void {
+				dao.openConnection("INSERT INTO photos (path) VALUES('"+object.url+"')");
+			  	dao.openConnection("SELECT id FROM photos WHERE path='"+ object.url+"'");
+			  	var identification:Object = dao.dbResult[0];
+				var original:File = File.userDirectory.resolvePath(object.nativePath);
+			  	var newFile:File;
+			  	newFile = File.applicationStorageDirectory.resolvePath(imagesDir + "/"+ identification.id +'.'+ object.extension);
+			 	dao.openConnection("UPDATE photos SET path='"+newFile.url+"' WHERE path='"+object.url+"'");
+			  	original.copyTo(newFile, true);
+			  	
+			  	//Creation of new item
+			  	var obj: Object = new Object();
+			  	obj.path = newFile.url;
+			  	obj.scientific = null;
+			  	obj.lat = null;
+			  	obj.lon = null;
+			  	obj.id = identification.id;
+			  	sqlArray.addItem(obj);
+			  	
+			  	chooseState();
 			}
-	
-	
-			private function selectImageFile(root:File):void {
+			
+			
+			
+			/* Check and choose state functions */
+			 
+		 	private function chooseState():void {
+		 		if (sqlArray.length!=0) {
+					currentState = "imagesAdded";
+				} else {
+					currentState = "";
+				}
+		 	}			
+			
+			
+			private function checkMultipleSelection(event:ListEvent):void {
+				if (tilelist.selectedItems.length>1) {
+					var result:Object = checkNoMoreTwoGroupsSelected();
+					if (!result.valid) {
+						currentState = "banSelection";
+					} else {
+						currentState = "multipleSelection";
+						label1.text = "You have selected " + result.count;
+						label2.text = "You have selected " + result.count;						
+					}
+				} else {
+					chooseState();
+				}
+			}
+			
+			
+			
+			private function checkNoMoreTwoGroupsSelected():Object {
+				var result:Object = new Object();
+				result.count = 0;
+				result.valid = true;
+				var numGroups:int = 0;
+				for (var i:int = 0; i<tilelist.selectedItems.length; i++) {
+					if (tilelist.selectedItems[i].group_total!=undefined) {
+						if (numGroups<1) {
+							result.count = result.count + tilelist.selectedItems[i].group_total;
+							numGroups++;
+						} else {
+							result.valid = false;
+							return result;
+						}						
+					} else {
+						result.count++;
+					}
+				}
+				return result;
+			}
+			
+			
+			
+			/* Create group */
+			
+			private function createGroup():void {
+				//Create group in our Database
+				var group_data:Object = new Object();
+				var photos_ids_str:String = '';
+				var imagesIdsArray: Array = new Array();
 				
-				var imgFilter:FileFilter = new FileFilter("Images", "*.jpg;*.jpeg;*.gif;*.png");
+				if (existGroupOnSelectedItems().group) {
+					//If there is a group in the selected items
+					var isThereGroup: Object = existGroupOnSelectedItems();
+					isThereGroup.selected_count = tilelist.selectedItems.length - 1;
+					for (var j:int=0; j<tilelist.selectedItems.length; j++) {
+						if (tilelist.selectedItems[j].group_total==undefined) {
+							photos_ids_str += tilelist.selectedItems[j].id + ',';
+							imagesIdsArray.push(tilelist.selectedItems[j].id);
+							
+						} else {
+							tilelist.selectedItems[j].group_total = tilelist.selectedItems[j].group_total + isThereGroup.selected_count;
+						}
+					}
+					
+					for (var k:int=0; k<imagesIdsArray.length; k++) {					
+	 					removeImageTilelist(imagesIdsArray[k]);
+					}
+					
+					
+					photos_ids_str = photos_ids_str.substr(0,photos_ids_str.length-1);
+		     		dao.openConnection("UPDATE photos SET group_id="+isThereGroup.group_id+" where id in ("+photos_ids_str+")");				
+				} else {
+					//If there isn't a group in the selected items
+					group_data.count = tilelist.selectedItems.length;
+					for (var i:int=0; i<tilelist.selectedItems.length; i++) {
+						if (group_data.scientific==undefined && tilelist.selectedItems[i].scientific != null) {
+							group_data.scientific = tilelist.selectedItems[i].scientific;
+						}
+						if (group_data.path==undefined) {
+							group_data.path = tilelist.selectedItems[i].path;
+						}
+						if (group_data.lat==undefined && tilelist.selectedItems[i].lat != null) {
+							group_data.lat = tilelist.selectedItems[i].lat;
+							group_data.lon = tilelist.selectedItems[i].lon;
+						}						
+						photos_ids_str += tilelist.selectedItems[i].id + ',';
+						imagesIdsArray.push(tilelist.selectedItems[i].id);
+						
+					}
+					
+					for (var z:int=0; z<imagesIdsArray.length; z++) {					
+						removeImageTilelist(imagesIdsArray[z]);
+					}
+
+					dao.openConnection("INSERT INTO groups (scientific,path,lat,lon) VALUES ('"+group_data.scienfitic+"','"+group_data.path+"','"+group_data.lat+"','"+group_data.lon+"')");
+					dao.openConnection("SELECT id FROM groups order by id DESC LIMIT 1");
+					var group_identification:String = dao.dbResult[0].id;
+					
+					//Create the group and added to the tilelist
+					var obj: Object = new Object();
+			  		obj.path = group_data.path;
+			  		obj.scientific = group_data.scienfitic;
+			  		obj.lat = group_data.lat;
+			  		obj.lon = group_data.lon;
+			  		obj.id = group_identification;
+			  		obj.group_total = group_data.count;
+			  		sqlArray.addItem(obj);					
+					
+					photos_ids_str = photos_ids_str.substr(0,photos_ids_str.length-1);
+		     		dao.openConnection("UPDATE photos SET group_id="+group_identification+" where id in ("+photos_ids_str+")");					
+				}
+				tilelist.selectedIndices = new Array();
+				chooseState();
+			}
+			
+			
+			
+			
+			private function existGroupOnSelectedItems():Object {
+				var result:Object = new Object();
+				result.group = false;
+				result.group_id = 0;
+				for (var i:int=0; i<tilelist.selectedItems.length; i++) {
+					if (tilelist.selectedItems[i].group_total!=undefined) {
+						result.group_id = tilelist.selectedItems[i].id;
+						result.group = true;
+						return result;
+					}
+				}
+				return result;
+			}
+			
+			
+			
+			
+			
+			/* ------- Image Selection ------- */
+			
+			private function selectImageFile(root:File):void {
+				var imgFilter:FileFilter = new FileFilter("Images", "*.jpg;*.jpeg;*.gif;*.png,*.JPG;*.JPEG;*.GIF;*.PNG");
 				root.browseForOpenMultiple("Open", [imgFilter]);
 			  	root.addEventListener(FileListEvent.SELECT_MULTIPLE, fileSelected);
 			}
 			
 			private function fileSelected(event:FileListEvent):void {
-				
 				var files:Array = event.files as Array;
 				var i: int = files.length;
 			  	for (var j:int = 0; j < i; j++) {
 				    insertImage(files[j]);
 				}
-	
 			}
 			
-			private function insertImage(object:Object):void {
-				var original:File = File.userDirectory.resolvePath(object.nativePath);
-			  	var newFile:File;
-			  	insertSQL();
-			  	newFile = File.applicationStorageDirectory.resolvePath(imagesDir + "/"+ identification +'.'+ object.extension);
-			  	original.copyTo(newFile, true);
-			  	dao.openConnection("UPDATE photos SET path='"+newFile.url+"' WHERE id='"+identification+"'");
-			  	var obj: Object = new Object();
-			  	obj.path = newFile.url;
-			  	obj.scientific = null;
-			  	sqlArray.addItem(obj);
-			  	/* refreshTilelist(); */
-			}
 			
+			
+			
+			/* ------- Drop functionality ------- */
 			
 			private function onDropEnter(event:NativeDragEvent):void {
 	 			NativeDragManager.acceptDragDrop(tilelist);
@@ -163,71 +358,41 @@
 			    	if (file.isDirectory) {						
 					     var dirContents:Array = file.getDirectoryListing();
 					     for each (var fi:File in dirContents) {
-							if (!fi.isHidden) {
-								switch (fi.extension) {
-						        	case "jpg":
-						           		addDroppedFile(fi.nativePath,fi.extension);
-						           		break;
-						           	case "jpeg":
-						           		addDroppedFile(fi.nativePath,fi.extension);
-						           		break;
-						         	case "png":
-						           		addDroppedFile(fi.nativePath,fi.extension);
-						           		break;
-						         	case "gif":
-						           		addDroppedFile(fi.nativePath,fi.extension);
-						           		break;
-						         	default: Alert.show("Unsupported file");       
-					       		}
-					  		}
-			    		}	
-
+							insertImage(fi);
+			    		 }	
 			    	} else {
-				    	switch (file.extension) {
-				        	case "jpg":
-				           		addDroppedFile(file.nativePath,file.extension);
-				           		break;
-				           	case "jpeg":
-				           		addDroppedFile(file.nativePath,file.extension);
-				           		break;
-				         	case "png":
-				           		addDroppedFile(file.nativePath,file.extension);
-				           		break;
-				         	case "gif":
-				           		addDroppedFile(file.nativePath,file.extension);
-				           		break;
-				         	default: Alert.show("Unsupported file");       
-				       	}
+				    	insertImage(file);
 			    	}			       
 			    }
+			    tilelist.selectedIndices = new Array();
 			}
 			
 
-
-			
-		   	private function addDroppedFile(nativePath:String,fileName:String):void {
-		   		var original:File = File.userDirectory.resolvePath(nativePath);
-		     	var newFile:File;
-			 	insertSQL();
-		      	newFile = File.applicationStorageDirectory.resolvePath(imagesDir + "/"+identification+"."+fileName);
-		     	original.copyTo(newFile, true);
-		     	dao.openConnection("UPDATE photos SET path='"+newFile.url+"' WHERE id='"+identification+"'");
-		     	var obj: Object = new Object();
-			  	obj.path = newFile.url;
-			  	obj.scientific = null;
-			  	sqlArray.addItem(obj);
-		     	/* refreshTilelist(); */
-		   }
 		   
 
 		]]>
 	</mx:Script>
 	
-		
+	<mx:DropShadowFilter id="headerShadow" alpha="0.3" color="#000000" angle="90" blurY="10" distance="8"/>
 	
-	<comp:TileListFlickTagger selectionColor="#4a4a4a" selectionDisabledColor="#4a4a4a" rollOverColor="#4a4a4a" id="tilelist"  dataProvider="{sqlArray}" styleName="CustomTilelist"
-			itemRenderer="com.vizzuality.views.main.components.ImageRenderer" borderThickness="0.5" width="100%" height="100%" borderColor="#999999" backgroundColor="#4A4A4A" themeColor="#4A4A4A" 
-			allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true"/>			
+	
+	<mx:VBox width="100%" height="100%" verticalGap="0">
+		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%" id="canvas1">
+			<mx:HBox horizontalCenter="0" verticalCenter="0" id="headerHBox">
+				<mx:Canvas >
+	    			<mx:Label text="Add some photos to FlickrTagger" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" horizontalCenter="0" id="label2"/>
+	    			<mx:Label text="Add some photos to FlickrTagger" x="10" verticalCenter="0" styleName="txtInfoUp" horizontalCenter="0" id="label1"/>
+				</mx:Canvas>
+			</mx:HBox>
+
+	    </mx:Canvas>
+		
+		<comp:TileListFlickTagger selectionColor="#4a4a4a" selectionDisabledColor="#4a4a4a" rollOverColor="#4a4a4a" id="tilelist"  dataProvider="{sqlArray}"
+				itemRenderer="com.vizzuality.views.main.components.ImageRenderer" width="100%" height="100%" borderThickness="0" itemClick="checkMultipleSelection(event)"
+				allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true" styleName="imagesContent" backgroundSize="100%"/>					
+	</mx:VBox>
+	
+	<components:EmptySectionPhoto  horizontalCenter="0" verticalCenter="0" width="315" height="180" visible="true" id="emptySelectionPhoto" addImage="selectImageFile(fileToOpen)"/>
 	
 	
 	

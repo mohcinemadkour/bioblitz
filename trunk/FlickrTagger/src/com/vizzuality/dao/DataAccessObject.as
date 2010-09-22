@@ -74,24 +74,21 @@ package com.vizzuality.dao
 			var sqlCreate2:String =
 			"CREATE TABLE IF NOT EXISTS photos (" +
 			"id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-			"login TEXT," +
 			"path TEXT," +
 			"scientific TEXT DEFAULT NULL,"+
 			"lat TEXT," +
 			"lon TEXT," +
-			"zoom INTEGER," +
-			"taxon_group INTEGER DEFAULT NULL," +
-			"FOREIGN KEY (login) REFERENCES user(alias) " +
-			"ON UPDATE CASCADE " +
-			"ON DELETE SET NULL)";
+			"group_id INTEGER DEFAULT NULL)";
 			openConnection(sqlCreate2);	
 			
 			
 			var sqlCreate3:String =
 			"CREATE TABLE IF NOT EXISTS groups (" +
 			"id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+			"path TEXT," +
 			"scientific TEXT DEFAULT NULL,"+
-			"date TEXT)";
+			"lat TEXT," +
+			"lon TEXT)";
 			openConnection(sqlCreate3);	
 					
 		}

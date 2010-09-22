@@ -72,21 +72,17 @@ package com.adobe.webapis.flickr.methodgroups {
 
 	
 
-	import com.adobe.webapis.flickr.events.FlickrResultEvent;
-
-	import com.adobe.webapis.flickr.*;
-
 	import com.adobe.crypto.MD5;
-
-	import flash.events.Event;
-
-	import flash.net.URLLoader;
-
-	import flash.net.FileReference;
-	import flash.net.URLRequest;
-	import flash.net.URLVariables;
 	import com.adobe.utils.StringUtil;
+	import com.adobe.webapis.flickr.*;
+	import com.adobe.webapis.flickr.events.FlickrResultEvent;
+	
+	import flash.events.Event;
+	import flash.net.FileReference;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
+	import flash.net.URLVariables;
 
 
 

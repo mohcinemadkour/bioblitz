@@ -31,7 +31,8 @@ package com.vizzuality.dao
 			var tag : String = "";
 			taxon = name;
 			dir = path;
-			tag = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger,bioblitz2010:scientificName=\""+taxon+"\"";
+			tag = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
+			tag = tag + ",bioblitz2010:scientificName=\""+taxon+"\"";
 			sendImageFlickr(tag);
 		}
 
@@ -46,7 +47,8 @@ package com.vizzuality.dao
 			service.secret = FlickrAuthorizationSettings.flickrAPISecret;
 			service.token = FlickrAuthorizationSettings.authToken;
 			var uploader:Upload = new Upload(service);
-			uploader.upload(imageFile,taxon,"",tag);
+			uploader.upload(imageFile,taxon,"Image uploaded at TDWGBioBlitz 2010",tag);
+			
 		}
 		
 		
@@ -61,9 +63,9 @@ package com.vizzuality.dao
 		   	for each( var id:XML in xml..photoid ) {
 				 photoID = id;					
 			}
-			trace(photoID);
+			//trace(photoID);
 			setImageLocation(photoID,"file://" + escape(ev.currentTarget.nativePath.toString()));
-			trace(ev.currentTarget.nativePath.toString());
+			//trace(ev.currentTarget.nativePath.toString());
 		}
 		
 		
@@ -75,7 +77,7 @@ package com.vizzuality.dao
 		private function setImageLocation(photoID:String,path:String):void {
 			
 			var dao: DataAccessObject = new DataAccessObject();
-			var sqlSentence: String = "SELECT lat,lon,zoom FROM photos WHERE path = '"+path+"'";
+			var sqlSentence: String = "SELECT lat,lon FROM photos WHERE path = '"+path+"'";
 			dao.openConnection(sqlSentence);
 			imageData = dao.dbResult;
 
@@ -89,10 +91,6 @@ package com.vizzuality.dao
 	    		flickr.photos.setLocation(photoID,imageData[0].lat,imageData[0].lon,imageData[0].zoom);		
     		}	
     		Application.application.principalView.system.deleteImage(path,1);
-    		//use flag if uploading multiple images
-    		if (Application.application.uploadingAllPictures) {
-    			Application.application.principalView.system.getAllImages();
-    		}
 			DockIcon(NativeApplication.nativeApplication.icon).bounce();
 		}	
 		

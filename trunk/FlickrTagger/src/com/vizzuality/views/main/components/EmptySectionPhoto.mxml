@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="315" height="180">
 
-	<mx:Image id="emptyImage" source="@Embed('com/vizzuality/assets/emptySectionImage_photo.png')" verticalCenter="0" horizontalCenter="0" />
-	<mx:HBox horizontalGap="0" horizontalCenter="0" y="{emptyImage.y + emptyImage.height + 30}" verticalAlign="middle">
-		<mx:Label text="Drag here your photos" styleName="txtEmptySectionLabel"/>
-		<mx:Button label="select your files" styleName="btnEmptySection" useHandCursor="true" buttonMode="true"/>
+
+	<mx:Script>
+		<![CDATA[
+			private var addImage:Event = new Event("addImage");
+		]]>
+	</mx:Script>
+	
+
+	<mx:Metadata>
+	    [Event(name="addImage", type="flash.events.Event")]
+	</mx:Metadata>
+	
+	<mx:Image id="emptyImage" source="@Embed('com/vizzuality/assets/emptySectionImage_photo.png')" verticalCenter="-30" horizontalCenter="0" />
+	<mx:HBox horizontalGap="0" horizontalCenter="0" verticalAlign="middle" bottom="15">
+		<mx:Label text="Drag here your photos or " styleName="txtEmptySectionLabel" color="#454545"/>
+		<mx:Button label="select your files" styleName="btnEmptySection" useHandCursor="true" buttonMode="true" click="dispatchEvent(addImage)"/>
 	</mx:HBox>
 </mx:Canvas>

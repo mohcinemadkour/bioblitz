@@ -6,7 +6,6 @@
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	
-	import mx.containers.Canvas;
 	import mx.controls.Alert;
 	import mx.core.Application;
 	import mx.rpc.events.FaultEvent;
@@ -239,13 +238,21 @@
 	/************* Anonymous Loggin ***************/
 	
 	private function getAnonymousToken():void {
-		currentState = 'authorizationState';
-		pBar.label = "Loggin with TDWGBioBlitz account...";
-		var service: HTTPService = new HTTPService();
-		service.url = 'http://tdwgbioblitz.s3.amazonaws.com/vizzuality_token.txt';
-		service.addEventListener(ResultEvent.RESULT,onTokenResult);
-		service.addEventListener(FaultEvent.FAULT,onTokenFault);
-		service.send();
+		
+		if (textInput.text != "") {
+			FlickrAuthorizationSettings.accountName = textInput.text;
+			currentState = 'authorizationState';
+			pBar.label = "Loggin with TDWGBioBlitz account...";
+			var service: HTTPService = new HTTPService();
+			service.url = 'http://tdwgbioblitz.s3.amazonaws.com/vizzuality_token.txt';
+			service.addEventListener(ResultEvent.RESULT,onTokenResult);
+			service.addEventListener(FaultEvent.FAULT,onTokenFault);
+			service.send();
+		} else {
+			
+		}
+		
+		
 	}
 	
 	private function onTokenResult(event:ResultEvent):void {
