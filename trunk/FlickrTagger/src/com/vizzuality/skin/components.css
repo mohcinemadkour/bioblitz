@@ -113,7 +113,21 @@ VBox.auth {
 }
 	
 .photoGroupBkg {
- 	background-image:Embed(source="components_skin.swf", symbol="photoGroupBkg");
+ 	background-image:Embed(source="components_skin2.swf", symbol="photoGroupBkg");
+ 	background-size: '100%';
+}
+
+.photoBkg {
+ 	background-image:Embed(source="components_skin2.swf", symbol="photoBkg");
+ 	background-size: '100%';
+}
+
+.spinnerBkg {
+	background-color: #000000;
+	background-alpha: 0.6;
+	border-style: solid;
+	border-thickness: 0;
+	corner-radius: 5;
 }
 	
 
@@ -358,6 +372,22 @@ Label.txtSuggestedNamesShadow {
 	border-thickness: 1;
 	corner-radius: 5;
 	color: #b3c38e;
+	font-weight: normal;
+	font-size: 13;
+	padding-top: 5;
+	padding-left: 7;
+	padding-right: 7;
+	focus-alpha: 0;
+}
+
+.titlePhotoTxtInput {
+	background-color: #0d0d0d;
+	background-alpha: 1;
+	border-color: #4e6412;
+	border-style: solid;
+	border-thickness: 0;
+	corner-radius: 3;
+	color: #4c4c4c;
 	font-weight: normal;
 	font-size: 13;
 	padding-top: 5;

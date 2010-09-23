@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="225" height="200" color="#040404" creationComplete="{initRenderer()}" verticalScrollPolicy="off" 
-	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0" top="3">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="220" height="180" color="#040404" creationComplete="{initRenderer()}" verticalScrollPolicy="off" 
+	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0">
         
         <mx:Script>
                 <![CDATA[
@@ -32,7 +32,7 @@
                     
                     [Bindable]private var inputColor: uint;
                     [Bindable]private var path: String;
-                    [Bindable]private var canvasBkg: uint;
+                    [Bindable]private var canvasBkg: String;
                     [Bindable]private var enabling: Boolean;  
                     [Bindable]private var textButton: String; 
                     [Bindable]private var textInput: String;   
@@ -41,7 +41,7 @@
                     override public function set data(value:Object):void{
 
 						  if (value != null) {
-						  	 canvasBkg = (value.group_total!=undefined)?0xFF7700:0xFFFFFF;
+						  	 canvasBkg = (value.group_total!=undefined)?'photoGroupBkg':'photoBkg';
 						     path = value.path;
 						     if (value.scientific == null || value.scientific == "") {						
 						     	textInput = 'Not recognized';
@@ -163,20 +163,22 @@
         
                       
         
-        <mx:Canvas id="itemSpace" height="136" width="180" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" verticalCenter="0" backgroundColor="{canvasBkg}">
+        <mx:Canvas id="itemSpace" height="157" width="197" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" top="0"
+        	styleName="photoGroupBkg" backgroundSize="100%">
 			<components:CroppedImage pathImage="{path}" verticalCenter="0" horizontalCenter="0"/>
         </mx:Canvas>
-        <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="142" horizontalCenter="0"/>
-        <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName()" textAlign="center" width="180" 
-        	creationComplete="changeColorInput()" height="24" enter="changeTaxonomy()" fontFamily="Arial" fontSize="13" x="22" y="169" color="#BBBBBB" fontWeight="bold"/>
-		<mx:Button label="" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" visible="{enabling}" x="10" y="20" alpha="0" styleName="uploadGreenBtn"
+        <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0"/>
+        <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName()" textAlign="center" maxWidth="181" 
+        	creationComplete="changeColorInput()" height="24" enter="changeTaxonomy()" styleName="titlePhotoTxtInput" horizontalCenter="0" bottom="0"/>
+		<mx:Button label="" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" visible="{enabling}" x="10" y="0" alpha="0" styleName="uploadGreenBtn"
 			buttonMode="true" mouseChildren="false" useHandCursor="true"/>
-        <mx:Button label="" fontSize="10" click="eraseImage()" width="28" id="deleteButton" height="28" visible="{enabling}" x="189" y="20" alpha="0" styleName="deleteRedBtn"
+        <mx:Button label="" fontSize="10" click="eraseImage()" width="28" id="deleteButton" height="28" visible="{enabling}" x="180" y="0" alpha="0" styleName="deleteRedBtn"
         	buttonMode="true" mouseChildren="false" useHandCursor="true"/>  
         	
-        <mx:Canvas verticalCenter="3" horizontalCenter="0" width="130" height="100" visible="{!enabling}">
-        	<mx:SWFLoader source="/com/vizzuality/assets/loading.swf" y="20" id="swfloader1" horizontalCenter="0"/>
-			<mx:Label id="bar" text="Uploading" y="66" color="#f9f9f9" fontSize="13" height="23" horizontalCenter="0" fontWeight="bold" fontFamily="Arial"/>
+        <mx:Canvas verticalCenter="0" horizontalCenter="0" width="86" height="86" visible="{!enabling}" styleName="spinnerBkg" horizontalScrollPolicy="off" 
+        	verticalScrollPolicy="off">
+        	<mx:SWFLoader source="/com/vizzuality/assets/loading.swf" y="15" id="swfloader1" horizontalCenter="0"/>
+			<mx:Label id="bar" text="Uploading" y="55" color="#f9f9f9" fontSize="13" height="23" horizontalCenter="0" fontWeight="bold" fontFamily="Arial"/>
         </mx:Canvas>        	
         	
         

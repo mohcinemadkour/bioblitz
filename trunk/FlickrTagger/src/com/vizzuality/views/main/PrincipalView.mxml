@@ -17,20 +17,18 @@
 				</mx:AddChild>
 			</mx:State>
 		</mx:states>
-	
-
 		
-      	<mx:VBox height="100%" width="100%" verticalGap="0" id="vbox1">
+      	<mx:VBox height="100%" width="100%" verticalGap="0" id="vbox1" horizontalAlign="center">
 	        <mx:HBox height="70" width="100%" horizontalAlign="center" verticalAlign="bottom" horizontalGap="0" horizontalCenter="0">
-        		<mx:Button width="162" height="70" styleName="sectionUpBtnPhoto" click="currentState=''"
+        		<mx:Button width="172" height="70" styleName="sectionUpBtnPhoto" click="currentState=''"
         			useHandCursor="true" buttonMode="true"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#111111"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#3c3c3c"/>
-        		<mx:Button width="162" height="70" styleName="sectionUpBtnGpx" click="currentState='Gpx'"
+        		<mx:Button width="172" height="70" styleName="sectionUpBtnGpx" click="currentState='Gpx'"
         			useHandCursor="true" buttonMode="true"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#111111"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#3c3c3c"/>
-        		<mx:Button width="162" height="70" styleName="sectionUpBtnHelp" click="currentState='Help'"
+        		<mx:Button width="172" height="70" styleName="sectionUpBtnHelp" click="currentState='Help'"
         			useHandCursor="true" buttonMode="true"/>
 	        </mx:HBox>
 	       	<main:ImagesContainer id="imagesState" label="Search" width="100%" height="100%"/>
