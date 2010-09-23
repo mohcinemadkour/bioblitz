@@ -77,18 +77,24 @@
                 </mx:State>
         </mx:states>
 		
-		<mx:DropShadowFilter id="bkgAuthOptionShadow" alpha="0.5" color="#000000" distance="3" blurX="5" blurY="5" angle="95" />         
-    
+		<mx:DropShadowFilter id="bkgAuthOptionShadow" alpha="0.3" color="#000000" distance="8" blurX="5" blurY="5" angle="90" />         
+		<mx:DropShadowFilter id="headerShadowFilter" alpha="0.2" color="#000000" distance="8" blurX="5" blurY="5" angle="90" knockout="true" hideObject="true"/>         
+
+		<mx:Canvas width="100%" height="100%" backgroundColor="#202020" backgroundAlpha="0.8" top="109">
+			<mx:Image source="@Embed('com/vizzuality/assets/illustration.png')" horizontalCenter="0"/>
+		</mx:Canvas>
+    	
+    	<mx:Canvas top="0" width="100%" height="109" backgroundAlpha="1" backgroundColor="#ffffff" filters="{[headerShadowFilter]}" borderStyle="solid" borderThickness="0"/>
 		<mx:Image source="@Embed('com/vizzuality/assets/logo.png')" top="28" horizontalCenter="0"/>
         
-        <mx:Canvas  top="109" left="0" styleName="authBkg" width="100%" height="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
-			<mx:VBox top="53" width="100%" paddingLeft="38" horizontalScrollPolicy="off" verticalScrollPolicy="off" verticalGap="0">
+        <mx:Canvas  top="109" left="0" width="100%" height="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			<mx:VBox top="53"  paddingLeft="19" horizontalScrollPolicy="off" verticalScrollPolicy="off" verticalGap="0" horizontalCenter="0">
 				<mx:Text width="423" id="text1" text="Flickrtagger allows you to georeference, tag and upload your photos biodiversity photos to flickr." styleName="authText"/>
 				<mx:Text width="423" id="text2" paddingTop="19" text="For it, you only need to syncronize your camera clock with your GPS device." styleName="authText"/>
 				<mx:Text width="423" id="text3" paddingTop="68" text="Do you have a Flickr account?" styleName="authQuestion"/>
 			</mx:VBox>	
 
-        	<mx:VBox id="option1" y="263" left="38" styleName="bkgAuthOption" backgroundSize="100%" width="417" height="84" paddingLeft="11" paddingRight="13" paddingTop="8" paddingBottom="14"
+        	<mx:VBox id="option1" y="263" horizontalCenter="0" styleName="bkgAuthOption" backgroundSize="100%" width="417" height="84" paddingLeft="11" paddingRight="13" paddingTop="8" paddingBottom="14"
         		verticalScrollPolicy="off" horizontalScrollPolicy="off" filters="{[bkgAuthOptionShadow]}">
 				<mx:HBox horizontalGap="2" verticalAlign="middle" height="100%">
 					<mx:RadioButton id="radioOption1" selected="true" click="toggleOptions('option1')" styleName="authOptionRadio"/>
@@ -103,7 +109,7 @@
 				</mx:Canvas>
 			</mx:VBox>
 			
-			<mx:VBox id="option2" y="349" left="38" width="417" height="106" backgroundSize="100%" paddingLeft="11" paddingRight="13" paddingTop="8" paddingBottom="14">
+			<mx:VBox id="option2" y="349" horizontalCenter="0" width="417" height="106" backgroundSize="100%" paddingLeft="11" paddingRight="13" paddingTop="8" paddingBottom="14">
 				<mx:HBox width="100%" height="100%" horizontalGap="2">
 					<mx:RadioButton id="radioOption2" selected="false" click="toggleOptions('option2')" styleName="authOptionRadio"
 						useHandCursor="true" buttonMode="true"/>
@@ -121,6 +127,6 @@
 			</mx:VBox>
         </mx:Canvas>
 
-		<mx:Image source="@Embed('com/vizzuality/assets/shadow.png')" top="109"/>
+		<!--<mx:Image source="@Embed('com/vizzuality/assets/shadow.png')" top="109"/>-->
 
 </mx:Canvas>

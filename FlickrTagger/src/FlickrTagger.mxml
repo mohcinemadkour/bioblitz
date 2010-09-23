@@ -76,7 +76,7 @@
 			<mx:AddChild>
 				<auth:AuthorizationView id="authorization" />
 			</mx:AddChild>
-			<mx:SetStyle name="backgroundColor" value="#2E2E2E"/>
+			<!--<mx:SetStyle name="backgroundColor" value="#2E2E2E"/>-->
 		</mx:State>
 	</mx:states>
 </mx:WindowedApplication>
