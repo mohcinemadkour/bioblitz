@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="140" height="76" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+	<mx:Image source="@Embed('/com/vizzuality/assets/errorName.png')"/>
+	<mx:Canvas  left="0" top="0" right="0" bottom="0">
+		<mx:Text selectable="false" text="You must enter your name" styleName="txtRetry" color="#333333" width="108" y="29" x="15"/>
+		<mx:Text selectable="false" text="You must enter your name" styleName="txtRetry" width="108" x="15" y="28"/>
+	</mx:Canvas>
+</mx:Canvas>

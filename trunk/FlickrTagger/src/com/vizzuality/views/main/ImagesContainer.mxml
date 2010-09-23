@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="com.vizzuality.components.*" creationComplete="onCreationComplete()" backgroundColor="#4a4a4a" 
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="com.vizzuality.components.*" creationComplete="onCreationComplete()" 
 	xmlns:components="com.vizzuality.views.main.components.*" xmlns:display="flash.display.*" xmlns:filters="flash.filters.*">
 	<mx:states>
 		<mx:State name="imagesAdded">
 			<mx:RemoveChild target="{emptySelectionPhoto}"/>
 			<mx:SetProperty target="{label1}" name="text">
-				<mx:value>Drag or select multiple photos (shift+click) or (ctrl/cmd+click) to create groups</mx:value>
+				<mx:value>Drag or select multiple photos (shift+click) to create groups</mx:value>
 			</mx:SetProperty>
 			<mx:SetProperty target="{label2}" name="text">
-				<mx:value>Drag or select multiple photos (shift+click) or (ctrl/cmd+click) to create groups</mx:value>
+				<mx:value>Drag or select multiple photos (shift+click) to create groups</mx:value>
 			</mx:SetProperty>
+			<mx:AddChild relativeTo="{headerHBox}" position="lastChild">
+				<mx:Button label="ADD PHOTO" click="selectImageFile(fileToOpen)"/>
+			</mx:AddChild>
 		</mx:State>
 		<mx:State name="multipleSelection">
 			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpYellowBkg"/>
@@ -100,7 +103,7 @@
 		 	}
 
 		 			 
-		 			 	
+		 	/* Delete operations */	 	
 		 	
 		 	public function deleteImage(path:String,num:int):void {
 	 			var file:File = new File;
@@ -112,19 +115,54 @@
 		 			file.url= path;
 	 			}
 	 			file.deleteFile();
-	 			//uploadedImage = true;
 	 			
-	 			//search index item in ArrayCollection
 	 			for (var i:int=0;i<sqlArray.length;i++) {
  					if (file.url==sqlArray[i].path)
  						break;
 	 			}
-	 			
-	 			//lines for reusing Tilelist!! and delete path reference to Dicciontary
-	 			//delete Application.application.croppedImagesDictionary[file.url];
+
 	 			tilelist.indexToItemRenderer(i).data=null;
 	 			sqlArray.removeItemAt(i);
 	 			chooseState();
+		 	}
+		 	
+		 	
+		 	public function deleteGroupImages(group_id:String):void {
+		 		dao.openConnection("SELECT path FROM photos WHERE group_id = '"+group_id+"'");
+		 		var result:ArrayCollection = dao.dbResult;
+		 		for (var i:int=0; i<result.length; i++) {
+		 			var file:File = new File;
+		 			file.url= result[i].path;
+		 			file.deleteFile();
+		 		}
+		 		dao.openConnection("DELETE FROM photos WHERE group_id = '"+group_id+"'");
+		 		deleteGroup(group_id);
+		 	}
+		 	
+		 	
+		 	public function deleteGroup(group_id:String):void {
+	 			for (var i:int=0;i<sqlArray.length;i++) {
+ 					if (group_id==sqlArray[i].id && sqlArray[i].group_total!=undefined)
+ 						break;
+ 					
+	 			}
+	 			dao.openConnection("DELETE FROM groups WHERE id='"+ group_id +"'");
+	 			tilelist.indexToItemRenderer(i).data=null;
+	 			sqlArray.removeItemAt(i);
+	 			chooseState();
+		 	}
+		 	
+		 	
+		 	public function deleteImagefromGroup(path:String,num:int):void {
+		 		var file:File = new File;
+	 			if (num==0) {
+		 			dao.openConnection("DELETE FROM photos WHERE path='"+ "file://" + escape(path) +"'");
+		 			file.url= "file://" + path;
+	 			} else {
+	 				dao.openConnection("DELETE FROM photos WHERE path='"+ path +"'");
+		 			file.url= path;
+	 			}
+	 			file.deleteFile();
 		 	}
 		 	
 		 	
@@ -365,12 +403,12 @@
 	</mx:Script>
 	<mx:DropShadowFilter id="headerShadow" alpha="0.3" color="#000000" angle="90" blurY="10" distance="8"/>
 	
-	<mx:Canvas width="100%" height="100%" backgroundColor="#202020" backgroundAlpha="0.7" top="37"/>
+	<mx:Canvas width="100%" height="100%" top="37"/>
 	
 	<mx:VBox width="100%" height="100%" verticalGap="0" horizontalAlign="center">
 		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%" id="canvas1">
 			<mx:HBox horizontalCenter="0" verticalCenter="0" id="headerHBox">
-				<mx:Canvas >
+				<mx:Canvas  id="canvas2">
 	    			<mx:Label text="Add some photos to FlickrTagger" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" horizontalCenter="0" id="label2"/>
 	    			<mx:Label text="Add some photos to FlickrTagger" x="10" verticalCenter="0" styleName="txtInfoUp" horizontalCenter="0" id="label1"/>
 				</mx:Canvas>
@@ -380,7 +418,7 @@
 	    <mx:Spacer height="10"/>
 		<comp:TileListFlickTagger backgroundAlpha="0" selectionColor="#4a4a4a" selectionDisabledColor="#4a4a4a" rollOverColor="#4a4a4a" id="tilelist"  dataProvider="{sqlArray}"
 				itemRenderer="com.vizzuality.views.main.components.ImageRenderer" minWidth="440" width="80%" height="100%" borderThickness="0" itemClick="checkMultipleSelection(event)"
-				allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true" styleName="imagesContent" backgroundSize="100%"/>					
+				allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true" styleName="imagesContent"/>					
 	</mx:VBox>
 	
 	<components:EmptySectionPhoto  horizontalCenter="0" verticalCenter="0" width="315" height="180" visible="true" id="emptySelectionPhoto" addImage="selectImageFile(fileToOpen)"/>

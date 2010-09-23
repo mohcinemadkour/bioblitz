@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-	height="100" width="130" borderStyle="solid" borderThickness="0" cornerRadius="10" horizontalScrollPolicy="off" verticalScrollPolicy="off"
-	backgroundColor="#000000" backgroundAlpha="0.2" themeColor="#000000" borderColor="#000000" creationComplete="onCreationComplete()">
+	height="175" width="150" borderStyle="solid" borderThickness="0" cornerRadius="0" horizontalScrollPolicy="off" verticalScrollPolicy="off"
+	backgroundAlpha="0" creationComplete="onCreationComplete()">
 	
 	<mx:states>
 		<mx:State name="httpError">
@@ -17,7 +17,6 @@
 			</mx:AddChild>
 			<mx:SetProperty name="width" value="310"/>
 			<mx:SetProperty name="height" value="70"/>
-			<mx:RemoveChild target="{swfloader1}"/>
 		</mx:State>
 	</mx:states>
 		
@@ -135,6 +134,6 @@
 		    [Event(name="onGetTokenOK", type="com.vizzuality.event.GetTokenEvent")]
 		    [Event(name="onGetTokenKO", type="com.vizzuality.event.GetTokenEvent")]
 	</mx:Metadata>
-	<mx:SWFLoader source="/com/vizzuality/assets/loading.swf" y="20" id="swfloader1" horizontalCenter="0"/>
-	<mx:Label id="bar" text="Checking..." y="66" color="#f9f9f9" fontSize="13" height="23" horizontalCenter="0" fontWeight="bold" fontFamily="Arial"/>
+	<mx:Image source="@Embed('com/vizzuality/assets/loading.png')" horizontalCenter="0" y="10" id="loading_image"/>
+	<mx:Label id="bar" text="Starting engines..." y="142" color="#454545" fontSize="15" height="23" horizontalCenter="0" fontWeight="bold" fontFamily="Arial"/>
 </mx:Canvas>

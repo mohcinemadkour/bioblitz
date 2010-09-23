@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" backgroundAlpha="0" width="100%" height="100%"
 	xmlns:main="com.vizzuality.views.main.*" xmlns:components="com.vizzuality.views.main.components.*" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		
 		<mx:states>
 			<mx:State name="Gpx">
 				<mx:RemoveChild target="{imagesState}"/>
 				<mx:AddChild relativeTo="{vbox1}" position="lastChild">
-					<main:GPXContainer>
-					</main:GPXContainer>
+					<main:GPXContainer/>
 				</mx:AddChild>
+				<mx:SetProperty target="{button1}" name="styleName" value="sectionUpBtnPhoto"/>
+				<mx:SetProperty target="{button2}" name="styleName" value="selectedBtnGpx"/>
+				<mx:SetStyle target="{image1}" name="horizontalCenter" value="-60"/>
 			</mx:State>
 			<mx:State name="Help">
 				<mx:RemoveChild target="{imagesState}"/>
@@ -15,27 +18,59 @@
 					<main:HelpContainer>
 					</main:HelpContainer>
 				</mx:AddChild>
+				<mx:SetProperty target="{button1}" name="styleName" value="sectionUpBtnPhoto"/>
+				<mx:SetProperty target="{button3}" name="styleName" value="selectedBtnHelp"/>
+				<mx:SetStyle target="{image1}" name="horizontalCenter" value="60"/>
+				<mx:SetProperty target="{image1}" name="source" value="@Embed('com/vizzuality/assets/grey_arrow.png')"/>
 			</mx:State>
 		</mx:states>
 		
+		
+		<mx:Script>
+			<![CDATA[
+				import mx.core.Application;
+				import com.vizzuality.dao.DataAccessObject;
+				
+				private function deleteAccount():void {
+					var images:File = File.applicationStorageDirectory.resolvePath("images");
+					var database:File = File.applicationStorageDirectory.resolvePath("DBV.db");
+					images.deleteDirectory(true);
+					database.deleteFile();
+					if (Application.application.authorization!=null) {
+						Application.application.authorization.currentState = "";
+					}
+					var dao: DataAccessObject = new DataAccessObject();
+					dao.createTables();
+					Application.application.currentState = "authorizationFlickr";
+				}
+				
+			]]>
+		</mx:Script>
+		
       	<mx:VBox height="100%" width="100%" verticalGap="0" id="vbox1" horizontalAlign="center">
 	        <mx:HBox height="70" width="100%" horizontalAlign="center" verticalAlign="bottom" horizontalGap="0" horizontalCenter="0">
-        		<mx:Button width="172" height="70" styleName="sectionUpBtnPhoto" click="currentState=''"
-        			useHandCursor="true" buttonMode="true"/>
+        		<mx:Button width="120" height="70" styleName="selectedBtnPhoto" click="currentState=''"
+        			useHandCursor="true" buttonMode="true" id="button1"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#111111"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#3c3c3c"/>
-        		<mx:Button width="172" height="70" styleName="sectionUpBtnGpx" click="currentState='Gpx'"
-        			useHandCursor="true" buttonMode="true"/>
+        		<mx:Button width="120" height="70" styleName="sectionUpBtnGpx" click="currentState='Gpx'"
+        			useHandCursor="true" buttonMode="true" id="button2"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#111111"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#3c3c3c"/>
-        		<mx:Button width="172" height="70" styleName="sectionUpBtnHelp" click="currentState='Help'"
-        			useHandCursor="true" buttonMode="true"/>
+        		<mx:Button width="120" height="70" styleName="sectionUpBtnHelp" click="currentState='Help'"
+        			useHandCursor="true" buttonMode="true" id="button3"/>
+        		<mx:VRule strokeWidth="1" height="70" strokeColor="#111111"/>
+        		<mx:VRule strokeWidth="1" height="70" strokeColor="#3c3c3c"/>
+        		<mx:Button width="120" height="70" styleName="" label="logout" click="logOut.visible=true"
+        			useHandCursor="true" buttonMode="true" id="button4"/>
 	        </mx:HBox>
 	       	<main:ImagesContainer id="imagesState" label="Search" width="100%" height="100%"/>
-     	</mx:VBox>  
+     	</mx:VBox>
+     	<components:LogOutAlert horizontalCenter="130" top="77" visible="false" goLogOut="deleteAccount()" closeLogOut="{logOut.visible=false}" id="logOut"/>
+     	<mx:Image source="@Embed('com/vizzuality/assets/orange_arrow.png')" horizontalCenter="-182" top="57" id="image1"/>
 </mx:Canvas>
 
 
-	        <!--<components:SuggestedPhotoNamesTooltip />-->
+<!--<components:SuggestedPhotoNamesTooltip />-->
 	        
 
