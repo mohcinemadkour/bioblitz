@@ -1,5 +1,106 @@
 var chart;
+var main_chart;
+var map;
+
 $(document).ready(function() {
+	
+		$(".move_box").resizable({
+			maxHeight: 104,
+			maxWidth: 756,
+			minHeight: 104,
+			minWidth: 1,
+			handles: 'w',
+			stop: function(event,ui) {
+				console.log(event);
+				console.log(ui);
+			}
+		});
+		
+		
+		
+		main_chart = new Highcharts.Chart({
+				chart: {
+				         renderTo: 'main_chart',
+				         defaultSeriesType: 'line',
+				         margin: [20,7,15,7],
+								 backgroundColor: 'none'
+				      },
+				      title: {
+				         text: ''
+				      },
+							plotOptions: {line: {pointStart: 0}},
+				      xAxis: {
+				         categories: ['0', '1', '2', '3', '4', '5', 
+				            '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
+				      },
+				      yAxis: {gridLineWidth:0},
+							credits: {enabled: false},
+				      tooltip: {enabled: false},
+				      legend: {enabled: false},
+				      series: [{
+				         name: 'Tokyo',
+				         data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6, 12, 14,14,14,15,16,17,18,1,1,1,1]
+				      }, {
+				         name: 'New York',
+				         data: [2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5, 12, 14,14,14,15,16,17,18,1,1,1,1]
+				      }, {
+				         name: 'Berlin',
+				         data: [1, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0, 12, 14,14,14,15,16,17,18,38,1,1,1]
+				      }, {
+				         name: 'London',
+				         data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8, 12, 14,14,14,15,16,17,18,1,1,1,1]
+				      }]
+				   });
+		
+		
+	
+	  var body_height = $(document).height();
+  	$('#map').css('height',body_height+'px');
+	  
+		var stylez = [
+		  {
+		    featureType: "road.arterial",
+		    elementType: "all",
+		    stylers: [
+		      { visibility: "off" }
+		    ]
+		  },{
+		    featureType: "water",
+		    elementType: "all",
+		    stylers: [
+		      { hue: "#0091ff" }
+		    ]
+		  },{
+		    featureType: "all",
+		    elementType: "all",
+		    stylers: [
+
+		    ]
+		  }
+		];
+		
+	
+		var mapOptions = {
+		   zoom: 14,
+		   center: new google.maps.LatLng(41.48195222338898, -70.66639090629883),
+		
+		   mapTypeControlOptions: {
+		      mapTypeIds: [google.maps.MapTypeId.TERRAIN, 'vizzuality']
+		   },
+			disableDefaultUI: true,
+			scrollwheel: false
+		 };
+
+		 map = new google.maps.Map(document.getElementById("map"),mapOptions);
+		 var styledMapOptions = {name: "Vizzuality"}
+		 var jayzMapType = new google.maps.StyledMapType(stylez, styledMapOptions);
+
+		 map.mapTypes.set('vizzuality', jayzMapType);
+		 map.setMapTypeId('vizzuality');
+		
+			
+		 
+	
 	
 		
    chart = new Highcharts.Chart({
@@ -87,88 +188,6 @@ $(document).ready(function() {
       }]
    });
 
-
-
-	var po = org.polymaps;
-	var body_height = $(document).height();
-	console.log(body_height);
-	$('#map').css('height',body_height+'px');
-	console.log($('#map').height());
-	var map = po.map()
-	    .container(document.getElementById("map").appendChild(po.svg("svg")))
-	    .center({lat: 37.787, lon: -122.228})
-	    .zoom(14)
-	    .zoomRange([12, 16])
-	    .add(po.interact());
-
-	map.add(po.image()
-	    .url(po.url("http://{S}tile.cloudmade.com"
-	    + "/67d9477354af439c8973454d7cf3aa58" // http://cloudmade.com/register
-	    + "/20760/256/{Z}/{X}/{Y}.png")
-	    .hosts(["a.", "b.", "c.", ""])));
-
-	map.add(po.geoJson()
-	    .url(crimespotting("http://oakland.crimespotting.org"
-	        + "/crime-data"
-	        + "?count=1000"
-	        + "&format=json"
-	        + "&bbox={B}"
-	        + "&dstart=2010-04-01"
-	        + "&dend=2010-05-01"))
-	    .on("load", load)
-	    .clip(false)
-	    .zoom(14));
-
-	map.add(po.compass()
-	    .pan("none"));
-
-	function crimespotting(template) {
-	  return function(c) {
-	    var max = 1 << c.zoom, column = c.column % max;
-	    if (column < 0) column += max;
-	    return template.replace(/{(.)}/g, function(s, v) {
-	      switch (v) {
-	        case "B": {
-	          var nw = map.coordinateLocation({row: c.row, column: column, zoom: c.zoom}),
-	              se = map.coordinateLocation({row: c.row + 1, column: column + 1, zoom: c.zoom}),
-	              pn = Math.ceil(Math.log(c.zoom) / Math.LN2);
-	          return nw.lon.toFixed(pn)
-	              + "," + se.lat.toFixed(pn)
-	              + "," + se.lon.toFixed(pn)
-	              + "," + nw.lat.toFixed(pn);
-	        }
-	      }
-	      return v;
-	    });
-	  };
-	}
-
-	function load(e) {
-		
-	  var cluster = e.tile.cluster || (e.tile.cluster = kmeans()
-	      .iterations(16)
-	      .size(64));
-
-	  for (var i = 0; i < e.features.length; i++) {
-	    var feature = e.features[i];
-	    cluster.add({
-	      x: Number(feature.element.getAttribute("cx")),
-	      y: Number(feature.element.getAttribute("cy"))
-	    });
-	  }
-
-	  var tile = e.tile, g = tile.element;
-	  while (g.lastChild) g.removeChild(g.lastChild);
-
-	  var means = cluster.means();
-	  means.sort(function(a, b) { return b.size - a.size; });
-	  for (var i = 0; i < means.length; i++) {
-	    var mean = means[i], point = g.appendChild(po.svg("circle"));
-	    point.setAttribute("cx", mean.x);
-	    point.setAttribute("cy", mean.y);
-	    point.setAttribute("r", Math.pow(2, tile.zoom - 11) * Math.sqrt(mean.size));
-	  }
-	}
 
    
    
