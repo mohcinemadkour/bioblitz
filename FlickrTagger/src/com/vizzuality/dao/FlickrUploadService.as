@@ -19,33 +19,48 @@ package com.vizzuality.dao
 		
 		private var imageData : ArrayCollection;
 		private var taxon : String;
-		private var dir : String;
-		private var arrayImages: Array = new Array();
-		private var tag:String = "";
+		private var arrayImages: ArrayCollection = new ArrayCollection();
+		private var group_id: String;
+		private var modeUpload: int = 0;
 		
 		
 		public function FlickrUploadService() {}
 		
 		
 		public function resolveTagsFlickr(path:String,name:String):void {
+			modeUpload = 0;
 			taxon = name;
-			dir = path;
-			tag = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
+			var tag:String = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
 			tag = tag + ",bioblitz2010:scientificName=\""+taxon+"\"";
-			sendImageFlickr(tag);
+			sendImageFlickr(tag, path);
 		}
 		
 		
-		public function resolveGroupTagsFlickr(path:String,name:String):void {
+		public function resolveGroupTagsFlickr(group_id_:String,name:String):void {
+			modeUpload = 1;
+			group_id = group_id_;
 			taxon = name;
-			dir = path;
-			tag = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
-			tag = tag + ",bioblitz2010:scientificName=\""+taxon+"\"";
-			sendImageFlickr(tag);
+			var dao: DataAccessObject = new DataAccessObject();
+			var sqlSentence: String = "SELECT path FROM photos WHERE group_id = '"+group_id_+"'";
+			dao.openConnection(sqlSentence);
+			arrayImages = dao.dbResult;
+			nextImageFromGroup();
+		}
+		
+		
+		private function nextImageFromGroup():void {
+			if (arrayImages.length==0) {
+				Application.application.principalView.imagesState.deleteGroup(group_id);
+			} else {
+				var tag:String = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
+				tag = tag + ",bioblitz2010:scientificName=\""+taxon+"\"";
+				sendImageFlickr(tag, arrayImages[0].path);
+				arrayImages.removeItemAt(0);
+			}
 		}
 
 
-		private function sendImageFlickr(tag: String):void {	
+		private function sendImageFlickr(tag: String, dir:String):void {	
 			var imageFile:File= new File();
 			imageFile.url=dir;
 			imageFile.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA,onResult);
@@ -95,8 +110,13 @@ package com.vizzuality.dao
 	    		flickr.addEventListener(FlickrResultEvent.SET_LOCATION_RESULT,onFlickrSetLocationResult);
 	    		flickr.photos.setLocation(photoID,imageData[0].lat,imageData[0].lon,imageData[0].zoom);		
     		}
-
-    		Application.application.principalView.imagesState.deleteImage(path,1);
+			
+			if (modeUpload==1) {
+				Application.application.principalView.imagesState.deleteImagefromGroup(path,1);
+				nextImageFromGroup();
+			} else {
+    			Application.application.principalView.imagesState.deleteImage(path,1);
+			}
 			DockIcon(NativeApplication.nativeApplication.icon).bounce();
 		}	
 		

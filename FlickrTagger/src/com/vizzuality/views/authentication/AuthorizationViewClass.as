@@ -14,7 +14,9 @@
 	
 	
 	/************ Panel State Constants ****************/
-	
+	[Bindable]private var stageWidth:int;
+	[Bindable]private var stageHeight:int;
+
 	//initial state
 	private static const START_STATE:String = "";
 	
@@ -50,7 +52,6 @@
 	public var flickrAPISecret:String = FlickrAuthorizationSettings.flickrAPISecret;
 	private var timer: Timer;
 	
-	
 
 	private function onCancelClick():void {
 	        closeWindow();
@@ -74,7 +75,6 @@
         flickr.addEventListener(FlickrResultEvent.AUTH_GET_FROB, onGetFrob);
         
         flickr.auth.getFrob();                          
-        pBar.label = "Retrieving Frob from Flickr";
 	}
 	
 	
@@ -121,7 +121,6 @@
 
 	private function onGetTokenClick():void {
 	        currentState = AUTHORIZATION_STATE;
-	        pBar.label = "Retrieving Application Token from Flickr";
 	        flickr.addEventListener(FlickrResultEvent.AUTH_GET_TOKEN, onGetToken);
 	        flickr.auth.getToken(frob);
 	}
@@ -239,17 +238,17 @@
 	
 	private function getAnonymousToken():void {
 		
-		if (textInput.text != "") {
+		if (textInput.text != "" && textInput.text != "Insert your name") {
+			errorUser.visible = false;
 			FlickrAuthorizationSettings.accountName = textInput.text;
 			currentState = 'authorizationState';
-			pBar.label = "Loggin with TDWGBioBlitz account...";
 			var service: HTTPService = new HTTPService();
 			service.url = 'http://tdwgbioblitz.s3.amazonaws.com/vizzuality_token.txt';
 			service.addEventListener(ResultEvent.RESULT,onTokenResult);
 			service.addEventListener(FaultEvent.FAULT,onTokenFault);
 			service.send();
 		} else {
-			
+			errorUser.visible = true;
 		}
 		
 		

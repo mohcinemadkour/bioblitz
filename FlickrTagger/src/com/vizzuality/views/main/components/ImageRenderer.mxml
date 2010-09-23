@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="220" height="180" color="#040404" creationComplete="{initRenderer()}" verticalScrollPolicy="off" 
-	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0">
+	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0" xmlns:components1="com.vizzuality.views.main.components.*">
         
         <mx:Script>
                 <![CDATA[
+                	import mx.effects.easing.Back;
                 	import mx.core.IUIComponent;
                 	import mx.core.DragSource;
                 	import mx.core.UIComponent;
@@ -33,9 +34,11 @@
                     [Bindable]private var inputColor: uint;
                     [Bindable]private var path: String;
                     [Bindable]private var canvasBkg: String;
-                    [Bindable]private var enabling: Boolean;  
+                    [Bindable]private var uploading: Boolean;  
                     [Bindable]private var textButton: String; 
-                    [Bindable]private var textInput: String;   
+                    [Bindable]private var textInput: String;  
+                    [Bindable]private var shadowVisible: Boolean;
+                    [Bindable]private var backgroundInputAlpha: int;
                                   
                     
                     override public function set data(value:Object):void{
@@ -43,21 +46,25 @@
 						  if (value != null) {
 						  	 canvasBkg = (value.group_total!=undefined)?'photoGroupBkg':'photoBkg';
 						     path = value.path;
+						     //If there is scientific name
+						     uploading = (value.uploading==undefined)?false:value.uploading;
+						     backgroundInputAlpha = 0;						     	
+						     
+						     //If there is scientific name
 						     if (value.scientific == null || value.scientific == "") {						
 						     	textInput = 'Not recognized';
-						     	inputColor = 0x000000;
+						     	inputColor = 0x050505;
+						     	shadowVisible = true;
 						     } else {
 						     	textInput = value.scientific;
 						     	inputColor = 0xBBBBBB;
+						     	shadowVisible = false;	
 						     }
-						     enabling = true;	
-						  	 textButton = "Upload to Flickr";	
 						  } else {
 						  	 inputColor = 0xf65951;
 						  	 textInput = "";
 						  	 path = ""; 
-						  	 enabling = true;
-						  	 textButton = "Upload to Flickr";						     
+						  	 uploading = false;
 						  }
 						  super.data = value;
 					}
@@ -87,6 +94,15 @@
                             inputColor = 0xBBBBBB;
                         }
                     }
+                    
+                    
+                    private function onFocusOutInput():void {
+                    	scientificNameInput.setStyle('backgroundAlpha','0');
+                    	if (scientificNameInput.text=='') {
+                    		scientificNameInput.text="Not recognized";
+                    	}
+                    }
+                    
                     
                     private function updateSelected(event:ListEvent):void {
 						var selected:Boolean = false;
@@ -118,45 +134,55 @@
                     }
                     
                     private function uploadImage():void {
-                        enabling = false;
-                        var upFlick: FlickrUploadService = new FlickrUploadService();
-                        upFlick.resolveTagsFlickr(data.path,scientificNameInput.text);
+                        uploading = true;
+                        this.data.uploading = true;
+                        scientificNameInput.setStyle('backgroundAlpha','1');
+                        var upFlickr: FlickrUploadService = new FlickrUploadService();
+                        if (this.data.group_total == undefined) {
+                        	upFlickr.resolveTagsFlickr(data.path,scientificNameInput.text);
+                        } else {
+                        	upFlickr.resolveGroupTagsFlickr(this.data.id,scientificNameInput.text);
+                        }
                     }
+   
                     
-                    private function eraseImage():void {
-                            (this.parentDocument as ImagesContainer).deleteImage(data.path,1);
-                    }       
-                    
-                   /*  private function overImage():void {
-                            canvas2.setStyle("backgroundAlpha","0.6");
-                            canvas2.setStyle("backgroundColor","#000000");
-                    }
-                    private function outImage():void {
-                            canvas2.setStyle("backgroundAlpha","0");
-                    }      */  
-                    
+
                     
                     private function changeScientificName():void {
-                            if (textInput == "Not recognized") {
-                                    textInput = "";
-                            }
+                        scientificNameInput.setStyle('backgroundAlpha','1');
+                        if (scientificNameInput.text == "Not recognized") {
+                                scientificNameInput.text = "";
+                        }
                     }
                     
-                    private function changeTaxonomy():void {
-                            /*if (textInput == "" || textInput == "Not recognized") {
-                                    Alert.show("Tag this image first!","Error taxonoming!!!¿?");
-                            }  else {
-                                    (this.parentDocument as ImagesContainer).openTaxonomyPanel(data.path,scientificNameInput.text);
-                            } */
+                    
+                    
+                    /* Delete images functions */
+                    
+                    private function eraseImage():void {
+                    	if (this.data.group_total==undefined) {
+                            (this.parentDocument as ImagesContainer).deleteImage(data.path,1);
+                    	} else {
+                    		(this.parentDocument as ImagesContainer).deleteGroupImages(this.data.id);
+                    	}
+                    }                       
+                    
+                    
+                    private function onDeleteButton():void {
+                    	scientificNameInput.enabled = false;
+                    	deleteButton.visible = false;
+                    	flickrButton.visible = false;
+                    	deleteConfirmation.visible = true;
                     }
                     
-                    private function onClickImage(ev:MouseEvent):void {
-		                popUpImage.source = data.path;
-		                PopUpManager.addPopUp(popUpImage,this, true);
-		                
-		            }
-		           
-		            
+                    
+                    private function onCancelDelete():void {
+                    	scientificNameInput.enabled = true;
+                    	deleteButton.visible = true;
+                    	flickrButton.visible = true;
+                    	deleteConfirmation.visible = false;
+                    }
+                    
 		            
                 ]]>
         </mx:Script>
@@ -164,22 +190,27 @@
                       
         
         <mx:Canvas id="itemSpace" height="157" width="197" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" top="0"
-        	styleName="photoGroupBkg" backgroundSize="100%">
+        	styleName="{canvasBkg}" backgroundSize="100%">
 			<components:CroppedImage pathImage="{path}" verticalCenter="0" horizontalCenter="0"/>
         </mx:Canvas>
-        <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0"/>
-        <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName()" textAlign="center" maxWidth="181" 
-        	creationComplete="changeColorInput()" height="24" enter="changeTaxonomy()" styleName="titlePhotoTxtInput" horizontalCenter="0" bottom="0"/>
-		<mx:Button label="" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" visible="{enabling}" x="10" y="0" alpha="0" styleName="uploadGreenBtn"
+        <!--<mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0"/>-->
+        <mx:Label text="Not recognized" horizontalCenter="0" bottom="0" color="#363636" fontSize="13" fontFamily="Arial" fontWeight="bold" visible="{shadowVisible}"/>
+        <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" focusOut="onFocusOutInput()" change="updateScientificName()" textAlign="center" maxWidth="181" backgroundAlpha="{backgroundInputAlpha}"
+        	creationComplete="changeColorInput()" height="24" styleName="titlePhotoTxtInput" horizontalCenter="0" bottom="0" paddingTop="2" paddingBottom="2" color="{inputColor}"
+        	enabled="{!uploading}"/>
+		<mx:Button label="" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" visible="{!uploading}" x="10" y="0" alpha="0" styleName="uploadGreenBtn"
 			buttonMode="true" mouseChildren="false" useHandCursor="true"/>
-        <mx:Button label="" fontSize="10" click="eraseImage()" width="28" id="deleteButton" height="28" visible="{enabling}" x="180" y="0" alpha="0" styleName="deleteRedBtn"
-        	buttonMode="true" mouseChildren="false" useHandCursor="true"/>  
+        <mx:Button label="" fontSize="10" click="onDeleteButton()" width="28" id="deleteButton" height="28" visible="{!uploading}" x="180" y="0" alpha="0" 
+        	styleName="deleteRedBtn" buttonMode="true" mouseChildren="false" useHandCursor="true"/>  
         	
-        <mx:Canvas verticalCenter="0" horizontalCenter="0" width="86" height="86" visible="{!enabling}" styleName="spinnerBkg" horizontalScrollPolicy="off" 
+        <mx:Canvas id="loading" verticalCenter="0" horizontalCenter="0" width="86" height="86" visible="{uploading}" styleName="spinnerBkg" horizontalScrollPolicy="off" 
         	verticalScrollPolicy="off">
         	<mx:SWFLoader source="/com/vizzuality/assets/loading.swf" y="15" id="swfloader1" horizontalCenter="0"/>
 			<mx:Label id="bar" text="Uploading" y="55" color="#f9f9f9" fontSize="13" height="23" horizontalCenter="0" fontWeight="bold" fontFamily="Arial"/>
-        </mx:Canvas>        	
+        </mx:Canvas>
+        
+        <components1:DeleteConfirmation id="deleteConfirmation" verticalCenter="-5" kind="{(data.group_total!=undefined)?'group':'image'}" 
+        	visible="false" deleteImages="eraseImage()" cancelDelete="onCancelDelete()"  horizontalCenter="0"/>     	
         	
         
 </mx:Canvas>

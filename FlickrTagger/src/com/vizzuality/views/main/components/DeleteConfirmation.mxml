@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="136" height="119" styleName="tooltipRedBkg" xmlns:components="com.vizzuality.views.authentication.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			[Bindable]public var kind:String = 'image'; 
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Metadata>
+		    [Event(name="deleteImages", type="flash.events.Event")]
+		    [Event(name="cancelDelete", type="flash.events.Event")]
+	</mx:Metadata>
+	
+	<mx:VBox horizontalCenter="0" top="13" verticalGap="2">
+		<mx:Canvas >
+			<mx:Text selectable="false" text="Do you want to delete the {kind}?" styleName="txtRetryShadow" textAlign="left" width="108" top="1" left="1" alpha="0.4"/>
+			<mx:Text selectable="false" text="Do you want to delete the {kind}?" styleName="txtRetry" width="108" textAlign="left" left="0" top="0"/>
+		</mx:Canvas>
+		<mx:HBox horizontalGap="8" >
+			<components:CanvasBtn width="55" height="25"
+				styleBtnOver="retryBtnOver"
+				styleBtnUp="retryBtnUp"
+				styleLabel="txtRetryTooltipBtn"
+				styleLabelShadow="txtRetryTooltipBtnShadow"
+				btnText="Yes" click="dispatchEvent(new Event('deleteImages'))"/>
+				
+			<mx:Button styleName="btnCancelUploading" label="cancel" useHandCursor="true" buttonMode="true" click="dispatchEvent(new Event('cancelDelete'))"/>
+		</mx:HBox>
+	</mx:VBox>
+</mx:Canvas>

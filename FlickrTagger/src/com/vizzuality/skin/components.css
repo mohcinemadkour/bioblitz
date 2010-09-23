@@ -27,7 +27,7 @@
 
 /* class */
 WindowedApplication {    
-    background-image:   Embed("com/vizzuality/assets/header_bkg.png");
+    background-image:   Embed("com/vizzuality/assets/app_bkg.png");
     background-repeat:   repeat;
     background-position: center;
     background-blend:    multiply;
@@ -53,6 +53,14 @@ ScrollBar {
 
 /*backgrounds*/
 
+Canvas.headerCanvas {
+    background-image:   Embed("com/vizzuality/assets/header_bkg.png");
+    background-repeat:   repeat;
+    background-position: center;
+    background-blend:    multiply;
+}	
+
+
 Canvas.auth {
 	background-image:   Embed("com/vizzuality/assets/shadow.png");
     background-repeat: 	repeat;
@@ -77,7 +85,7 @@ Tilelist.imagesContent {
 	
 
 VBox.auth {
-	background-image:   Embed("com/vizzuality/assets/app_bkg.jpg");
+	background-image:   Embed("com/vizzuality/assets/app_bkg.png");
     background-repeat: 	repeat;
     background-position: center;
 }
@@ -261,6 +269,18 @@ Label.txtSuggestedNamesShadow {
 	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
 }
 
+.selectedBtnPhoto {
+	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
+	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
+	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
+	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
+	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
+	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
+}
+
+
 .sectionUpBtnGpx {
 	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_up");
 	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
@@ -270,6 +290,17 @@ Label.txtSuggestedNamesShadow {
 	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
 	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
 	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+}
+
+.selectedBtnGpx {
+	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
+	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
+	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
+	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
+	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
+	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
 }
 
 .sectionUpBtnHelp {
@@ -282,6 +313,19 @@ Label.txtSuggestedNamesShadow {
 	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
 	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
 }
+
+
+.selectedBtnHelp {
+	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
+	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
+	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
+	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
+	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
+	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
+}
+
 
 .retryBtnUp {
 	background-image:Embed(source="components_skin.swf", symbol="retryBtn_up");
@@ -381,17 +425,13 @@ Label.txtSuggestedNamesShadow {
 }
 
 .titlePhotoTxtInput {
+	background-disabled-color: #0d0d0d;
 	background-color: #0d0d0d;
-	background-alpha: 1;
-	border-color: #4e6412;
 	border-style: solid;
-	border-thickness: 0;
+	border-thickness: 0.1;
 	corner-radius: 3;
-	color: #4c4c4c;
-	font-weight: normal;
+	color: #B3B3B3;
+	font-weight: bold;
 	font-size: 13;
-	padding-top: 5;
-	padding-left: 7;
-	padding-right: 7;
 	focus-alpha: 0;
 }
