@@ -192,11 +192,7 @@
 		 	public function updateName(scientificName:String,path:String):void {
 			 	dao.openConnection("UPDATE photos SET scientific='"+scientificName+"' WHERE path='"+path+"'");
 		 	}
-		 	
-		 	
 
-	
-	
 
 			
 			private function insertImage(object:Object):void {
@@ -225,7 +221,7 @@
 			
 			/* Check and choose state functions */
 			 
-		 	private function chooseState():void {
+		 	public function chooseState():void {
 		 		if (sqlArray.length!=0) {
 					currentState = "imagesAdded";
 				} else {
@@ -295,6 +291,7 @@
 							tilelist.selectedItems[j].group_total = tilelist.selectedItems[j].group_total + isThereGroup.selected_count;
 						}
 					}
+					
 					
 					for (var k:int=0; k<imagesIdsArray.length; k++) {					
 	 					removeImageTilelist(imagesIdsArray[k]);

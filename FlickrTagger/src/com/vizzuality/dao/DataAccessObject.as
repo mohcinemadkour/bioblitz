@@ -78,7 +78,8 @@ package com.vizzuality.dao
 			"scientific TEXT DEFAULT NULL,"+
 			"lat TEXT," +
 			"lon TEXT," +
-			"group_id INTEGER DEFAULT NULL)";
+			"group_id INTEGER DEFAULT NULL," + 
+			"timestamp DATE)";
 			openConnection(sqlCreate2);	
 			
 			
@@ -88,7 +89,8 @@ package com.vizzuality.dao
 			"path TEXT," +
 			"scientific TEXT DEFAULT NULL,"+
 			"lat TEXT," +
-			"lon TEXT)";
+			"lon TEXT,"+
+			"timestamp DATE)";
 			openConnection(sqlCreate3);	
 					
 		}
