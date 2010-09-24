@@ -6,13 +6,19 @@
 		<mx:State name="gpxAdded">
 			<mx:RemoveChild target="{emptySectionGpx}"/>
 			<mx:AddChild relativeTo="{vbox1}" position="lastChild">
-				<maps:Map id="map" mapevent_mapready="onMapReady()" sensor="false" width="100%" height="100%" url="http://bioblitz.tdwg.org/flickrtagger" key="ABQIAAAAtDJGVn6RztUmxjnX5hMzjRTlgNwHccSvWwZGaOrPR5JguxSloxRLQb8iPFvjar21x70RCFpHWU1zvQ"/>
+				<mx:Image id="staticMap" width="100%" height="100%" source="{staticMapUrl}" />
+				<!--maps:Map id="map" mapevent_mapready="onMapReady()" sensor="false" width="100%" height="100%" url="http://bioblitz.tdwg.org/flickrtagger" key="ABQIAAAAtDJGVn6RztUmxjnX5hMzjRTlgNwHccSvWwZGaOrPR5JguxSloxRLQb8iPFvjar21x70RCFpHWU1zvQ"/-->
 			</mx:AddChild>
 		</mx:State>
 	</mx:states>
 	
 	<mx:Script>
 		<![CDATA[
+			import net.duncanhall.gmaps.PolylineEncoder;
+			import __AS3__.vec.Vector;
+			import com.google.maps.LatLng;
+			import com.adobe.gpslib.gpx.Track;
+			import com.adobe.gpslib.gpx.Waypoint;
 			import com.adobe.gpslib.GPX;
 			import com.adobe.gpslib.GPXService;
 			import com.adobe.gpslib.gpx.events.ParseEvent;
@@ -21,12 +27,17 @@
 			import mx.core.Application;
 			import mx.core.Window;
 			import mx.events.FileEvent;
+			
+			
 			private var gpxFile:File = File.documentsDirectory;
+			private var gpx: GPX = new GPX(); 
+			public var gpxPath:Array;
+			[Bindable] private var staticMapUrl:String;
 				
 			
 			private function onCreationComplete():void {
  				
-				var hackWindow:Window=new Window();
+/* 				var hackWindow:Window=new Window();
 				var hackMap:Map = new Map();
 				hackMap.url ="http://bioblitz.tdwg.org/flickrtagger";
 				hackMap.key="ABQIAAAAtDJGVn6RztUmxjnX5hMzjRTlgNwHccSvWwZGaOrPR5JguxSloxRLQb8iPFvjar21x70RCFpHWU1zvQ";
@@ -34,7 +45,7 @@
 				hackWindow.addChild(hackMap);
 				hackWindow.visible=false;
 				hackWindow.open();
-				hackWindow.close();
+				hackWindow.close(); */
 			}
 			private function onMapReady():void {
 				
@@ -61,11 +72,36 @@
 			protected function onGpxParse(event:ParseEvent):void {
 				var len:int = event.gpx.arrWaypoints.length;
 				//gpx_data.text = event.gpx.time.day + '/' + event.gpx.time.month + '/' + event.gpx.time.fullYear + ' --> ' + event.gpx.name;
-			
+				
+				if (event.gpx.arrWaypoints.length>1) {
+					gpxPath = event.gpx.arrWaypoints;
+				} else {
+					if(event.gpx.arrTracks.length>0) {
+						gpxPath = (event.gpx.arrTracks[0] as Track).trackSegment;
+					}
+				}
+				
+				var allCoords:String ="";
+				var latlngs:Vector.<LatLng> = new Vector.<LatLng>;
+				
+				for each(var wayPoint:Waypoint in gpxPath) {
+					latlngs.push(new LatLng(wayPoint.latitude,wayPoint.longitude));
+				}
+				var encoded:String = PolylineEncoder.fromPoints(latlngs);
+				
+				staticMapUrl="http://maps.google.com/maps/api/staticmap?maptype=terrain&path=color:0xff0000ff|weight:5|enc:"+encoded+
+					"&size=490x590&sensor=false";
+					
+								
 				currentState="gpxAdded";
+				
+				
 			}
 			
-			private var gpx: GPX = new GPX(); 
+			private function geolocatePictures():void {
+				
+			}
+			
 			
 			
 		]]>
