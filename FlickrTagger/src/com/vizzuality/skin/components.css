@@ -110,6 +110,11 @@ VBox.auth {
  	background-size: '100%';
 }
 
+.infoUpYellowBkg {
+ 	background-image:Embed(source="components_skin2.swf", symbol="infoUpYellowBkg");
+ 	background-size: '100%';
+}
+
 .tooltipRedBkg {
  	background-image:Embed(source="components_skin.swf", symbol="tooltipRedBkg");
  	background-size: '100%';
@@ -125,8 +130,18 @@ VBox.auth {
  	background-size: '100%';
 }
 
+.photoGroupBkgSelected {
+ 	background-image:Embed(source="components_skin2.swf", symbol="photoGroupBkg_selected");
+ 	background-size: '100%';
+}
+
 .photoBkg {
  	background-image:Embed(source="components_skin2.swf", symbol="photoBkg");
+ 	background-size: '100%';
+}
+
+.photoBkgSelected {
+ 	background-image:Embed(source="components_skin2.swf", symbol="photoBkg_selected");
  	background-size: '100%';
 }
 
@@ -168,6 +183,48 @@ Label.authOptionBtnLabelShadow {
 	fontFamily: "Arial Bold";
 	fontSize: 13;
 	color: #ffffff; 
+	font-weight: normal;
+}
+
+Label.cancelConnectBtnLabel {
+	fontFamily: "Arial Bold";
+	fontSize: 11;
+	color: #333333; 
+	font-weight: normal;
+}
+
+Label.cancelConnectBtnLabelShadow {
+	fontFamily: "Arial Bold";
+	fontSize: 11;
+	color: #daa13e; 
+	font-weight: normal;
+}
+
+Label.makeGroupBtnLabel {
+	fontFamily: "Arial Bold";
+	fontSize: 11;
+	color: #333333; 
+	font-weight: normal;
+}
+
+Label.makeGroupBtnLabelShadow {
+	fontFamily: "Arial Bold";
+	fontSize: 11;
+	color: #efd97a; 
+	font-weight: normal;
+}
+
+Label.addPhotoBtnLabel {
+	fontFamily: "Arial Bold";
+	fontSize: 11;
+	color: #333333; 
+	font-weight: normal;
+}
+
+Label.addPhotoBtnLabelShadow {
+	fontFamily: "Arial Bold";
+	fontSize: 11;
+	color: #daa13e; 
 	font-weight: normal;
 }
 
@@ -251,11 +308,13 @@ Label.txtSuggestedNamesShadow {
 /*buttons*/
 
 .authOptionBtnUp {
-	background-image:Embed(source="components_skin.swf", symbol="authOptionBtn_up");
+	background-image:Embed(source="components_skin2.swf", symbol="authOptionBtn_up");
+	background-size: '100%';
 }
 
 .authOptionBtnOver {
-	background-image:Embed(source="components_skin.swf", symbol="authOptionBtn_over");
+	background-image:Embed(source="components_skin2.swf", symbol="authOptionBtn_over");
+	background-size: '100%';
 }
 
 .sectionUpBtnPhoto {
@@ -270,14 +329,14 @@ Label.txtSuggestedNamesShadow {
 }
 
 .selectedBtnPhoto {
-	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
-	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
-	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
-	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
-	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
-	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
-	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
-	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_over");
+	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
+	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnPhoto_down");
 }
 
 
@@ -293,14 +352,14 @@ Label.txtSuggestedNamesShadow {
 }
 
 .selectedBtnGpx {
-	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
-	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
-	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
-	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
-	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
-	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
-	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
-	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_over");
+	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
+	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnGpx_down");
 }
 
 .sectionUpBtnHelp {
@@ -316,23 +375,66 @@ Label.txtSuggestedNamesShadow {
 
 
 .selectedBtnHelp {
-	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
-	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
-	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
-	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
-	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
-	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
-	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
-	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_over");
+	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnHelp_down");
+}
+
+.sectionUpBtnLogout {
+	up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnLogout_up");
+	over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnLogout_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnLogout_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnLogout_up");
+	selected-up-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnLogout_down");
+	selected-over-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnLogout_down");
+	selected-down-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnLogout_down");
+	selected-disabled-skin: Embed(source="components_skin2.swf", symbol="sectionUpBtnLogout_down");
 }
 
 
 .retryBtnUp {
 	background-image:Embed(source="components_skin.swf", symbol="retryBtn_up");
+	background-size: '100%';
 }
 
 .retryBtnOver {
 	background-image:Embed(source="components_skin.swf", symbol="retryBtn_over");
+	background-size: '100%';
+}
+
+.cancelConnectBtnUp {
+	background-image:Embed(source="components_skin2.swf", symbol="cancelConnectBtn_up");
+	background-size: '100%';
+}
+
+.cancelConnectBtnOver {
+	background-image:Embed(source="components_skin2.swf", symbol="cancelConnectBtn_over");
+	background-size: '100%';
+}
+
+.makeGroupBtnUp {
+	background-image:Embed(source="components_skin2.swf", symbol="makeGroupBtn_up");
+	background-size: '100%';
+}
+
+.makeGroupBtnOver {
+	background-image:Embed(source="components_skin2.swf", symbol="makeGroupBtn_over");
+	background-size: '100%';
+}
+
+.addPhotoBtnUp {
+	background-image:Embed(source="components_skin2.swf", symbol="cancelConnectBtn_up");
+	background-size: '100%';
+}
+
+.addPhotoBtnOver {
+	background-image:Embed(source="components_skin2.swf", symbol="cancelConnectBtn_over");
+	background-size: '100%';
 }
 
 .uploadGreenBtn {
@@ -343,10 +445,10 @@ Label.txtSuggestedNamesShadow {
 }
 
 .deleteRedBtn {
-	up-skin: Embed(source="components_skin.swf", symbol="deleteRedBtn_up");
-	over-skin: Embed(source="components_skin.swf", symbol="deleteRedBtn_over");
-	down-skin: Embed(source="components_skin.swf", symbol="deleteRedBtn_down");
-	disabled-skin: Embed(source="components_skin.swf", symbol="deleteRedBtn_disabled");
+	up-skin: Embed(source="components_skin2.swf", symbol="deleteRedBtn_up");
+	over-skin: Embed(source="components_skin2.swf", symbol="deleteRedBtn_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="deleteRedBtn_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="deleteRedBtn_disabled");
 }
 
 .btnEmptySection{	

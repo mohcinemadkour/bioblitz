@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="com.vizzuality.components.*" creationComplete="onCreationComplete()" 
-	xmlns:components="com.vizzuality.views.main.components.*" xmlns:display="flash.display.*" xmlns:filters="flash.filters.*">
+	xmlns:components="com.vizzuality.views.main.components.*" xmlns:display="flash.display.*" xmlns:filters="flash.filters.*" 
+	xmlns:components1="com.vizzuality.views.authentication.components.*">
 	<mx:states>
 		<mx:State name="imagesAdded">
 			<mx:RemoveChild target="{emptySelectionPhoto}"/>
@@ -11,14 +12,24 @@
 				<mx:value>Drag or select multiple photos (shift+click) to create groups</mx:value>
 			</mx:SetProperty>
 			<mx:AddChild relativeTo="{headerHBox}" position="lastChild">
-				<mx:Button label="ADD PHOTO" click="selectImageFile(fileToOpen)"/>
+				<components1:CanvasBtn width="81" height="22" click="selectImageFile(fileToOpen)"
+				btnText="ADD PHOTO"
+				styleBtnOver="addPhotoBtnOver"
+				styleBtnUp="addPhotoBtnUp"
+				styleLabel="addPhotoBtnLabel"
+				styleLabelShadow="addPhotoBtnLabelShadow"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="multipleSelection">
 			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpYellowBkg"/>
 			<mx:RemoveChild target="{emptySelectionPhoto}"/>
 			<mx:AddChild relativeTo="{headerHBox}" position="lastChild">
-				<mx:Button x="315" y="10" label="GROUP" useHandCursor="true" buttonMode="true" mouseChildren="false" click="createGroup()"/>
+				<components1:CanvasBtn width="55" height="22" click="createGroup()"
+					btnText="GROUP"
+					styleBtnOver="makeGroupBtnOver"
+					styleBtnUp="makeGroupBtnUp"
+					styleLabel="makeGroupBtnLabel"
+					styleLabelShadow="makeGroupBtnLabelShadow"/>
 			</mx:AddChild>
 			<mx:SetProperty target="{label1}" name="text" value="You have selected "/>
 			<mx:SetProperty target="{label2}" name="text" value="You have selected "/>
@@ -407,18 +418,20 @@
 	
 	<mx:VBox width="100%" height="100%" verticalGap="0" horizontalAlign="center">
 		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%" id="canvas1">
-			<mx:HBox horizontalCenter="0" verticalCenter="0" id="headerHBox">
+			<mx:HBox verticalCenter="0" id="headerHBox" width="100%">
 				<mx:Canvas  id="canvas2">
-	    			<mx:Label text="Add some photos to FlickrTagger" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" horizontalCenter="0" id="label2"/>
-	    			<mx:Label text="Add some photos to FlickrTagger" x="10" verticalCenter="0" styleName="txtInfoUp" horizontalCenter="0" id="label1"/>
+	    			<mx:Label text="Add some photos to FlickrTagger" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" id="label2"
+	    				left="14"/>
+	    			<mx:Label text="Add some photos to FlickrTagger" x="10" verticalCenter="0" styleName="txtInfoUp" id="label1"
+	    				left="13"/>
 				</mx:Canvas>
 			</mx:HBox>
 
 	    </mx:Canvas>
 	    <mx:Spacer height="10"/>
 		<comp:TileListFlickTagger backgroundAlpha="0" selectionColor="#4a4a4a" selectionDisabledColor="#4a4a4a" rollOverColor="#4a4a4a" id="tilelist"  dataProvider="{sqlArray}"
-				itemRenderer="com.vizzuality.views.main.components.ImageRenderer" minWidth="440" width="80%" height="100%" borderThickness="0" itemClick="checkMultipleSelection(event)"
-				allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true" styleName="imagesContent"/>					
+				itemRenderer="com.vizzuality.views.main.components.ImageRenderer" minWidth="440" width="90%" height="100%" borderThickness="0" 
+				itemClick="checkMultipleSelection(event)" allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true" styleName="imagesContent"/>					
 	</mx:VBox>
 	
 	<components:EmptySectionPhoto  horizontalCenter="0" verticalCenter="0" width="315" height="180" visible="true" id="emptySelectionPhoto" addImage="selectImageFile(fileToOpen)"/>

@@ -61,7 +61,7 @@
         			useHandCursor="true" buttonMode="true" id="button3"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#111111"/>
         		<mx:VRule strokeWidth="1" height="70" strokeColor="#3c3c3c"/>
-        		<mx:Button width="120" height="70" styleName="" label="logout" click="logOut.visible=true"
+        		<mx:Button width="120" height="70" styleName="sectionUpBtnLogout" label="" click="logOut.visible=true"
         			useHandCursor="true" buttonMode="true" id="button4"/>
 	        </mx:HBox>
 	       	<main:ImagesContainer id="imagesState" label="Search" width="100%" height="100%"/>
