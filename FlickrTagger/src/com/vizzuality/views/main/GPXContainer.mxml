@@ -103,7 +103,7 @@
 				}
 				var encoded:String = PolylineEncoder.fromPoints(latlngs);
 				
-				staticMapUrl="http://maps.google.com/maps/api/staticmap?maptype=terrain&path=color:0xff0000ff|weight:5|enc:"+encoded+
+				staticMapUrl="http://maps.google.com/maps/api/staticmap?maptype=roadmap&path=color:0xff0000ff|weight:5|enc:"+encoded+
 					"&size=490x590&sensor=false";
 					
 								
