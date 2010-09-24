@@ -53,7 +53,7 @@
 			<mx:RemoveChild target="{emptySelectionPhoto}"/>
 			<mx:AddChild relativeTo="{headerHBox}" position="lastChild">
 				<mx:Canvas width="380" height="37" >
-					<mx:ProgressBar color="black" label="" id="pBar" labelPlacement="left" verticalCenter="-2" indeterminate="true" width="340" height="15" 
+					<mx:ProgressBar color="black" label="" id="pBar" labelPlacement="left" verticalCenter="0" indeterminate="true" width="300" height="15" 
 					trackHeight="12" barColor="black" direction="right"/>
 				</mx:Canvas>
 			</mx:AddChild>
@@ -73,6 +73,8 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import jp.shichiseki.exif.ExifInfo;
+			import jp.shichiseki.exif.ExifLoader;
 			import com.adobe.images.JPGEncoder;
 			import __AS3__.vec.Vector;
 			import mx.events.DragEvent;
@@ -459,7 +461,7 @@
 			}
 			
 			private var processingPath:String;
-			private var processingLoader:Loader = new Loader();
+			private var processingLoader:ExifLoader = new ExifLoader();
 			private var isProcessingImage:Boolean=false;
 			private function loadImage(event:TimerEvent):void {			
 				if(isProcessingImage) return;
@@ -484,6 +486,15 @@
 			}
 			
 			private function processImage(event:Event):void {
+				
+				var dateTimeDigitized:Date;
+				try {
+					dateTimeDigitized = new Date(((event.target.loader.exif as ExifInfo).ifds.exif.DateTimeDigitized as String).replace(":","/").replace(":","/"));
+					
+				} catch(e:Error) {
+					dateTimeDigitized=null;
+				}
+				
 				var bitmap:Bitmap = Bitmap(event.target.content);
 				var bitmapData:BitmapData = bitmap.bitmapData;
 				var originalWidth:Number = bitmapData.width;
@@ -518,11 +529,10 @@
 	            stream.close();
 	            	
 	            	
-				dao.openConnection("INSERT INTO photos (path) VALUES('"+event.target.url+"')");
+				dao.openConnection("INSERT INTO photos (path,date) VALUES('"+event.target.url+"','"+dateTimeDigitized+"')");
 			  	dao.openConnection("SELECT id FROM photos WHERE path='"+event.target.url+"'");
 			  	var identification:Object = dao.dbResult[0];
-	            	
-	            	
+
 	            //Creation of new item
 			  	var obj: Object = new Object();
 			  	obj.path = event.target.url;
@@ -530,6 +540,7 @@
 			  	obj.lat = null;
 			  	obj.lon = null;
 			  	obj.id = identification.id;
+			  	obj.date = dateTimeDigitized;
 			  	sqlArray.addItem(obj);	
 	            
 	            isProcessingImage=false;		
