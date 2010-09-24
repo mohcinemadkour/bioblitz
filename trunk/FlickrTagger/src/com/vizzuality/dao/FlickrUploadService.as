@@ -20,6 +20,7 @@ package com.vizzuality.dao
 		private var imageData : ArrayCollection;
 		private var taxon : String;
 		private var arrayImages: ArrayCollection = new ArrayCollection();
+		private var arrayImagesData: ArrayCollection = new ArrayCollection();
 		private var group_id: String;
 		private var modeUpload: int = 0;
 		
@@ -70,7 +71,7 @@ package com.vizzuality.dao
 			service.secret = FlickrAuthorizationSettings.flickrAPISecret;
 			service.token = FlickrAuthorizationSettings.authToken;
 			var uploader:Upload = new Upload(service);
-			uploader.upload(imageFile,taxon,"Image uploaded at TDWGBioBlitz 2010",tag);
+			uploader.upload(imageFile,taxon,"Image uploaded at TDWGBioBlitz 2010",tag,true);
 		}
 		
 		
@@ -83,9 +84,23 @@ package com.vizzuality.dao
 			var xml: XML = new XML(ev.data);
 			var photoID: String = "";
 		   	for each( var id:XML in xml..photoid ) {
-				 photoID = id;					
+				 photoID = id;
+				 var flickr:FlickrService = new FlickrService(FlickrAuthorizationSettings.flickrAPIKey);
+				 flickr.addEventListener(FlickrResultEvent.PHOTOS_GET_INFO,onGetPhotoInfo);
+				 if (group_id!=null) {
+				 	flickr.group = true;
+				 } else {
+				 	flickr.group = false;
+				 }
+				 flickr.photos.getInfo(photoID,FlickrAuthorizationSettings.flickrAPISecret);
 			}
+			
 			setImageLocation(photoID,"file://" + escape(ev.currentTarget.nativePath.toString()));
+		}
+		
+		
+		private function onGetPhotoInfo(event:FlickrResultEvent):void {
+			
 		}
 		
 		

@@ -37,13 +37,15 @@
                     [Bindable]private var textInput: String;  
                     [Bindable]private var shadowVisible: Boolean;
                     [Bindable]private var backgroundInputAlpha: int;
+                    private var imagesDir:String = File.applicationStorageDirectory.resolvePath("images").nativePath;
+                    
                                   
                     
                     override public function set data(value:Object):void{
 
 						  if (value != null) {
 						  	 canvasBkg = (value.group_total!=undefined)?'photoGroupBkg':'photoBkg';
-						     path = value.path;
+						     path = getImageUrlInsideApp(value.path);
 						     //If there is scientific name
 						     uploading = (value.uploading==undefined)?false:value.uploading;
 						     backgroundInputAlpha = 0;						     	
@@ -75,6 +77,16 @@
                         	this.addEventListener(FlexEvent.DATA_CHANGE, checkSelected);
                     	}
                     }
+                    
+                    
+                    
+                    
+                    private function getImageUrlInsideApp(externalPath:String):String {
+						var fileName:String = externalPath.replace("file://","").replace(/\//g,'_');
+			          	fileName.replace("gif","jpg").replace("png","jpg").replace("GIF","jpg").replace("PNG","jpg").replace("JPG","jpg");
+						return File.applicationStorageDirectory.resolvePath(imagesDir + "/"+fileName).url;
+					}
+                    
                      
                  
                     
@@ -190,7 +202,7 @@
         
         <mx:Canvas id="itemSpace" height="157" width="197" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" top="0"
         	styleName="{canvasBkg}" backgroundSize="100%">
-			<components:CroppedImage pathImage="{path}" verticalCenter="0" horizontalCenter="0"/>
+			<mx:Image source="{path}" verticalCenter="0" horizontalCenter="0"/>
         </mx:Canvas>
         <!--<mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0"/>-->
         <mx:Label text="Not recognized" horizontalCenter="0" bottom="0" color="#363636" fontSize="13" fontFamily="Arial" fontWeight="bold" visible="{shadowVisible}"/>
@@ -208,7 +220,7 @@
 			<mx:Label id="bar" text="Uploading" y="55" color="#f9f9f9" fontSize="13" height="23" horizontalCenter="0" fontWeight="bold" fontFamily="Arial"/>
         </mx:Canvas>
         
-        <components1:DeleteConfirmation id="deleteConfirmation" verticalCenter="-5" kind="{(data.group_total!=undefined)?'group':'image'}" 
+        <components1:DeleteConfirmation id="deleteConfirmation" verticalCenter="-15" kind="{(data.group_total!=undefined)?'group':'image'}" 
         	visible="false" deleteImages="eraseImage()" cancelDelete="onCancelDelete()"  horizontalCenter="0"/>     	
         	
         

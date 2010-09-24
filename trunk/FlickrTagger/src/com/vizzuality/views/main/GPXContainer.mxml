@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		   xmlns:components="com.vizzuality.views.main.components.*" xmlns:maps="com.google.maps.*" creationComplete="onCreationComplete()">
 	
 	<mx:states>
@@ -9,6 +9,16 @@
 				<mx:Image id="staticMap" width="100%" height="100%" source="{staticMapUrl}" />
 				<!--maps:Map id="map" mapevent_mapready="onMapReady()" sensor="false" width="100%" height="100%" url="http://bioblitz.tdwg.org/flickrtagger" key="ABQIAAAAtDJGVn6RztUmxjnX5hMzjRTlgNwHccSvWwZGaOrPR5JguxSloxRLQb8iPFvjar21x70RCFpHWU1zvQ"/-->
 			</mx:AddChild>
+			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpGreenBkg"/>
+		</mx:State>
+		<mx:State name="gpxError">
+			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpRedBkg"/>
+			<mx:SetProperty target="{label1}" name="text">
+				<mx:value>There has been an error with the file, try again please.</mx:value>
+			</mx:SetProperty>
+			<mx:SetProperty target="{label2}" name="text">
+				<mx:value>There has been an error with the file, try again please.</mx:value>
+			</mx:SetProperty>
 		</mx:State>
 	</mx:states>
 	
@@ -36,6 +46,10 @@
 				
 			
 			private function onCreationComplete():void {
+ 				addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDropEnter);
+				addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDrop);
+ 				
+ 				
  				
 /* 				var hackWindow:Window=new Window();
 				var hackMap:Map = new Map();
@@ -104,17 +118,39 @@
 			
 			
 			
+
+			private function onDropEnter(event:NativeDragEvent):void {
+	 			NativeDragManager.acceptDragDrop(dropZone);
+	   		}
+	   		
+			private function onDrop(event:NativeDragEvent):void {
+				NativeDragManager.dropAction = NativeDragActions.COPY;
+			    var droppedFiles:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+			    for each (var file:File in droppedFiles) {
+			    	if (file.extension == 'gpx') {
+			    		gpxFile = file;
+			    		fileSelected(new Event(Event.SELECT));
+			    		return;
+			    	}				       
+			    }
+			    
+			    currentState = 'gpxError';
+			}
+			
+			
+			
 		]]>
 	</mx:Script>
 
 	<mx:DropShadowFilter id="headerShadow" alpha="0.3" color="#000000" angle="90" blurY="10" distance="8"/>
 	<mx:VBox width="100%" height="100%" verticalGap="0" id="vbox1">
-		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%">
-	    	<mx:Label text="Drag or select by browsing a GPX of your journey" x="14" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" />
-	    	<mx:Label text="Drag or select by browsing a GPX of your journey" x="13" verticalCenter="0" styleName="txtInfoUp" />
-	    </mx:Canvas>				
+		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%" id="canvas1">
+	    	<mx:Label text="Drag or select by browsing a GPX of your journey" x="14" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3"  id="label2"/>
+	    	<mx:Label text="Drag or select by browsing a GPX of your journey" x="13" verticalCenter="0" styleName="txtInfoUp"  id="label1"/>
+	    </mx:Canvas>
+	    <mx:List height="100%" width="100%" id="dropZone" allowDragSelection="true" backgroundAlpha="0" borderThickness="0"/>			
 	</mx:VBox>
-	<components:EmptySectionGpx  horizontalCenter="0" verticalCenter="0" width="345" height="180" visible="true" id="emptySectionGpx" clickSelect="selectGPXFile(gpxFile)"/>
+	<components:EmptySectionGpx  horizontalCenter="0" verticalCenter="0" width="345" height="180" visible="true" id="emptySectionGpx" clickSelect="selectGPXFile(gpxFile)" />
 	
 </mx:Canvas>
 

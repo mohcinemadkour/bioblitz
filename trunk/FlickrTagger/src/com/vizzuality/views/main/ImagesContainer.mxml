@@ -12,12 +12,14 @@
 				<mx:value>Drag or select multiple photos (shift+click) to create groups</mx:value>
 			</mx:SetProperty>
 			<mx:AddChild relativeTo="{headerHBox}" position="lastChild">
-				<components1:CanvasBtn width="81" height="22" click="selectImageFile(fileToOpen)"
-				btnText="ADD PHOTO"
-				styleBtnOver="addPhotoBtnOver"
-				styleBtnUp="addPhotoBtnUp"
-				styleLabel="addPhotoBtnLabel"
-				styleLabelShadow="addPhotoBtnLabelShadow"/>
+				<mx:Canvas height="37">
+					<components1:CanvasBtn width="81" height="22" click="selectImageFile(fileToOpen)"
+					btnText="ADD PHOTO" verticalCenter="0" horizontalCenter="0"
+					styleBtnOver="addPhotoBtnOver"
+					styleBtnUp="addPhotoBtnUp"
+					styleLabel="addPhotoBtnLabel"
+					styleLabelShadow="addPhotoBtnLabelShadow"/>
+				</mx:Canvas>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="multipleSelection">
@@ -41,12 +43,38 @@
 			<mx:SetProperty target="{label1}" name="text" value="You can't join two groups"/>
 			<mx:SetProperty target="{label2}" name="text" value="You can't join two groups"/>
 		</mx:State>
+		<mx:State name="processingImages">
+			<mx:AddChild position="lastChild">
+				<mx:Canvas top="36" left="0" right="0" bottom="0" backgroundColor="#000000" backgroundAlpha="0.55" visible="true">
+				</mx:Canvas>
+			</mx:AddChild>
+			<mx:SetProperty target="{label1}" name="text" value="Processing images..."/>
+			<mx:SetProperty target="{label2}" name="text" value="Processing images..."/>
+			<mx:RemoveChild target="{emptySelectionPhoto}"/>
+			<mx:AddChild relativeTo="{headerHBox}" position="lastChild">
+				<mx:Canvas width="380" height="37" >
+					<mx:ProgressBar color="black" label="" id="pBar" labelPlacement="left" verticalCenter="-2" indeterminate="true" width="340" height="15" 
+					trackHeight="12" barColor="black" direction="right"/>
+				</mx:Canvas>
+			</mx:AddChild>
+			<mx:SetStyle target="{vbox1}" name="left" value="0"/>
+			<mx:SetProperty target="{vbox1}" name="width"/>
+			<mx:SetStyle target="{vbox1}" name="right" value="0"/>
+			<mx:SetStyle target="{vbox1}" name="top" value="0"/>
+			<mx:SetProperty target="{vbox1}" name="height"/>
+			<mx:SetStyle target="{vbox1}" name="bottom" value="0"/>
+			<mx:SetProperty target="{headerHBox}" name="width"/>
+			<mx:SetStyle target="{headerHBox}" name="left" value="0"/>
+			<mx:SetStyle target="{headerHBox}" name="right" value="0"/>
+		</mx:State>
 	</mx:states>
 
 	
 		
 	<mx:Script>
 		<![CDATA[
+			import com.adobe.images.JPGEncoder;
+			import __AS3__.vec.Vector;
 			import mx.events.DragEvent;
 			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
 			import mx.containers.TabNavigator;
@@ -86,7 +114,6 @@
 			private var fileToOpen:File = File.documentsDirectory;
 			private var alias: String;
 			private var identification: String;
-			
 			private var path: String;
 			private var scientific: String;
 			
@@ -223,8 +250,10 @@
 			 
 		 	public function chooseState():void {
 		 		if (sqlArray.length!=0) {
+		 			Application.application.principalView.arrow.source = "com/vizzuality/assets/orange_arrow.png";
 					currentState = "imagesAdded";
 				} else {
+		 			Application.application.principalView.arrow.source = "com/vizzuality/assets/orange_arrow.png";
 					currentState = "";
 				}
 		 	}			
@@ -234,8 +263,10 @@
 				if (tilelist.selectedItems.length>1) {
 					var result:Object = checkNoMoreTwoGroupsSelected();
 					if (!result.valid) {
+		 				Application.application.principalView.arrow.source = "com/vizzuality/assets/red_arrow.png";
 						currentState = "banSelection";
 					} else {
+		 				Application.application.principalView.arrow.source = "com/vizzuality/assets/yellow_arrow.png";
 						currentState = "multipleSelection";
 						label1.text = "You have selected " + result.count;
 						label2.text = "You have selected " + result.count;						
@@ -390,20 +421,128 @@
 	 			NativeDragManager.acceptDragDrop(tilelist);
 	   		}
 	   		
+	   		private var imagePaths:Vector.<String> = new Vector.<String>();
+			private var acceptedExtensions:Array = ["jpg","jpeg","gif","png","JPG","JPEG","GIF","PNG"];
+			private var processingTimer:Timer = new Timer(500);
+	   		
 			private function onDrop(event:NativeDragEvent):void {
+				currentState = "processingImages";
 				NativeDragManager.dropAction = NativeDragActions.COPY;
-			    var droppedFiles:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-			    for each (var file:File in droppedFiles) {
-			    	if (file.isDirectory) {						
-					     var dirContents:Array = file.getDirectoryListing();
-					     for each (var fi:File in dirContents) {
-							insertImage(fi);
-			    		 }	
+			    var droppedFiles:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;	    
+			    getImageFilesRecursively(droppedFiles);		  
+			    
+			    var numItems:int = imagePaths.length;  
+				
+				processingTimer.addEventListener(TimerEvent.TIMER,loadImage);
+				processingTimer.start();				
+				
+				
+			   // tilelist.selectedIndices = new Array();
+			}
+			
+			private function getImageUrlInsideApp(externalPath:String):String {
+				var fileName:String = externalPath.replace("file://","").replace(/\//g,'_');
+	          	fileName.replace("gif","jpg").replace("png","jpg").replace("GIF","jpg").replace("PNG","jpg").replace("JPG","jpg");
+				return File.applicationStorageDirectory.resolvePath(imagesDir + "/"+fileName).url;
+			}
+			
+			private function getImageFilesRecursively(files:Array):void {
+				for each (var file:File in files) {
+			    	if (file.isDirectory) {		
+			    		getImageFilesRecursively(file.getDirectoryListing());
 			    	} else {
-				    	insertImage(file);
+			    		if(acceptedExtensions.indexOf(file.extension)>=0 && !checkIfExistPhoto(file.url)) {
+			    			imagePaths.push(file.url);
+			    		}
 			    	}			       
 			    }
-			    tilelist.selectedIndices = new Array();
+			}
+			
+			private var processingPath:String;
+			private var processingLoader:Loader = new Loader();
+			private var isProcessingImage:Boolean=false;
+			private function loadImage(event:TimerEvent):void {			
+				if(isProcessingImage) return;
+				
+				isProcessingImage=true;
+				
+				if(imagePaths.length>0) {
+					processingPath=imagePaths[0];
+				}else {
+					processingTimer.stop();
+					processingTimer.removeEventListener(TimerEvent.TIMER,loadImage);
+					chooseState();
+					return;
+				}
+				
+				processingLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,processImage);
+				processingLoader.load(new URLRequest(processingPath));				
+				
+				
+				//we finish removing the used path
+				imagePaths.shift();
+			}
+			
+			private function processImage(event:Event):void {
+				var bitmap:Bitmap = Bitmap(event.target.content);
+				var bitmapData:BitmapData = bitmap.bitmapData;
+				var originalWidth:Number = bitmapData.width;
+			 	var originalHeight:Number = bitmapData.height;
+			 	var newWidth:Number = 500;
+			 	var newHeight:Number = 350;
+			 			
+			 	var m:Matrix = new Matrix();
+			 
+		  		var sx:Number =  newWidth / originalWidth;
+		  		var sy:Number = newHeight / originalHeight;
+		  		var scale:Number = Math.min(sx, sy);
+		  		newWidth = originalWidth * scale;
+		  		newHeight = originalHeight * scale;	
+			 	m.scale(scale, scale);
+			 	var bmd2:BitmapData = new BitmapData( newWidth,newHeight); 
+			 	bmd2.draw(bitmapData, m);
+				var startPoint:Point = new Point(((newWidth/2)-85), ((newHeight/2)-63));
+				var newBitmapData:BitmapData = new BitmapData(170,126);
+				newBitmapData.copyPixels(bmd2, 
+					new Rectangle(startPoint.x,startPoint.y,170,126), 
+	                new Point(0,0));
+	            
+	            //save the image
+	            var jpg:JPGEncoder = new JPGEncoder(70);
+	            var ba:ByteArray = jpg.encode(newBitmapData);
+	            var stream:FileStream = new FileStream();
+	            var newFile:File = new File();
+	            newFile.url = getImageUrlInsideApp(event.target.url as String);
+	            stream.open(newFile, FileMode.WRITE);
+	            stream.writeBytes(ba);
+	            stream.close();
+	            	
+	            	
+				dao.openConnection("INSERT INTO photos (path) VALUES('"+event.target.url+"')");
+			  	dao.openConnection("SELECT id FROM photos WHERE path='"+event.target.url+"'");
+			  	var identification:Object = dao.dbResult[0];
+	            	
+	            	
+	            //Creation of new item
+			  	var obj: Object = new Object();
+			  	obj.path = event.target.url;
+			  	obj.scientific = null;
+			  	obj.lat = null;
+			  	obj.lon = null;
+			  	obj.id = identification.id;
+			  	sqlArray.addItem(obj);	
+	            
+	            isProcessingImage=false;		
+			}
+			
+			
+			private function checkIfExistPhoto(path:String):Boolean {
+				for (var i:int=0;i<sqlArray.length; i++) {
+					if (sqlArray[i].path == path) {
+						return true;
+					}
+				}
+				return false;
 			}
 			
 
@@ -413,21 +552,19 @@
 	
 	<mx:Canvas width="100%" height="100%" top="37"/>
 	
-	<mx:VBox width="100%" height="100%" verticalGap="0" horizontalAlign="center">
-		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%" id="canvas1">
-			<mx:HBox verticalCenter="0" id="headerHBox" width="100%">
-				<mx:Canvas  id="canvas2">
-	    			<mx:Label text="Add some photos to FlickrTagger" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" id="label2"
-	    				left="14"/>
-	    			<mx:Label text="Add some photos to FlickrTagger" x="10" verticalCenter="0" styleName="txtInfoUp" id="label1"
-	    				left="13"/>
+	<mx:VBox width="100%" height="100%" verticalGap="0" horizontalAlign="center" id="vbox1">
+		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%" id="canvas1" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			<mx:HBox verticalCenter="0" id="headerHBox" width="190%" horizontalGap="3">
+				<mx:Canvas  id="canvas2" height="37">
+	    			<mx:Label text="Add some photos to FlickrTagger" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" id="label2" left="14"/>
+	    			<mx:Label text="Add some photos to FlickrTagger" x="10" verticalCenter="0" styleName="txtInfoUp" id="label1" left="13"/>
 				</mx:Canvas>
 			</mx:HBox>
 
 	    </mx:Canvas>
 	    <mx:Spacer height="10"/>
 		<comp:TileListFlickTagger backgroundAlpha="0" selectionColor="#4a4a4a" selectionDisabledColor="#4a4a4a" rollOverColor="#4a4a4a" id="tilelist"  dataProvider="{sqlArray}"
-				itemRenderer="com.vizzuality.views.main.components.ImageRenderer" minWidth="440" width="90%" height="100%" borderThickness="0" 
+				itemRenderer="com.vizzuality.views.main.components.ImageRenderer" minWidth="440" width="100%" height="100%" borderThickness="0" 
 				itemClick="checkMultipleSelection(event)" allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true" styleName="imagesContent"/>					
 	</mx:VBox>
 	

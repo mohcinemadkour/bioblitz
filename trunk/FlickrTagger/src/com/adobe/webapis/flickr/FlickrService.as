@@ -35,10 +35,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.adobe.webapis.flickr {
 	
-	import com.adobe.webapis.flickr.flickrservice_internal;
 	import com.adobe.crypto.MD5;
 	import com.adobe.webapis.URLLoaderBase;
 	import com.adobe.webapis.flickr.methodgroups.*;
+	
 	import flash.net.URLLoader;
 	
 	/**
@@ -94,6 +94,7 @@ package com.adobe.webapis.flickr {
 		private var _tags:Tags;
 		private var _test:Test;
 		private var _urls:Urls;
+		public var group: Boolean;
 		
 		public function FlickrService( api_key:String ) {
 			_api_key = api_key;

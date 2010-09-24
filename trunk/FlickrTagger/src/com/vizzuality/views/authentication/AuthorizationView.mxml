@@ -35,7 +35,7 @@
 							    			<mx:Label text="Connecting..." x="10" verticalCenter="0" styleName="txtInfoUp" horizontalCenter="0" id="label8"/>
 										</mx:Canvas>
 										<mx:Canvas width="380" height="37" >
-											<mx:ProgressBar top="4" color="black" mode="manual" label="" id="pBar" labelPlacement="left" verticalCenter="-2" indeterminate="true" width="380" height="15" 
+											<mx:ProgressBar color="black" label="" id="pBar" labelPlacement="left" verticalCenter="-2" indeterminate="true" width="380" height="15" 
 											trackHeight="12" barColor="black" direction="right"/>
 										</mx:Canvas>
 									</mx:HBox>
