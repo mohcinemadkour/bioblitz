@@ -9,7 +9,6 @@ DatabaseCleaner.strategy   = :truncation
 
 RSpec.configure do |config|
   config.include Capybara
-  config.include ActiveSupport::Testing::Assertions
 
   config.before(:each) do
     Capybara.use_default_driver
