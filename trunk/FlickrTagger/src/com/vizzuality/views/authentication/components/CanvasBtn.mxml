@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" >
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"  horizontalScrollPolicy="off" verticalScrollPolicy="off">
 	<mx:Script >
 		<![CDATA[
 			private function overEvent():void {
@@ -18,7 +18,7 @@
 	<mx:String id="styleBtnOver" />
 	
 	
-	<mx:Canvas id="canvasButton" width="100%" height="100%" top="0" left="0" styleName="{styleBtnUp}">
+	<mx:Canvas id="canvasButton" width="100%" height="100%" top="0" left="0" styleName="{styleBtnUp}" horizontalScrollPolicy="off" verticalScrollPolicy="off">
 		<mx:Label verticalCenter="1" horizontalCenter="0" styleName="{styleLabelShadow}" text="{btnText}"/>
 		<mx:Label verticalCenter="0" horizontalCenter="0" styleName="{styleLabel}" text="{btnText}"/>
 	</mx:Canvas>

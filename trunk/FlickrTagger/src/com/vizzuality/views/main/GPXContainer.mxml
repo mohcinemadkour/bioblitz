@@ -74,8 +74,8 @@
 	<mx:DropShadowFilter id="headerShadow" alpha="0.3" color="#000000" angle="90" blurY="10" distance="8"/>
 	<mx:VBox width="100%" height="100%" verticalGap="0" id="vbox1">
 		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%">
-	    	<mx:Label text="Drag or select by browsing a GPX of your journey" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" horizontalCenter="0"/>
-	    	<mx:Label text="Drag or select by browsing a GPX of your journey" x="10" verticalCenter="0" styleName="txtInfoUp" horizontalCenter="0"/>
+	    	<mx:Label text="Drag or select by browsing a GPX of your journey" x="14" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" />
+	    	<mx:Label text="Drag or select by browsing a GPX of your journey" x="13" verticalCenter="0" styleName="txtInfoUp" />
 	    </mx:Canvas>				
 	</mx:VBox>
 	<components:EmptySectionGpx  horizontalCenter="0" verticalCenter="0" width="345" height="180" visible="true" id="emptySectionGpx" clickSelect="selectGPXFile(gpxFile)"/>

@@ -61,7 +61,12 @@
 								    			<mx:Label text="Please, proceed to authenticate on flickr to use FlickrTagger" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" horizontalCenter="0" id="label2"/>
 								    			<mx:Label text="Please, proceed to authenticate on flickr to use FlickrTagger" x="10" verticalCenter="0" styleName="txtInfoUp" horizontalCenter="0" id="label1"/>
 											</mx:Canvas>
-											<mx:Button useHandCursor="true" buttonMode="true" mouseChildren="false" label="CANCEL" click="currentState=''"/>
+											<components:CanvasBtn width="63" height="22" click="currentState=''"
+												btnText="CANCEL"
+												styleBtnOver="cancelConnectBtnOver"
+												styleBtnUp="cancelConnectBtnUp"
+												styleLabel="cancelConnectBtnLabel"
+												styleLabelShadow="cancelConnectBtnLabelShadow"/>
 										</mx:HBox>
 								    </mx:Canvas>
 	                                <mx:HTML id="web" creationComplete="onLaunchFlickrClick()" addedToStage="onLaunchFlickrClick()" width="100%" height="100%"/>
