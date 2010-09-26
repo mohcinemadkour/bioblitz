@@ -145,6 +145,11 @@ VBox.auth {
  	background-size: '100%';
 }
 
+.bkgHelpStepNumbers {
+ 	background-image:Embed(source="components_skin2.swf", symbol="bkgHelpStepNumbers");
+ 	background-size: '100%';
+}
+
 .spinnerBkg {
 	background-color: #000000;
 	background-alpha: 0.6;
@@ -197,6 +202,20 @@ Label.cancelConnectBtnLabelShadow {
 	fontFamily: "Arial Bold";
 	fontSize: 11;
 	color: #daa13e; 
+	font-weight: normal;
+}
+
+Label.goBackBtnLabel {
+	fontFamily: "Arial Bold";
+	fontSize: 11;
+	color: #333333; 
+	font-weight: normal;
+}
+
+Label.goBackBtnLabelShadow {
+	fontFamily: "Arial Bold";
+	fontSize: 11;
+	color: #e3e3e3; 
 	font-weight: normal;
 }
 
@@ -254,6 +273,20 @@ Label.txtInfoUpShadow {
 	font-weight: normal;
 }
 
+Label.txtInfoUpHelp {
+	font-family: "Arial Bold";
+	fontSize: 13;
+	color: #ffffff; 
+	font-weight: normal;
+}
+
+Label.txtInfoUpHelpShadow {
+	font-family: "Arial Bold";
+	fontSize: 13;
+	color: #000000;
+	font-weight: normal;
+}
+
 Label.txtEmptySectionLabel {
 	font-family: "Arial";
 	fontSize: 15;
@@ -298,6 +331,39 @@ Label.txtSuggestedNames {
 Label.txtSuggestedNamesShadow {
 	font-family: "Arial Bold";
 	fontSize: 13;
+	color: #ffffff;
+	font-weight: normal;
+}
+
+Label.txtHelpTitle {
+	font-family: "Arial Bold";
+	fontSize: 19;
+	color: #ffffff;
+	font-weight: normal;
+}
+
+Text.txtHelpStepsDescription {
+	fontSize: 15;
+	color: #ffffff;
+	font-weight: normal;
+}
+
+Text.txtHelpInfo {
+	fontSize: 13;
+	color: #ffffff;
+	font-weight: normal;
+}
+
+Label.txtHelpStepNumber {
+	font-family: "Arial Bold";
+	fontSize: 27;
+	color: #1f1f1f;
+	font-weight: normal;
+}
+
+Label.txtHelpStepNumberShadow {
+	font-family: "Arial Bold";
+	fontSize: 27;
 	color: #ffffff;
 	font-weight: normal;
 }
@@ -406,6 +472,18 @@ Label.txtSuggestedNamesShadow {
 	background-image:Embed(source="components_skin.swf", symbol="retryBtn_over");
 	background-size: '100%';
 }
+
+.goBackBtnUp {
+	background-image:Embed(source="components_skin2.swf", symbol="goBackBtn_up");
+	background-size: '100%';
+}
+
+.goBackBtnOver {
+	background-image:Embed(source="components_skin2.swf", symbol="goBackBtn_over");
+	background-size: '100%';
+}
+
+
 
 .cancelConnectBtnUp {
 	background-image:Embed(source="components_skin2.swf", symbol="cancelConnectBtn_up");
