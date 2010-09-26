@@ -81,6 +81,7 @@ package com.adobe.webapis.flickr {
 		/**
 		 * Private variable that we provide read-only access to
 		 */
+		
 		private var _auth:Auth;
 		private var _blogs:Blogs;
 		private var _contacts:Contacts;
@@ -95,6 +96,8 @@ package com.adobe.webapis.flickr {
 		private var _test:Test;
 		private var _urls:Urls;
 		public var group: Boolean;
+		public var image_url: String;
+
 		
 		public function FlickrService( api_key:String ) {
 			_api_key = api_key;

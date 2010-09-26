@@ -70,6 +70,7 @@ package com.adobe.webapis.flickr {
 		private var _notes:Array;
 		private var _tags:Array;
 		private var _urls:Array;
+		private var _farm:int;
 		
 		/**
 		 * Construct a new Photo instance
@@ -158,7 +159,24 @@ package com.adobe.webapis.flickr {
 		
 		public function set server( value:int ):void {
 			_server = value;
+		}	
+		
+		
+		/**
+		 * The farm of the photo set
+		 *
+		 * Jam
+		 */
+		 
+		public function get farm():int {
+			return _farm;
+		}
+		
+		public function set farm( value:int ):void {
+			_farm = value;
 		}		
+		
+			
 		
 		/**
 		 * The icon server of the photo

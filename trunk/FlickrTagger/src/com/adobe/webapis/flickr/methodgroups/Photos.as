@@ -36,7 +36,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package com.adobe.webapis.flickr.methodgroups {
 	
 	import com.adobe.webapis.flickr.*;
-	import com.adobe.webapis.flickr.events.FlickrResultEvent;	
+	import com.adobe.webapis.flickr.events.FlickrResultEvent;
+	
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	
@@ -802,7 +803,7 @@ package com.adobe.webapis.flickr.methodgroups {
 								   "flickr.photos.getInfo", 
 								   false,
 								   new NameValuePair( "photo_id", photo_id ),
-								   new NameValuePair( "secret", secret ) );
+								   new NameValuePair( "secret", secret ));
 		}
 		
 		/**

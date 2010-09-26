@@ -50,6 +50,7 @@ package com.adobe.webapis.flickr {
 		private var _secret:String;
 		private var _server:int;
 		private var _photos:Array;
+		private var _farm:int;
 		
 		/**
 		 * Construct a new PhotoSet instance
@@ -181,6 +182,23 @@ package com.adobe.webapis.flickr {
 		public function set secret( value:String ):void {
 			_secret = value;
 		}
+		
+		
+		/**
+		 * The farm of the photo set
+		 *
+		 * Jam
+		 */
+		 
+		public function get farm():int {
+			return _farm;
+		}
+		
+		public function set farm( value:int ):void {
+			_farm = value;
+		}		
+		
+		
 		
 		/**
 		 * The server of the photo set
