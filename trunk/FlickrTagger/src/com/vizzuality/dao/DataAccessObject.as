@@ -13,6 +13,7 @@ package com.vizzuality.dao
 	public class DataAccessObject {
 		
 		private var sentence:String="";
+		private var providedSqlStatement:SQLStatement;
 		private var dbFile:File = File.applicationStorageDirectory.resolvePath("DBV.db");
 		private var sqlConect:SQLConnection;
 		private var sqlStatement: SQLStatement;
@@ -32,8 +33,9 @@ package com.vizzuality.dao
 		public function DataAccessObject() {}
 		
 
-		public function openConnection(str:String):void {
+		public function openConnection(str:String,_providedSqlStatement:SQLStatement=null):void {
 		    sentence = str;
+			this.providedSqlStatement = _providedSqlStatement;
 		    sqlConect = new SQLConnection();
 		    sqlConect.addEventListener(SQLEvent.OPEN, sqlConnectionOpenHandler);
 		    sqlConect.addEventListener(SQLErrorEvent.ERROR, sqlConnectionErrorHandler);
@@ -41,10 +43,15 @@ package com.vizzuality.dao
 		}
 		
 		
+		
 		private function sqlConnectionOpenHandler(ev:SQLEvent):void {
-			sqlStatement = new SQLStatement();
+			if(providedSqlStatement) {
+				sqlStatement = providedSqlStatement;
+			} else {
+				sqlStatement = new SQLStatement();
+				sqlStatement.text = sentence;
+			}
 			sqlStatement.sqlConnection = sqlConect;
-			sqlStatement.text = sentence;
 			sqlStatement.addEventListener(SQLEvent.RESULT, handlerStatement);
 			sqlStatement.addEventListener(SQLErrorEvent.ERROR, sqlConnectionErrorHandler);
 			sqlStatement.execute();
@@ -79,7 +86,7 @@ package com.vizzuality.dao
 			"lat TEXT," +
 			"lon TEXT," +
 			"group_id INTEGER DEFAULT NULL," + 
-			"timestamp DATE)";
+			"timestamp DATETIME)";
 			openConnection(sqlCreate2);	
 			
 			
@@ -90,7 +97,7 @@ package com.vizzuality.dao
 			"scientific TEXT DEFAULT NULL,"+
 			"lat TEXT," +
 			"lon TEXT,"+
-			"timestamp DATE)";
+			"timestamp DATETIME)";
 			openConnection(sqlCreate3);	
 					
 		}

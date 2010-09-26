@@ -73,39 +73,43 @@
 		
 	<mx:Script>
 		<![CDATA[
-			import com.adobe.utils.DateUtil;
-			import jp.shichiseki.exif.ExifInfo;
-			import jp.shichiseki.exif.ExifLoader;
-			import com.adobe.images.JPGEncoder;
 			import __AS3__.vec.Vector;
-			import mx.events.DragEvent;
-			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
-			import mx.containers.TabNavigator;
-			import com.vizzuality.dao.FlickrUploadService;
-			import mx.states.AddChild;
-			import mx.events.CloseEvent;
-			import com.vizzuality.dao.TaxonomyResolutionService;
-			import mx.rpc.events.FaultEvent;
-			import mx.rpc.events.ResultEvent;
-            import com.adobe.crypto.MD5;
-			import mx.events.ListEvent;
-			import mx.controls.Image;
-			import mx.controls.TileList;
-			import mx.collections.ArrayCollection;
+			
+			import com.adobe.crypto.MD5;
+			import com.adobe.images.JPGEncoder;
+			import com.adobe.serialization.json.JSON;
+			import com.adobe.utils.DateUtil;
+			import com.adobe.webapis.flickr.FlickrService;
+			import com.adobe.webapis.flickr.events.*;
+			import com.adobe.webapis.flickr.methodgroups.Upload;
+			import com.vizzuality.*;
 			import com.vizzuality.dao.DataAccessObject;
+			import com.vizzuality.dao.FlickrUploadService;
+			import com.vizzuality.dao.TaxonomyResolutionService;
+			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
+			
+			import flash.data.*;
+			import flash.desktop.*;
 			import flash.filesystem.*;
 			import flash.net.FileFilter;
-			import flash.desktop.*;
-			import flash.data.*;
-		   	import mx.controls.Alert;
-		   	import com.vizzuality.*;
-		    import mx.core.Application;
-		    import com.adobe.webapis.flickr.events.*;
-			import com.adobe.webapis.flickr.FlickrService;
-			import com.adobe.webapis.flickr.methodgroups.Upload;
+			
+			import jp.shichiseki.exif.ExifInfo;
+			import jp.shichiseki.exif.ExifLoader;
+			
+			import mx.collections.ArrayCollection;
+			import mx.containers.TabNavigator;
+			import mx.controls.Alert;
+			import mx.controls.Image;
+			import mx.controls.TileList;
+			import mx.core.Application;
+			import mx.core.IFlexDisplayObject;
+			import mx.events.CloseEvent;
+			import mx.events.DragEvent;
+			import mx.events.ListEvent;
 			import mx.managers.PopUpManager;
-            import mx.core.IFlexDisplayObject;
-			import com.adobe.serialization.json.JSON;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.states.AddChild;
 			
 			
 			//progress uploading bar
@@ -528,8 +532,12 @@
 	            stream.open(newFile, FileMode.WRITE);
 	            stream.writeBytes(ba);
 	            stream.close();
-	            	
-				dao.openConnection("INSERT INTO photos (path,timestamp) VALUES('"+event.target.loader.url+"',"+((dateTimeDigitized)?("'"+DateUtil.toW3CDTF(dateTimeDigitized)+"'"):'NULL')+")");
+	            
+				var sqlStament:SQLStatement = new SQLStatement();
+				sqlStament.text ="INSERT INTO photos (path,timestamp) VALUES(:path,:timestamp)";
+				sqlStament.parameters[":path"]=event.target.loader.url;
+				sqlStament.parameters[":timestamp"]=dateTimeDigitized;
+				dao.openConnection("",sqlStament);
 			  	dao.openConnection("SELECT id FROM photos WHERE path='"+event.target.loader.url+"'");
 			  	var identification:Object = dao.dbResult[0];
 
