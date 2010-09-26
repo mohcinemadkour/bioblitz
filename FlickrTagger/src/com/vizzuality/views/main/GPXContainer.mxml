@@ -5,19 +5,21 @@
 	<mx:states>
 		<mx:State name="gpxAdded">
 			<mx:RemoveChild target="{emptySectionGpx}"/>
+			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpGreenBkg"/>
+			<mx:RemoveChild target="{dropZone}"/>
 			<mx:AddChild relativeTo="{vbox1}" position="lastChild">
 				<mx:Image id="staticMap" width="100%" height="100%" source="{staticMapUrl}" />
-				<!--maps:Map id="map" mapevent_mapready="onMapReady()" sensor="false" width="100%" height="100%" url="http://bioblitz.tdwg.org/flickrtagger" key="ABQIAAAAtDJGVn6RztUmxjnX5hMzjRTlgNwHccSvWwZGaOrPR5JguxSloxRLQb8iPFvjar21x70RCFpHWU1zvQ"/-->
 			</mx:AddChild>
-			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpGreenBkg"/>
+			<mx:SetProperty target="{label1}" name="text" value="This is the track you have loaded. XX photos had been geotagged."/>
+			<mx:SetProperty target="{label2}" name="text" value="This is the track you have loaded. XX photos had been geotagged."/>
 		</mx:State>
 		<mx:State name="gpxError">
 			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpRedBkg"/>
 			<mx:SetProperty target="{label1}" name="text">
-				<mx:value>There has been an error with the file, try again please.</mx:value>
+				<mx:value>There has been an error with the file, use another GPX file.</mx:value>
 			</mx:SetProperty>
 			<mx:SetProperty target="{label2}" name="text">
-				<mx:value>There has been an error with the file, try again please.</mx:value>
+				<mx:value>There has been an error with the file, use another GPX file.</mx:value>
 			</mx:SetProperty>
 		</mx:State>
 	</mx:states>
@@ -52,8 +54,14 @@
 				
 			
 			private function onCreationComplete():void {
- 				addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDropEnter);
-				addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDrop);
+ 				
+				if(File.applicationStorageDirectory.resolvePath("track.gpx").exists) {
+					loadGpxFile();
+				} else {
+					addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDropEnter);
+					addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDrop);
+				}
+				
  				
  				
  				
@@ -71,22 +79,28 @@
 				
 			}
 				
-			private function selectGPXFile(gpx:File):void {
+			private function selectGPXFile():void {
 				var imgFilter:FileFilter = new FileFilter("GPX Files", "*.gpx");
-		  		gpx.addEventListener(Event.SELECT, fileSelected);
-				gpx.browseForOpen("Open", [imgFilter]);
+				gpxFile.addEventListener(Event.SELECT, fileSelected);
+				gpxFile.browseForOpen("Open", [imgFilter]);
 			}
 			
 			private function fileSelected(event:Event):void {
+				
+				//Lets copy the file to our data dir
+				gpxFile.copyTo(File.applicationStorageDirectory.resolvePath("track.gpx"));
+			}
+			
+			private function loadGpxFile():void {				
 				var stream:FileStream = new FileStream();
-				stream.open(gpxFile,FileMode.READ);
+				stream.open(File.applicationStorageDirectory.resolvePath("track.gpx"),FileMode.READ);
 				var fileData:String = stream.readUTFBytes(stream.bytesAvailable);
 				stream.close();
 				var xmlData:XML = new XML(fileData);
 				
 				var gpxSrv:GPXService = new GPXService();
 				gpxSrv.addEventListener(ParseEvent.PARSE_COMPLETE,onGpxParse);
-				gpxSrv.load(xmlData);	
+				gpxSrv.load(xmlData);				
 			}
 			
 			protected function onGpxParse(event:ParseEvent):void {
@@ -99,6 +113,9 @@
 					if(event.gpx.arrTracks.length>0) {
 						gpxPath = (event.gpx.arrTracks[0] as Track).trackSegment;
 					}
+				}
+				if(gpxPath.length<2) {
+					currentState = 'gpxError';
 				}
 				geolocatePictures();
 				
@@ -189,7 +206,7 @@
 	    </mx:Canvas>
 	    <mx:List height="100%" width="100%" id="dropZone" allowDragSelection="true" backgroundAlpha="0" borderThickness="0"/>			
 	</mx:VBox>
-	<components:EmptySectionGpx  horizontalCenter="0" verticalCenter="0" width="345" height="180" visible="true" id="emptySectionGpx" clickSelect="selectGPXFile(gpxFile)" />
+	<components:EmptySectionGpx  horizontalCenter="0" verticalCenter="0" width="345" height="180" visible="true" id="emptySectionGpx" clickSelect="selectGPXFile()" />
 	
 </mx:Canvas>
 
