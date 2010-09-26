@@ -84,7 +84,9 @@ package com.vizzuality.dao
 			observationData = _observationData;
 			observationData.pathString = "";
 			var tag:String = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
-			tag = tag + ",bioblitz2010:scientificName=\""+ observationData.taxon +"\"";
+			if (observationData.taxon!=null && observationData.taxon!="Not recognized") {
+				tag = tag + ",bioblitz2010:scientificName=\""+ observationData.taxon +"\"";
+			}
 			sendImageFlickr(tag, _observationData.path);
 		}
 		
@@ -107,7 +109,9 @@ package com.vizzuality.dao
 				Application.application.principalView.imagesState.deleteGroup(observationData.group_id);
 			} else {
 				var tag:String = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
-				tag = tag + ",bioblitz2010:scientificName=\""+ observationData.taxon +"\"";
+				if (observationData.taxon!=null && observationData.taxon!="Not recognized") {
+					tag = tag + ",bioblitz2010:scientificName=\""+ observationData.taxon +"\"";
+				}
 				sendImageFlickr(tag, observationData.images[0].path);
 				observationData.images.removeItemAt(0);
 			}
@@ -124,7 +128,7 @@ package com.vizzuality.dao
 			service.secret = FlickrAuthorizationSettings.flickrAPISecret;
 			service.token = FlickrAuthorizationSettings.authToken;
 			var uploader:Upload = new Upload(service);
-			uploader.upload(imageFile,observationData.taxon,"Image uploaded at TDWGBioBlitz 2010",tag,true);
+			uploader.upload(imageFile,((observationData.taxon!=null && observationData.taxon!="Not recognized")?observationData.taxon:""),"Image uploaded at TDWGBioBlitz 2010",tag,true);
 		}
 		
 		
@@ -157,21 +161,17 @@ package com.vizzuality.dao
 		}
 		
 		
-		private function setImageLocation(photoID:String,path:String):void {
-			
-			var dao: DataAccessObject = new DataAccessObject();
-			var sqlSentence: String = "SELECT lat,lon FROM photos WHERE path = '"+path+"'";
-			dao.openConnection(sqlSentence);
-			var imageData:Object = dao.dbResult;
+		private function setImageLocation(photoID:String, path:String):void {
 
-    		if (imageData[0].lat != null) {
+
+    		if (observationData.lat != null) {
 	    		var flickr: FlickrService = new FlickrService(FlickrAuthorizationSettings.flickrAPIKey);
 	    		flickr.secret = FlickrAuthorizationSettings.flickrAPISecret;
 	    		flickr.token  = FlickrAuthorizationSettings.flickrAPIKey;
 	    		flickr.permission = AuthPerm.WRITE;
 	    		
 	    		flickr.addEventListener(FlickrResultEvent.SET_LOCATION_RESULT,onFlickrSetLocationResult);
-	    		flickr.photos.setLocation(photoID,imageData[0].lat,imageData[0].lon,imageData[0].zoom);		
+	    		flickr.photos.setLocation(photoID,observationData.lat,observationData.lon);		
     		}
 			
 			if (modeUpload==1) {
