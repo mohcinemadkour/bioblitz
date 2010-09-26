@@ -1,25 +1,25 @@
 /*New code*/
 /*Embed fonts*/
 @font-face {
-    src: url(components_skin.swf);
+    src: url(components_skin2.swf);
     fontFamily: "Arial";
     fontWeight: normal;
 }
 
 @font-face {
-    src: url(components_skin.swf);
+    src: url(components_skin2.swf);
     fontFamily: "Arial Bold";
     fontWeight: normal;
 }
 
 @font-face {
-    src: url(components_skin.swf);
+    src: url(components_skin2.swf);
     fontFamily: "Arial Bold Italic";
     fontWeight: normal;
 }
 
 @font-face {
-    src: url(components_skin.swf);
+    src: url(components_skin2.swf);
     fontFamily: "Arial Italic";
     fontWeight: normal;
 }
@@ -36,19 +36,19 @@ WindowedApplication {
 
 
 ScrollBar {
-	downArrowDisabledSkin: Embed(source="components_skin.swf", symbol="ScrollArrowDown_Skin");
-	downArrowDownSkin: Embed(source="components_skin.swf", symbol="ScrollArrowDown_Skin");
-	downArrowOverSkin: Embed(source="components_skin.swf", symbol="ScrollArrowDown_Skin");
-	downArrowUpSkin: Embed(source="components_skin.swf", symbol="ScrollArrowDown_Skin");
-	thumbDownSkin: Embed(source="components_skin.swf", symbol="ScrollThumb_downSkin");
-	thumbIcon: Embed(source="components_skin.swf", symbol="ScrollBar_thumbIcon");
-	thumbOverSkin: Embed(source="components_skin.swf", symbol="ScrollThumb_overSkin");
-	thumbUpSkin: Embed(source="components_skin.swf", symbol="ScrollThumb_upSkin");
-	trackSkin: Embed(source="components_skin.swf", symbol="ScrollTrack_skin");
-	upArrowDisabledSkin: Embed(source="components_skin.swf", symbol="ScrollArrowUp_Skin");
-	upArrowDownSkin: Embed(source="components_skin.swf", symbol="ScrollArrowUp_Skin");
-	upArrowOverSkin: Embed(source="components_skin.swf", symbol="ScrollArrowUp_Skin"); 
-	upArrowUpSkin: Embed(source="components_skin.swf", symbol="ScrollArrowUp_Skin"); 
+	upArrowDisabledSkin: Embed(source="components_skin2.swf", symbol="ScrollArrowUp_Skin");
+	upArrowDownSkin: Embed(source="components_skin2.swf", symbol="ScrollArrowUp_Skin");
+	upArrowOverSkin: Embed(source="components_skin2.swf", symbol="ScrollArrowUp_Skin"); 
+	upArrowUpSkin: Embed(source="components_skin2.swf", symbol="ScrollArrowUp_Skin"); 
+	downArrowDisabledSkin: Embed(source="components_skin2.swf", symbol="ScrollArrowDown_Skin");
+	downArrowDownSkin: Embed(source="components_skin2.swf", symbol="ScrollArrowDown_Skin");
+	downArrowOverSkin: Embed(source="components_skin2.swf", symbol="ScrollArrowDown_Skin");
+	downArrowUpSkin: Embed(source="components_skin2.swf", symbol="ScrollArrowDown_Skin");
+	thumbIcon: Embed(source="components_skin2.swf", symbol="ScrollBar_thumbIcon");
+	thumbUpSkin: Embed(source="components_skin2.swf", symbol="ScrollThumb_upSkin");
+	thumbOverSkin: Embed(source="components_skin2.swf", symbol="ScrollThumb_overSkin");
+	thumbDownSkin: Embed(source="components_skin2.swf", symbol="ScrollThumb_downSkin");
+	trackSkin: Embed(source="components_skin2.swf", symbol="ScrollTrack_skin");
 }
 
 /*backgrounds*/
@@ -74,7 +74,7 @@ Canvas.authBkg {
 }
 
 Canvas.bkgAuthOption {
-	background-image:Embed(source="components_skin.swf", symbol="bkgAuthOption");
+	background-image:Embed(source="components_skin2.swf", symbol="bkgAuthOption");
 }
 
 Tilelist.imagesContent {
@@ -91,22 +91,22 @@ VBox.auth {
 }
 
 .infoUpGreenBkg {
-	background-image:Embed(source="components_skin.swf", symbol="infoUpGreenBkg");
+	background-image:Embed(source="components_skin2.swf", symbol="infoUpGreenBkg");
  	background-size: '100%';
 }
 
 .infoUpRedBkg {
- 	background-image:Embed(source="components_skin.swf", symbol="infoUpRedBkg");
+ 	background-image:Embed(source="components_skin2.swf", symbol="infoUpRedBkg");
  	background-size: '100%';
 }
 
 .infoUpOrangeBkg {
- 	background-image:Embed(source="components_skin.swf", symbol="infoUpOrangeBkg");
+ 	background-image:Embed(source="components_skin2.swf", symbol="infoUpOrangeBkg");
  	background-size: '100%';
 }
 
 .infoUpGreyBkg {
- 	background-image:Embed(source="components_skin.swf", symbol="infoUpGreyBkg");
+ 	background-image:Embed(source="components_skin2.swf", symbol="infoUpGreyBkg");
  	background-size: '100%';
 }
 
@@ -116,12 +116,12 @@ VBox.auth {
 }
 
 .tooltipRedBkg {
- 	background-image:Embed(source="components_skin.swf", symbol="tooltipRedBkg");
+ 	background-image:Embed(source="components_skin2.swf", symbol="tooltipRedBkg");
  	background-size: '100%';
 }
 
 .tooltipGreyBkg {
- 	background-image:Embed(source="components_skin.swf", symbol="tooltipGreyBkg");
+ 	background-image:Embed(source="components_skin2.swf", symbol="tooltipGreyBkg");
  	background-size: '100%';
 }
 	
@@ -464,12 +464,12 @@ Label.txtHelpStepNumberShadow {
 
 
 .retryBtnUp {
-	background-image:Embed(source="components_skin.swf", symbol="retryBtn_up");
+	background-image:Embed(source="components_skin2.swf", symbol="retryBtn_up");
 	background-size: '100%';
 }
 
 .retryBtnOver {
-	background-image:Embed(source="components_skin.swf", symbol="retryBtn_over");
+	background-image:Embed(source="components_skin2.swf", symbol="retryBtn_over");
 	background-size: '100%';
 }
 
@@ -516,10 +516,10 @@ Label.txtHelpStepNumberShadow {
 }
 
 .uploadGreenBtn {
-	up-skin: Embed(source="components_skin.swf", symbol="uploadGreenBtn_up");
-	over-skin: Embed(source="components_skin.swf", symbol="uploadGreenBtn_over");
-	down-skin: Embed(source="components_skin.swf", symbol="uploadGreenBtn_down");
-	disabled-skin: Embed(source="components_skin.swf", symbol="uploadGreenBtn_disabled");
+	up-skin: Embed(source="components_skin2.swf", symbol="uploadGreenBtn_up");
+	over-skin: Embed(source="components_skin2.swf", symbol="uploadGreenBtn_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="uploadGreenBtn_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="uploadGreenBtn_disabled");
 }
 
 .deleteRedBtn {
@@ -579,14 +579,14 @@ Label.txtHelpStepNumberShadow {
 
 .authOptionRadio { 
 	skin: ClassReference(null);
-	upIcon: Embed(source="components_skin.swf", symbol="authOptionRadioUnselected_up");
-	overIcon: Embed(source="components_skin.swf", symbol="authOptionRadioUnselected_over");
-	downIcon: Embed(source="components_skin.swf", symbol="authOptionRadioUnselected_down");
-	disabledIcon: Embed(source="components_skin.swf", symbol="authOptionRadioUnselected_disabled");
-	selected-up-icon: Embed(source="components_skin.swf", symbol="authOptionRadioSelected_up");
-	selected-over-icon: Embed(source="components_skin.swf", symbol="authOptionRadioSelected_over");
-	selected-down-icon: Embed(source="components_skin.swf", symbol="authOptionRadioSelected_down");
-	selected-disabled-icon: Embed(source="components_skin.swf", symbol="authOptionRadioSelected_disabled");
+	upIcon: Embed(source="components_skin2.swf", symbol="authOptionRadioUnselected_up");
+	overIcon: Embed(source="components_skin2.swf", symbol="authOptionRadioUnselected_over");
+	downIcon: Embed(source="components_skin2.swf", symbol="authOptionRadioUnselected_down");
+	disabledIcon: Embed(source="components_skin2.swf", symbol="authOptionRadioUnselected_disabled");
+	selected-up-icon: Embed(source="components_skin2.swf", symbol="authOptionRadioSelected_up");
+	selected-over-icon: Embed(source="components_skin2.swf", symbol="authOptionRadioSelected_over");
+	selected-down-icon: Embed(source="components_skin2.swf", symbol="authOptionRadioSelected_down");
+	selected-disabled-icon: Embed(source="components_skin2.swf", symbol="authOptionRadioSelected_disabled");
 }
 
 .authTxtInput {
