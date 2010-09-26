@@ -12,6 +12,9 @@
 			</mx:AddChild>
 			<mx:SetProperty target="{label1}" name="text" value="This is the track you have loaded. XX photos had been geotagged."/>
 			<mx:SetProperty target="{label2}" name="text" value="This is the track you have loaded. XX photos had been geotagged."/>
+			<mx:RemoveChild target="{dropZone}"/>
+			<mx:SetProperty target="{label1}" name="text" value="This is your GPX Map"/>
+			<mx:SetProperty target="{label2}" name="text" value="This is your GPX Map"/>
 		</mx:State>
 		<mx:State name="gpxError">
 			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpRedBkg"/>
@@ -131,6 +134,7 @@
 				
 								
 				currentState="gpxAdded";
+				Application.application.principalView.arrow.source= "com/vizzuality/assets/green_arrow.png";
 				
 				
 			}
@@ -170,6 +174,7 @@
 					pic.lon = closestWp.longitude;
 					pic.altitude = closestWp.elevation;					
 				}
+				Application.application.principalView.imagesState.refreshTilelist();
 			}
 			
 			
@@ -189,7 +194,7 @@
 			    		return;
 			    	}				       
 			    }
-			    
+			    Application.application.principalView.arrow.source= "com/vizzuality/assets/red_arrow.png";
 			    currentState = 'gpxError';
 			}
 			

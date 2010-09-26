@@ -130,12 +130,12 @@
 			
 		 	public function refreshTilelist():void {
 		 		sqlArray = new ArrayCollection();
-		 		//GEt first images not grouped
-		 		dao.openConnection("SELECT scientific,path,id,lat,lon, (select count(id) from photos where group_id=g.id) AS group_total FROM groups as g");
+		 		//Get first images not grouped
+		 		dao.openConnection("SELECT scientific,path,id,lat,lon,timestamp, (select count(id) from photos where group_id=g.id) AS group_total FROM groups as g");
 				sqlArray = dao.dbResult;
 
-		 		//GEt second images not grouped
-				dao.openConnection("SELECT scientific,path,id,lat,lon FROM photos WHERE group_id is NULL");
+		 		//Get second images not grouped
+				dao.openConnection("SELECT scientific,path,id,lat,lon,timestamp FROM photos WHERE group_id is NULL");
 				sqlArray = new ArrayCollection(sqlArray.source.concat(dao.dbResult.source));
 				chooseState();
 		 	}
@@ -230,28 +230,6 @@
 
 
 			
-			private function insertImage(object:Object):void {
-				dao.openConnection("INSERT INTO photos (path) VALUES('"+object.url+"')");
-			  	dao.openConnection("SELECT id FROM photos WHERE path='"+ object.url+"'");
-			  	var identification:Object = dao.dbResult[0];
-				var original:File = File.userDirectory.resolvePath(object.nativePath);
-			  	var newFile:File;
-			  	newFile = File.applicationStorageDirectory.resolvePath(imagesDir + "/"+ identification.id +'.'+ object.extension);
-			 	dao.openConnection("UPDATE photos SET path='"+newFile.url+"' WHERE path='"+object.url+"'");
-			  	original.copyTo(newFile, true);
-			  	
-			  	//Creation of new item
-			  	var obj: Object = new Object();
-			  	obj.path = newFile.url;
-			  	obj.scientific = null;
-			  	obj.lat = null;
-			  	obj.lon = null;
-			  	obj.id = identification.id;
-			  	sqlArray.addItem(obj);
-			  	
-			  	chooseState();
-			}
-			
 			
 			
 			/* Check and choose state functions */
@@ -325,7 +303,6 @@
 						if (tilelist.selectedItems[j].group_total==undefined) {
 							photos_ids_str += tilelist.selectedItems[j].id + ',';
 							imagesIdsArray.push(tilelist.selectedItems[j].id);
-							
 						} else {
 							tilelist.selectedItems[j].group_total = tilelist.selectedItems[j].group_total + isThereGroup.selected_count;
 						}
@@ -370,8 +347,8 @@
 					var obj: Object = new Object();
 			  		obj.path = group_data.path;
 			  		obj.scientific = group_data.scienfitic;
-			  		obj.lat = group_data.lat;
-			  		obj.lon = group_data.lon;
+			  		obj.lat = (group_data.lat==undefined)?null:group_data.lat;
+			  		obj.lon = (group_data.lon==undefined)?null:group_data.lon;
 			  		obj.id = group_identification;
 			  		obj.group_total = group_data.count;
 			  		sqlArray.addItem(obj);					
@@ -412,11 +389,13 @@
 			}
 			
 			private function fileSelected(event:FileListEvent):void {
+				currentState = "processingImages";
 				var files:Array = event.files as Array;
-				var i: int = files.length;
-			  	for (var j:int = 0; j < i; j++) {
-				    insertImage(files[j]);
-				}
+				getImageFilesRecursively(files);
+				var numItems:int = imagePaths.length;  
+				processingTimer.addEventListener(TimerEvent.TIMER,loadImage);
+				processingTimer.start();
+				tilelist.selectedIndices = new Array();
 			}
 			
 			
@@ -437,14 +416,10 @@
 				NativeDragManager.dropAction = NativeDragActions.COPY;
 			    var droppedFiles:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;	    
 			    getImageFilesRecursively(droppedFiles);		  
-			    
 			    var numItems:int = imagePaths.length;  
-				
 				processingTimer.addEventListener(TimerEvent.TIMER,loadImage);
 				processingTimer.start();				
-				
-				
-			   // tilelist.selectedIndices = new Array();
+				tilelist.selectedIndices = new Array();
 			}
 			
 			private function getImageUrlInsideApp(externalPath:String):String {
@@ -567,10 +542,9 @@
 
 		]]>
 	</mx:Script>
+	
 	<mx:DropShadowFilter id="headerShadow" alpha="0.3" color="#000000" angle="90" blurY="10" distance="8"/>
-	
 	<mx:Canvas width="100%" height="100%" top="37"/>
-	
 	<mx:VBox width="100%" height="100%" verticalGap="0" horizontalAlign="center" id="vbox1">
 		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%" id="canvas1" verticalScrollPolicy="off" horizontalScrollPolicy="off">
 			<mx:HBox verticalCenter="0" id="headerHBox" width="190%" horizontalGap="3" verticalAlign="middle">
@@ -579,14 +553,12 @@
 	    			<mx:Label text="Add some photos to FlickrTagger" x="10" verticalCenter="0" styleName="txtInfoUp" id="label1" left="13"/>
 				</mx:Canvas>
 			</mx:HBox>
-
 	    </mx:Canvas>
 	    <mx:Spacer height="10"/>
 		<comp:TileListFlickTagger backgroundAlpha="0" selectionColor="#4a4a4a" selectionDisabledColor="#4a4a4a" rollOverColor="#4a4a4a" id="tilelist"  dataProvider="{sqlArray}"
 				itemRenderer="com.vizzuality.views.main.components.ImageRenderer" minWidth="440" width="100%" height="100%" borderThickness="0" 
 				itemClick="checkMultipleSelection(event)" allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true" styleName="imagesContent"/>					
 	</mx:VBox>
-	
 	<components:EmptySectionPhoto  horizontalCenter="0" verticalCenter="0" width="315" height="180" visible="true" id="emptySelectionPhoto" addImage="selectImageFile(fileToOpen)"/>
 	
 	
