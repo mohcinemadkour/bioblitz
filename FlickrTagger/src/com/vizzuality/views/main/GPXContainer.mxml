@@ -100,6 +100,7 @@
 						gpxPath = (event.gpx.arrTracks[0] as Track).trackSegment;
 					}
 				}
+				geolocatePictures();
 				
 				var latlngs:Vector.<LatLng> = new Vector.<LatLng>;
 				
@@ -111,7 +112,6 @@
 				staticMapUrl="http://maps.google.com/maps/api/staticmap?maptype=roadmap&path=color:0xff0000ff|weight:5|enc:"+encoded+
 					"&size=490x590&sensor=false";
 				
-				geolocatePictures();
 								
 				currentState="gpxAdded";
 				
@@ -125,9 +125,13 @@
 				var maxTime:Date = (gpxPath[pathLen-1] as Waypoint).time;
 				
 				//Loop over pics
-				var sql:String ="SELECT * from photos where lat is null " +
-					"and timestamp >='"+DateUtil.toW3CDTF(minTime)+"' and timestamp<='"+DateUtil.toW3CDTF(maxTime)+"'";
-				dao.openConnection(sql);
+				var sqlStatement:SQLStatement = new SQLStatement();
+				sqlStatement.text="SELECT * from photos where lat is null ";
+					//"and timestamp >=:minTime and timestamp<= :maxTime";
+				//sqlStatement.parameters[":minTime"]=minTime;
+				//sqlStatement.parameters[":maxTime"]=maxTime;
+				
+				dao.openConnection("",sqlStatement);
 				var pics:Array = dao.dbResult.source;
 				for each(var pic:Object in pics) {
 					var firstClosestWayPointIndex:uint=0;
