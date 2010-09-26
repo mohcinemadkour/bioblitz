@@ -616,7 +616,7 @@ package com.adobe.webapis.flickr.methodgroups {
 				photo.server = parseInt( p.@server );
 				photo.ownerName = p.@username.toString();
 				photo.title = p.@title.toString();
-								
+				photo.farm = p.@farm.toString();
 				photos.push( photo );
 			}
 			
@@ -676,6 +676,9 @@ package com.adobe.webapis.flickr.methodgroups {
 			photo.secret = xml.photo.@secret.toString();
 			if ( xml.photo.@server.toString() ) {
 				photo.server = parseInt( xml.photo.@server );
+			}
+			if ( xml.photo.@farm.toString() ) {
+				photo.farm = parseInt( xml.photo.@farm );
 			}
 			photo.isFavorite = xml.photo.@isfavorite.toString == "1";
 			if ( xml.photo.@license.toString() ) {
@@ -878,6 +881,7 @@ package com.adobe.webapis.flickr.methodgroups {
 				photoSet.photoCount = parseInt( s.@photos.toString() );	
 				photoSet.secret = s.@secret.toString();
 				photoSet.server = parseInt( s.@server.toString() );	
+				photoSet.farm = parseInt( s.@farm.toString() );
 				photoSet.title = s.title.toString();
 				photoSet.description = s.description.toString();
 				

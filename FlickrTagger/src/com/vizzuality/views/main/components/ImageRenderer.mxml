@@ -100,8 +100,10 @@
                     private function changeColorInput():void {
                         if(textInput =='' || textInput == 'Not recognized') {
                         	inputColor = 0x000000;
+                        	shadowVisible = true;
                         } else {
                             inputColor = 0xBBBBBB;
+                            shadowVisible = false;
                         }
                     }
                     
@@ -143,15 +145,18 @@
          				}
                     }
                     
+                    
+                    
+                    
                     private function uploadImage():void {
                         uploading = true;
                         this.data.uploading = true;
                         scientificNameInput.setStyle('backgroundAlpha','1');
                         var upFlickr: FlickrUploadService = new FlickrUploadService();
                         if (this.data.group_total == undefined) {
-                        	upFlickr.resolveTagsFlickr(data.path,scientificNameInput.text);
+                        	upFlickr.resolveTagsFlickr(this.data);
                         } else {
-                        	upFlickr.resolveGroupTagsFlickr(this.data.id,scientificNameInput.text);
+                        	upFlickr.resolveGroupTagsFlickr(this.data);
                         }
                     }
    
