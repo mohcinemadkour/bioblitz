@@ -24,25 +24,31 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import net.duncanhall.gmaps.PolylineEncoder;
 			import __AS3__.vec.Vector;
-			import com.google.maps.LatLng;
-			import com.adobe.gpslib.gpx.Track;
-			import com.adobe.gpslib.gpx.Waypoint;
+			
 			import com.adobe.gpslib.GPX;
 			import com.adobe.gpslib.GPXService;
+			import com.adobe.gpslib.gpx.Track;
+			import com.adobe.gpslib.gpx.Waypoint;
 			import com.adobe.gpslib.gpx.events.ParseEvent;
+			import com.adobe.utils.DateUtil;
+			import com.google.maps.LatLng;
+			import com.vizzuality.dao.DataAccessObject;
 			
+			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.core.Application;
 			import mx.core.Window;
 			import mx.events.FileEvent;
+			
+			import net.duncanhall.gmaps.PolylineEncoder;
 			
 			
 			private var gpxFile:File = File.documentsDirectory;
 			private var gpx: GPX = new GPX(); 
 			public var gpxPath:Array;
 			[Bindable] private var staticMapUrl:String;
+			private var dao: DataAccessObject= new DataAccessObject();
 				
 			
 			private function onCreationComplete():void {
@@ -95,7 +101,6 @@
 					}
 				}
 				
-				var allCoords:String ="";
 				var latlngs:Vector.<LatLng> = new Vector.<LatLng>;
 				
 				for each(var wayPoint:Waypoint in gpxPath) {
@@ -105,7 +110,8 @@
 				
 				staticMapUrl="http://maps.google.com/maps/api/staticmap?maptype=roadmap&path=color:0xff0000ff|weight:5|enc:"+encoded+
 					"&size=490x590&sensor=false";
-					
+				
+				geolocatePictures();
 								
 				currentState="gpxAdded";
 				
@@ -113,7 +119,36 @@
 			}
 			
 			private function geolocatePictures():void {
+				var pathLen:int = gpxPath.length;
+				//get GPX timespan
+				var minTime:Date = (gpxPath[0] as Waypoint).time;
+				var maxTime:Date = (gpxPath[pathLen-1] as Waypoint).time;
 				
+				//Loop over pics
+				var sql:String ="SELECT * from photos where lat is null " +
+					"and timestamp >='"+DateUtil.toW3CDTF(minTime)+"' and timestamp<='"+DateUtil.toW3CDTF(maxTime)+"'";
+				dao.openConnection(sql);
+				var pics:Array = dao.dbResult.source;
+				for each(var pic:Object in pics) {
+					var firstClosestWayPointIndex:uint=0;
+					var counter:uint=0;
+					var minimumDistance:Number=999999999999999999;
+					for each(var wp:Waypoint in gpxPath) {
+						var distance:Number= Math.abs((pic.timestamp as Date).time - wp.time.time);
+						if(distance < minimumDistance) {
+							minimumDistance=distance;
+						} else {
+							break;
+						}
+						counter++;	
+					}		
+					counter=(counter==0)?0:counter-1;
+					var closestWp:Waypoint = gpxPath[counter];
+					dao.openConnection("UPDATE photos set lat="+closestWp.latitude+", lon="+closestWp.longitude+" WHERE path='"+pic.path+"'");
+					pic.lat = closestWp.latitude;
+					pic.lon = closestWp.longitude;
+					pic.altitude = closestWp.elevation;					
+				}
 			}
 			
 			
