@@ -21,7 +21,7 @@
 				<mx:SetProperty target="{button1}" name="styleName" value="sectionUpBtnPhoto"/>
 				<mx:SetProperty target="{button3}" name="styleName" value="selectedBtnHelp"/>
 				<mx:SetStyle target="{arrow}" name="horizontalCenter" value="60"/>
-				<mx:SetProperty target="{arrow}" name="source" value="@Embed('com/vizzuality/assets/grey_arrow.png')"/>
+				<mx:SetProperty target="{arrow}" name="source" value="@Embed('com/vizzuality/assets/orange_arrow.png')"/>
 			</mx:State>
 		</mx:states>
 		
