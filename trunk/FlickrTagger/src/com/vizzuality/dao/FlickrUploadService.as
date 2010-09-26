@@ -184,6 +184,10 @@ package com.vizzuality.dao
 			DockIcon(NativeApplication.nativeApplication.icon).bounce();
 		}	
 		
-		private function onFlickrSetLocationResult(ev: FlickrResultEvent):void {}	
+		private function onFlickrSetLocationResult(ev: FlickrResultEvent):void {
+			trace(ev.success);
+		}	
+		
+
 	}
 }
