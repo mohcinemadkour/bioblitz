@@ -254,10 +254,10 @@
 			 
 		 	public function chooseState():void {
 		 		if (sqlArray.length!=0) {
-		 			Application.application.principalView.arrow.source = "@Embed('com/vizzuality/assets/orange_arrow.png')";
+		 			Application.application.principalView.arrow.source = "com/vizzuality/assets/orange_arrow.png";
 					currentState = "imagesAdded";
 				} else {
-		 			Application.application.principalView.arrow.source = "@Embed('com/vizzuality/assets/orange_arrow.png')";
+		 			Application.application.principalView.arrow.source = "com/vizzuality/assets/orange_arrow.png";
 					currentState = "";
 				}
 		 	}			
@@ -267,10 +267,10 @@
 				if (tilelist.selectedItems.length>1) {
 					var result:Object = checkNoMoreTwoGroupsSelected();
 					if (!result.valid) {
-		 				Application.application.principalView.arrow.source = "@Embed('com/vizzuality/assets/red_arrow.png')";
+		 				Application.application.principalView.arrow.source = "com/vizzuality/assets/red_arrow.png";
 						currentState = "banSelection";
 					} else {
-		 				Application.application.principalView.arrow.source = "@Embed('com/vizzuality/assets/yellow_arrow.png')";
+		 				Application.application.principalView.arrow.source = "com/vizzuality/assets/yellow_arrow.png";
 						currentState = "multipleSelection";
 						label1.text = "You have selected " + result.count;
 						label2.text = "You have selected " + result.count;						
