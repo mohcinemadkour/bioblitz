@@ -142,7 +142,7 @@
 
                     
                     private function changeScientificName():void {
-                        if (scientificNameInput.text == "Not recognized") {
+                        if (scientificNameInput.text == "Not recognized" && !uploading) {
                                 scientificNameInput.text = "";
                         }
                     }

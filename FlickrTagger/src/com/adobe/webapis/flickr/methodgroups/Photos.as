@@ -1369,7 +1369,7 @@ package com.adobe.webapis.flickr.methodgroups {
 		
 		public function setLocation( photo_id:String, lat:Number, lon:Number, accuracy:Number = 1 ):void { 
              // Let the Helper do the work to invoke the method 
-             MethodGroupHelper.invokeMethod( _service, setLocationResult, "flickr.photos.geo.setLocation", false, new NameValuePair( "photo_id", photo_id ), 
+             MethodGroupHelper.invokeMethod( _service, setLocationResult, "flickr.photos.geo.setLocation", true, new NameValuePair( "photo_id", photo_id ), 
              	new NameValuePair( "lat", lat.toString()), new NameValuePair( "lon", lon.toString() ), new NameValuePair( "accuracy", accuracy.toString() ) ); 
         } 
         
