@@ -73,43 +73,39 @@
 		
 	<mx:Script>
 		<![CDATA[
-			import __AS3__.vec.Vector;
-			
-			import com.adobe.crypto.MD5;
-			import com.adobe.images.JPGEncoder;
-			import com.adobe.serialization.json.JSON;
 			import com.adobe.utils.DateUtil;
-			import com.adobe.webapis.flickr.FlickrService;
-			import com.adobe.webapis.flickr.events.*;
-			import com.adobe.webapis.flickr.methodgroups.Upload;
-			import com.vizzuality.*;
-			import com.vizzuality.dao.DataAccessObject;
-			import com.vizzuality.dao.FlickrUploadService;
-			import com.vizzuality.dao.TaxonomyResolutionService;
-			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
-			
-			import flash.data.*;
-			import flash.desktop.*;
-			import flash.filesystem.*;
-			import flash.net.FileFilter;
-			
 			import jp.shichiseki.exif.ExifInfo;
 			import jp.shichiseki.exif.ExifLoader;
-			
-			import mx.collections.ArrayCollection;
-			import mx.containers.TabNavigator;
-			import mx.controls.Alert;
-			import mx.controls.Image;
-			import mx.controls.TileList;
-			import mx.core.Application;
-			import mx.core.IFlexDisplayObject;
-			import mx.events.CloseEvent;
+			import com.adobe.images.JPGEncoder;
+			import __AS3__.vec.Vector;
 			import mx.events.DragEvent;
-			import mx.events.ListEvent;
-			import mx.managers.PopUpManager;
+			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
+			import mx.containers.TabNavigator;
+			import com.vizzuality.dao.FlickrUploadService;
+			import mx.states.AddChild;
+			import mx.events.CloseEvent;
+			import com.vizzuality.dao.TaxonomyResolutionService;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
-			import mx.states.AddChild;
+            import com.adobe.crypto.MD5;
+			import mx.events.ListEvent;
+			import mx.controls.Image;
+			import mx.controls.TileList;
+			import mx.collections.ArrayCollection;
+			import com.vizzuality.dao.DataAccessObject;
+			import flash.filesystem.*;
+			import flash.net.FileFilter;
+			import flash.desktop.*;
+			import flash.data.*;
+		   	import mx.controls.Alert;
+		   	import com.vizzuality.*;
+		    import mx.core.Application;
+		    import com.adobe.webapis.flickr.events.*;
+			import com.adobe.webapis.flickr.FlickrService;
+			import com.adobe.webapis.flickr.methodgroups.Upload;
+			import mx.managers.PopUpManager;
+            import mx.core.IFlexDisplayObject;
+			import com.adobe.serialization.json.JSON;
 			
 			
 			//progress uploading bar
@@ -532,12 +528,8 @@
 	            stream.open(newFile, FileMode.WRITE);
 	            stream.writeBytes(ba);
 	            stream.close();
-	            
-				var sqlStament:SQLStatement = new SQLStatement();
-				sqlStament.text ="INSERT INTO photos (path,timestamp) VALUES(:path,:timestamp)";
-				sqlStament.parameters[":path"]=event.target.loader.url;
-				sqlStament.parameters[":timestamp"]=dateTimeDigitized;
-				dao.openConnection("",sqlStament);
+	            	
+				dao.openConnection("INSERT INTO photos (path,timestamp) VALUES('"+event.target.loader.url+"',"+((dateTimeDigitized)?("'"+DateUtil.toW3CDTF(dateTimeDigitized)+"'"):'NULL')+")");
 			  	dao.openConnection("SELECT id FROM photos WHERE path='"+event.target.loader.url+"'");
 			  	var identification:Object = dao.dbResult[0];
 
@@ -573,7 +565,7 @@
 	
 	<mx:VBox width="100%" height="100%" verticalGap="0" horizontalAlign="center" id="vbox1">
 		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%" id="canvas1" verticalScrollPolicy="off" horizontalScrollPolicy="off">
-			<mx:HBox verticalCenter="0" id="headerHBox" width="190%" horizontalGap="3">
+			<mx:HBox verticalCenter="0" id="headerHBox" width="190%" horizontalGap="3" verticalAlign="middle">
 				<mx:Canvas  id="canvas2" height="37">
 	    			<mx:Label text="Add some photos to FlickrTagger" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" id="label2" left="14"/>
 	    			<mx:Label text="Add some photos to FlickrTagger" x="10" verticalCenter="0" styleName="txtInfoUp" id="label1" left="13"/>
