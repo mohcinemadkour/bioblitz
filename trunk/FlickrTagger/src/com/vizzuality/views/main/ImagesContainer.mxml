@@ -73,6 +73,7 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import com.adobe.utils.DateUtil;
 			import jp.shichiseki.exif.ExifInfo;
 			import jp.shichiseki.exif.ExifLoader;
 			import com.adobe.images.JPGEncoder;
@@ -124,6 +125,7 @@
 			
 			
 		 	public function refreshTilelist():void {
+		 		sqlArray = new ArrayCollection();
 		 		//GEt first images not grouped
 		 		dao.openConnection("SELECT scientific,path,id, (select count(id) from photos where group_id=g.id) AS group_total FROM groups as g");
 				sqlArray = dao.dbResult;
@@ -379,7 +381,6 @@
 			
 			
 			
-			
 			private function existGroupOnSelectedItems():Object {
 				var result:Object = new Object();
 				result.group = false;
@@ -523,24 +524,23 @@
 	            var ba:ByteArray = jpg.encode(newBitmapData);
 	            var stream:FileStream = new FileStream();
 	            var newFile:File = new File();
-	            newFile.url = getImageUrlInsideApp(event.target.url as String);
+	            newFile.url = getImageUrlInsideApp(event.target.loader.url as String);
 	            stream.open(newFile, FileMode.WRITE);
 	            stream.writeBytes(ba);
 	            stream.close();
 	            	
-	            	
-				dao.openConnection("INSERT INTO photos (path,date) VALUES('"+event.target.url+"','"+dateTimeDigitized+"')");
-			  	dao.openConnection("SELECT id FROM photos WHERE path='"+event.target.url+"'");
+				dao.openConnection("INSERT INTO photos (path,timestamp) VALUES('"+event.target.loader.url+"',"+((dateTimeDigitized)?("'"+DateUtil.toW3CDTF(dateTimeDigitized)+"'"):'NULL')+")");
+			  	dao.openConnection("SELECT id FROM photos WHERE path='"+event.target.loader.url+"'");
 			  	var identification:Object = dao.dbResult[0];
 
 	            //Creation of new item
 			  	var obj: Object = new Object();
-			  	obj.path = event.target.url;
+			  	obj.path = event.target.loader.url;
 			  	obj.scientific = null;
 			  	obj.lat = null;
 			  	obj.lon = null;
 			  	obj.id = identification.id;
-			  	obj.date = dateTimeDigitized;
+			  	obj.timestamp = dateTimeDigitized;
 			  	sqlArray.addItem(obj);	
 	            
 	            isProcessingImage=false;		

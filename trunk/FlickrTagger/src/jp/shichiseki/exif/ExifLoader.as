@@ -1,11 +1,11 @@
 package jp.shichiseki.exif {
 	import flash.display.Loader;
-	import flash.system.LoaderContext;
-	import flash.utils.ByteArray;
+	import flash.events.*;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
-	import flash.events.*;
+	import flash.system.LoaderContext;
+	import flash.utils.ByteArray;
 
 	/**
 	 * The ExifLoader is a sub class of <code>Loader</code> class which is used to load JPG
@@ -36,6 +36,7 @@ package jp.shichiseki.exif {
 		 * Returns a ExifInfo object containing information about loaded JPG image file.
 		 */
 		public function get exif():ExifInfo { return _exif; }
+		public var url:String;
 		private var _urlLoader:URLLoader;
 		private var _context:LoaderContext;
 
@@ -44,6 +45,7 @@ package jp.shichiseki.exif {
 		 */
 		override public function load(request:URLRequest, context:LoaderContext=null):void {
 			_context = context;
+			url = request.url;
 
 			_urlLoader = new URLLoader();
 			_urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
