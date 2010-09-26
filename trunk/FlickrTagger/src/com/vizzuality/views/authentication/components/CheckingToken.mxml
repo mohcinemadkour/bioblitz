@@ -16,7 +16,7 @@
 				<mx:Label x="26" y="10" text="Ups!! You aren't connect currently to internet" width="258" textAlign="center"/>
 			</mx:AddChild>
 			<mx:SetProperty name="width" value="310"/>
-			<mx:SetProperty name="height" value="70"/>
+			<mx:SetProperty name="height" value="186"/>
 		</mx:State>
 	</mx:states>
 		
