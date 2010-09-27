@@ -73,6 +73,10 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.TextInput;
+			import com.vizzuality.event.SelectedSpecieEvent;
+			import com.vizzuality.views.main.components.ImageRenderer;
+			import com.vizzuality.event.GetTaxonEvent;
 			import __AS3__.vec.Vector;
 			
 			import com.adobe.crypto.MD5;
@@ -142,11 +146,34 @@
 			
 						
 			private function onCreationComplete():void {
+		    	addEventListener(GetTaxonEvent.RESULT,onTaxonResult);
+		    	addEventListener("onFocusInputOut",function(ev:Event):void{searchAsYouType.visible = false;});
+		    	addEventListener(Event.RESIZE,function(ev:Event):void{searchAsYouType.visible = false;});
+		    	tilelist.addEventListener(Event.SCROLL,function(ev:Event):void{searchAsYouType.visible = false;});
+		    	
 		    	refreshTilelist();
    			  	imagesDir = dir.nativePath;
 				addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDropEnter);
 				addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDrop);
 		 	}
+		 	
+		 	
+		 	private function onTaxonResult(ev:GetTaxonEvent):void {
+		 		searchAsYouType.taxon = ev.taxon;
+		 		
+		 		//(ev.target as ImageRenderer).
+		 		//Positioning Search as you type
+		 		if (ev.coords.x<208) {
+		 			searchAsYouType.setStyle('top',ev.coords.y-308);
+		 			searchAsYouType.setStyle('left',ev.coords.x+130);
+		 		} else {
+		 			searchAsYouType.setStyle('top',ev.coords.y-308);
+		 			searchAsYouType.setStyle('left',ev.coords.x-220);
+		 		}
+		 		
+		 	}
+		 	
+		 	
 
 		 			 
 		 	/* Delete operations */	 	
@@ -539,6 +566,21 @@
 				return false;
 			}
 			
+			
+			private function onSelectedSpecie(ev:SelectedSpecieEvent):void {
+				for (var i:int = 0; i<tilelist.renderers.length; i++) {
+					for (var j:int = 0; j<tilelist.renderers[i].length; j++) {
+						if (tilelist.renderers[i][j].data.editing!=undefined && tilelist.renderers[i][j].data.editing) {
+							tilelist.renderers[i][j].data.editing = false;
+							(tilelist.renderers[i][j].scientificNameInput as TextInput).focusEnabled = false;
+							tilelist.renderers[i][j].scientificNameInput.text = ev.taxon;
+							updateName(ev.taxon,tilelist.renderers[i][j].data.path);
+							return;
+						}	
+					}
+				}
+			}
+			
 
 		]]>
 	</mx:Script>
@@ -547,7 +589,7 @@
 	<mx:Canvas width="100%" height="100%" top="37"/>
 	<mx:VBox width="100%" height="100%" verticalGap="0" horizontalAlign="center" id="vbox1">
 		<mx:Canvas height="37" width="100%" styleName="infoUpOrangeBkg" filters="{[headerShadow]}" backgroundSize="100%" id="canvas1" verticalScrollPolicy="off" horizontalScrollPolicy="off">
-			<mx:HBox verticalCenter="0" id="headerHBox" width="190%" horizontalGap="3" verticalAlign="middle">
+			<mx:HBox verticalCenter="0" id="headerHBox" width="100%" horizontalGap="3" verticalAlign="middle">
 				<mx:Canvas  id="canvas2" height="37">
 	    			<mx:Label text="Add some photos to FlickrTagger" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" id="label2" left="14"/>
 	    			<mx:Label text="Add some photos to FlickrTagger" x="10" verticalCenter="0" styleName="txtInfoUp" id="label1" left="13"/>
@@ -560,7 +602,7 @@
 				itemClick="checkMultipleSelection(event)" allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true" styleName="imagesContent"/>					
 	</mx:VBox>
 	<components:EmptySectionPhoto  horizontalCenter="0" verticalCenter="0" width="315" height="180" visible="true" id="emptySelectionPhoto" addImage="selectImageFile(fileToOpen)"/>
-	
+	<components:SuggestedPhotoNamesTooltip visible="false" id="searchAsYouType" top="0" left="0" selectedSpecie="onSelectedSpecie(event)"/>
 	
 	
 </mx:Canvas>

@@ -1,14 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" minWidth="208" minHeight="174" styleName="tooltipGreyBkg" filters="{[glowTooltip]}">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="208" height="174" styleName="tooltipGreyBkg" filters="{[glowTooltip]}">
+
+	<mx:Script>
+		<![CDATA[
+			import com.vizzuality.event.SelectedSpecieEvent;
+			import __AS3__.vec.Vector;
+			import com.adobe.serialization.json.JSON;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import com.vizzuality.event.GetTaxonEvent;
+			private var _taxon:String = "";
+			
+			public function set taxon(value:String):void {
+				_taxon = value;
+				onGetTaxon();
+			}
+			
+			
+			private function onGetTaxon():void {
+				request_taxonomy.url = "http://bioblitz.tdwg.org/api/taxonomy?query="+_taxon+"&limit=10";
+				request_taxonomy.send();
+			}
+			
+			
+			private function onResultTaxonomy(ev:ResultEvent):void {
+				var taxonomy:Vector.<Object> = Vector.<Object>(JSON.decode(ev.result as String));
+				var pattern:RegExp = new RegExp(_taxon,"gi");
+				canvas1.visible = false; canvas2.visible = false; canvas3.visible = false;
+				for (var i:int=0; i<taxonomy.length; i++) {
+					if (i==3) break;
+					switch (i) {
+						case 0: result1.htmlText = (taxonomy[i].s as String).replace(pattern,setSpan);
+								kingdom1.text = taxonomy[i].k;
+								canvas1.visible = true;
+								break;
+						case 1:	result2.htmlText = (taxonomy[i].s as String).replace(pattern,setSpan);
+							    kingdom2.text = taxonomy[i].k;
+							    canvas2.visible = true;
+								break;
+						case 2: result3.htmlText = (taxonomy[i].s as String).replace(pattern,setSpan);
+								kingdom3.text = taxonomy[i].k;
+								canvas3.visible = true;
+								break;
+					}
+				}
+				if (taxonomy.length==0) {
+					visible = false;
+				} else {
+					visible = true;
+				}
+			}
+			
+			
+			private function onFaultTaxonomy(ev:FaultEvent):void {}
+			
+			
+			private function setSpan(txt:String, ...rest):String { 
+			   var pattern:RegExp = new RegExp(_taxon,"i"); 
+			   var tag:String = txt.replace(pattern,"<u>$&</u>"); 
+			   return tag; 
+			} 
+			
+			
+			
+			
+			private function onMouseOver(event:MouseEvent):void {
+				switch (event.currentTarget.id) {
+					case "canvas1": result1.setStyle('color','0x333333'); break;
+					case "canvas2": result2.setStyle('color','0x333333'); break;
+					case "canvas3": result3.setStyle('color','0x333333'); break;
+				}
+			}
+			
+			
+			private function onMouseOut(event:MouseEvent):void {
+				switch (event.currentTarget.id) {
+					case "canvas1": result1.setStyle('color','0x666666'); break;
+					case "canvas2": result2.setStyle('color','0x666666'); break;
+					case "canvas3": result3.setStyle('color','0x666666'); break;
+				}
+			}
+			
+			
+			private function onClickItem(event:MouseEvent):void {
+				switch (event.currentTarget.id) {
+					case "canvas1": dispatchEvent(new SelectedSpecieEvent("selectedSpecie",result1.text));break;
+					case "canvas2": dispatchEvent(new SelectedSpecieEvent("selectedSpecie",result2.text));break;
+					case "canvas3": dispatchEvent(new SelectedSpecieEvent("selectedSpecie",result3.text));break;
+				}
+				visible = false;
+			}
+			
+ 
+			
+		]]>
+	</mx:Script>
+
+	<mx:Metadata>
+		[Event(name="selectedSpecie", type="com.vizzuality.event.SelectedSpecieEvent")]
+	</mx:Metadata>
 
 	<mx:GlowFilter id="glowTooltip" alpha="0.7" color="#000000" blurX="8" blurY="8" />
-		
 	<mx:Label text="Suggested species" styleName="txtSuggestedNamesShadow" top="11" left="6"/>
 	<mx:Label text="Suggested species" styleName="txtSuggestedNames" top="10" left="5"/>
-	
-	<mx:VBox top="31" left="5" right="19" bottom="6" mask="{listMask}" verticalGap="0" backgroundColor="#00ff00">
-				
-	</mx:VBox>
-	
-	<mx:Canvas id="listMask" top="31" left="5" right="19" bottom="6" borderStyle="solid" borderThickness="0" cornerRadius="3" backgroundColor="#000000"/>
+	<mx:Canvas id="listMask" top="31" left="5" right="19" bottom="6" borderStyle="solid" borderThickness="1" borderColor="#CCCCCC" cornerRadius="3" backgroundColor="#F5F5F5"
+		verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<mx:VBox width="181" verticalScrollPolicy="off" horizontalScrollPolicy="off" verticalGap="0">
+			<mx:Canvas height="44" width="181" top="0" left="0" verticalScrollPolicy="off" horizontalScrollPolicy="off" id="canvas1" click="onClickItem(event)"
+				mouseOver="onMouseOver(event)" mouseOut="onMouseOut(event)" useHandCursor="true" mouseChildren="false" buttonMode="true">
+				<mx:Label id="result1" color="#666666" fontSize="13" top="3" left="4" width="170"/>
+				<mx:Label id="kingdom1" width="170" color="#999999" fontSize="11" top="23" left="4"/>
+			</mx:Canvas>
+			<mx:Canvas height="44" width="181" top="44" left="0" backgroundColor="#FFFFFF" verticalScrollPolicy="off" horizontalScrollPolicy="off" id="canvas2" click="onClickItem(event)"
+				mouseOver="onMouseOver(event)" mouseOut="onMouseOut(event)" useHandCursor="true" mouseChildren="false" buttonMode="true">
+				<mx:Label id="result2" color="#666666" fontSize="13" top="3" left="4" width="170"/>
+				<mx:Label id="kingdom2" color="#999999" fontSize="11" top="23" left="4" width="170"/>
+			</mx:Canvas>
+			<mx:Canvas height="44" width="181" top="88" left="0" verticalScrollPolicy="off" horizontalScrollPolicy="off" id="canvas3" click="onClickItem(event)"
+				mouseOver="onMouseOver(event)" mouseOut="onMouseOut(event)" useHandCursor="true" mouseChildren="false" buttonMode="true">
+				<mx:Label id="result3" color="#666666" fontSize="13" top="3" left="4" width="170"/>
+				<mx:Label id="kingdom3" color="#999999" fontSize="11" top="23" left="4" width="170"/>
+			</mx:Canvas>	
+		</mx:VBox>
+	</mx:Canvas>
+	<mx:HTTPService method="POST" result="onResultTaxonomy(event)" fault="onFaultTaxonomy(event)" id="request_taxonomy" />
 </mx:Canvas>
