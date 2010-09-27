@@ -101,14 +101,17 @@
 					  	} else {
 					    	selected = Boolean(event.itemRenderer == this);
 					  	}
-					  	data.selected = selected;
+						//This IF is a HACK, no idea why this can get null, Javi2?
+						if(data) {
+						  	data.selected = selected;
+							if (data.group_total != undefined) {						
+						     	canvasBkg = (selected!=false)?'photoGroupBkgSelected':'photoGroupBkg';
+						    } else {
+						     	canvasBkg = (selected!=false)?'photoBkgSelected':'photoBkg';
+						    }
+						}
 					  	
 					  	
-						if (data.group_total != undefined) {						
-					     	canvasBkg = (selected!=false)?'photoGroupBkgSelected':'photoGroupBkg';
-					    } else {
-					     	canvasBkg = (selected!=false)?'photoBkgSelected':'photoBkg';
-					    }
                     }
                     
                     
