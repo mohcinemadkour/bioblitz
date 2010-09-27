@@ -39,8 +39,8 @@ package com.vizzuality.dao
 			googleService.method = "POST";
 			googleService.contentType = "application/x-www-form-urlencoded";
 			googleService.request.account = "GOOGLE";
-			googleService.request.Email = "";  // <-- USER
-			googleService.request.Passwd = "";    // <-- PASSWORD
+			googleService.request.Email = "jatorre@gmail.com";  // <-- USER
+			googleService.request.Passwd = "steivos666";    // <-- PASSWORD
 			googleService.request.source = "ImageTagger";
 			googleService.request.service = "fusiontables";
 			googleService.addEventListener(ResultEvent.RESULT,handleGoogleLogin);
