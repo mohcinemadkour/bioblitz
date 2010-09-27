@@ -10,13 +10,11 @@
 			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpGreenBkg"/>
 			<mx:RemoveChild target="{dropZone}"/>
 			<mx:AddChild relativeTo="{vbox1}" position="lastChild">
-				<mx:Image id="staticMap" scaleContent="true" width="100%" height="100%" source="{staticMapUrl}" />
+				<mx:Image id="staticMap" scaleContent="true" width="100%" height="100%" source="{staticMapUrl}"  complete="smoothImage(event)" />
 			</mx:AddChild>
 			<mx:SetProperty target="{label1}" name="text" value="This is the track you have loaded. XX photos had been geotagged."/>
 			<mx:SetProperty target="{label2}" name="text" value="This is the track you have loaded. XX photos had been geotagged."/>
 			<mx:RemoveChild target="{dropZone}"/>
-			<mx:SetProperty target="{label1}" name="text" value="This is your GPX Map"/>
-			<mx:SetProperty target="{label2}" name="text" value="This is your GPX Map"/>
 		</mx:State>
 		<mx:State name="gpxError">
 			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpRedBkg"/>
@@ -57,6 +55,14 @@
 			[Bindable] private var staticMapUrl:String;
 			private var dao: DataAccessObject= new DataAccessObject();
 				
+
+			
+			private function smoothImage(evt:Event):void{
+				var myBitmap:Bitmap = ((evt.target as Image).content as Bitmap);
+				if (myBitmap != null) {
+					myBitmap.smoothing = true;
+				}
+			}
 			
 			private function onCreationComplete():void {
  				
