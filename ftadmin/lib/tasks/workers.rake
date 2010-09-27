@@ -59,6 +59,19 @@ namespace :workers do
     end 
   end
   
+  desc 'Set the ROWIDS'
+  task :setrowid => :environment do
+    config = YAML::load_file("#{Rails.root}/config/credentials.yml")
+    ft = GData::Client::FusionTables.new
+    ft.clientlogin(config["ft_username"],config["ft_password"])    
+    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID from #{config['ft_occurrence_table']} WHERE row_ID=''"))
+    res.body.each do |rec|
+      rowid = rec[:rowid] 
+      ft.sql_post("UPDATE #{config['ft_occurrence_table']} SET row_ID='#{rowid}' WHERE ROWID='#{rowid}'")
+    end 
+    
+  end
+  
   
   desc 'Import EOL Flickr pics'
   task :import_eol => :environment do
