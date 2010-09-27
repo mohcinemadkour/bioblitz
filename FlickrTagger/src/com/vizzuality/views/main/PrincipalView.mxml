@@ -38,8 +38,10 @@
 					first = true;
 					var images:File = File.applicationStorageDirectory.resolvePath("images");
 					var database:File = File.applicationStorageDirectory.resolvePath("DBV.db");
+					var gpxFile:File = File.applicationStorageDirectory.resolvePath("track.gpx");
 					images.deleteDirectory(true);
 					database.deleteFile();
+					gpxFile.deleteFile();
 					Application.application.principalView.imagesState.sqlArray = new ArrayCollection();
 					Application.application.principalView.imagesState.chooseState();
 					if (Application.application.authorization!=null) {
@@ -48,6 +50,9 @@
 					var dao: DataAccessObject = new DataAccessObject();
 					dao.createTables();
 					Application.application.currentState = "authorizationFlickr";
+					
+					logOut.visible=false;
+					first=true;
 				}
 				
 				

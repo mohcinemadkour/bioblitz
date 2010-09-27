@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
-		   xmlns:components="com.vizzuality.views.main.components.*" xmlns:maps="com.google.maps.*" creationComplete="onCreationComplete()">
+		   xmlns:components="com.vizzuality.views.main.components.*" xmlns:maps="com.google.maps.*" 
+		    
+		   addedToStage="onCreationComplete()">
 	
 	<mx:states>
 		<mx:State name="gpxAdded">
@@ -63,6 +65,7 @@
 				} else {
 					addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDropEnter);
 					addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDrop);
+					currentState="";
 				}
 				
  				
@@ -92,6 +95,7 @@
 				
 				//Lets copy the file to our data dir
 				gpxFile.copyTo(File.applicationStorageDirectory.resolvePath("track.gpx"));
+				loadGpxFile();
 			}
 			
 			private function loadGpxFile():void {				
