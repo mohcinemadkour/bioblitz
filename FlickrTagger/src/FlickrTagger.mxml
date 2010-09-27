@@ -15,6 +15,7 @@
 			public var count: int = 0;			
 			[Bindable] public var taxon: String = "";
 			[Bindable] public var tagSequence: String = "";
+			[Bindable] public var uploadingStatus: String = "";
 			public var croppedImagesDictionary : Dictionary = new Dictionary();
 				
 			

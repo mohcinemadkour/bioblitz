@@ -4,20 +4,22 @@
         
         <mx:Script>
                 <![CDATA[
-                	import com.vizzuality.event.SelectedSpecieEvent;
-                	import com.vizzuality.event.GetTaxonEvent;
-                	import mx.core.IUIComponent;
-                	import mx.core.UIComponent;
-                	import mx.collections.ArrayCollection;
-                	import mx.utils.ArrayUtil;
-                	import com.vizzuality.components.TileListFlickTagger;
-                	import com.vizzuality.views.main.ImagesContainer;
-                    import com.vizzuality.dao.FlickrUploadService;
-                    import mx.core.IFlexDisplayObject;
-                    import mx.events.ChildExistenceChangedEvent;
-                    import mx.effects.RemoveItemAction;
-                    import mx.events.ListEvent;
-                    import mx.events.FlexEvent;
+					import com.vizzuality.components.TileListFlickTagger;
+					import com.vizzuality.dao.FlickrUploadService;
+					import com.vizzuality.event.GetTaxonEvent;
+					import com.vizzuality.event.SelectedSpecieEvent;
+					import com.vizzuality.views.main.ImagesContainer;
+					
+					import mx.collections.ArrayCollection;
+					import mx.core.Application;
+					import mx.core.IFlexDisplayObject;
+					import mx.core.IUIComponent;
+					import mx.core.UIComponent;
+					import mx.effects.RemoveItemAction;
+					import mx.events.ChildExistenceChangedEvent;
+					import mx.events.FlexEvent;
+					import mx.events.ListEvent;
+					import mx.utils.ArrayUtil;
                     
                     [Bindable]private var uploading: Boolean;  
                     [Bindable]private var textInput: String;  
@@ -210,7 +212,7 @@
         <mx:Canvas id="loading" verticalCenter="-8" horizontalCenter="0" width="86" height="86" visible="{uploading}" styleName="spinnerBkg" horizontalScrollPolicy="off" 
         	verticalScrollPolicy="off">
         	<mx:SWFLoader source="/com/vizzuality/assets/loading.swf" y="15" id="swfloader1" horizontalCenter="0"/>
-			<mx:Label id="bar" text="Uploading" y="55" color="#f9f9f9" fontSize="13" height="23" horizontalCenter="0" fontWeight="bold" fontFamily="Arial"/>
+			<mx:Label id="bar" text="{Application.application.uploadingStatus}" y="55" color="#f9f9f9" fontSize="13" height="23" horizontalCenter="0" fontWeight="bold" fontFamily="Arial"/>
         </mx:Canvas>
         
         <components1:DeleteConfirmation id="deleteConfirmation" verticalCenter="-15" kind="{(group)?'group':'image'}" 

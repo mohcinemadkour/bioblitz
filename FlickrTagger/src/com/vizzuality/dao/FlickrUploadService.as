@@ -66,6 +66,7 @@ package com.vizzuality.dao
 		
 		private function saveToFusionTables():void {
 			trace("SAVING TO FT");
+			Application.application.uploadingStatus = "Fusioning...";
 		   var obj:Object = new Object();
 		   var scientific:String = (observationData.taxon!=null && observationData.taxon!="Not recognized")?observationData.taxon:"";
 		   var takenDate: String = (observationData.timestamp!=null && observationData.timestamp!=undefined)?DateUtil.toW3CDTF(observationData.timestamp):"";
@@ -146,7 +147,7 @@ package com.vizzuality.dao
 			imageFile.addEventListener(IOErrorEvent.NETWORK_ERROR,onErrorStatus);
 			imageFile.addEventListener(IOErrorEvent.IO_ERROR,onErrorStatus);
 			imageFile.addEventListener(ProgressEvent.PROGRESS,function(ev:ProgressEvent):void {
-				trace((ev.bytesLoaded/ev.bytesTotal)*100+"%");
+				Application.application.uploadingStatus = Math.round((ev.bytesLoaded/ev.bytesTotal)*100) + "%";
 			});
 			var service:FlickrService = new FlickrService(FlickrAuthorizationSettings.flickrAPIKey);
 			service.secret = FlickrAuthorizationSettings.flickrAPISecret;
@@ -160,6 +161,7 @@ package com.vizzuality.dao
 		private function onResult(ev: DataEvent):void {
 			trace("UPLOADING IMAGE FINISHED...");
 			trace("GETTING PIC INFO");
+			Application.application.uploadingStatus = "Flickering";
 			var xml: XML = new XML(ev.data);
 			var photoID: String = "";
 		   	for each( var id:XML in xml..photoid ) {
