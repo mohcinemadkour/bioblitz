@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="220" height="180" color="#040404" creationComplete="{initRenderer()}" verticalScrollPolicy="off" 
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="220" height="180" color="#040404" creationComplete="{initRenderer()}" verticalScrollPolicy="off"
 	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0" xmlns:components1="com.vizzuality.views.main.components.*">
         
         <mx:Script>
                 <![CDATA[
+                	import com.vizzuality.event.SelectedSpecieEvent;
+                	import com.vizzuality.event.GetTaxonEvent;
                 	import mx.core.IUIComponent;
                 	import mx.core.UIComponent;
                 	import mx.collections.ArrayCollection;
@@ -33,7 +35,7 @@
 
 						if (value != null) {
 						  	 // Geotagged?
-						  	 (value.lat !=null)?geotagged = true:geotagged = false;
+						  	 (value.lat !=null && value.lat!=undefined)?geotagged = true:geotagged = false;
 						  	 
 						  	 // Scientific Name?
 						  	 (value.scientific == null || value.scientific == "Not recognized" || value.scientific == undefined)?textInput = "Not recognized":textInput = value.scientific;						  	 
@@ -76,13 +78,18 @@
                     
                      
                     
-                    private function updateScientificName():void {
+                    private function updateScientificName(ev:Event):void {
+                    	var coords:Point = new Point(scientificNameInput.x,scientificNameInput.y);
+                        coords = scientificNameInput.localToGlobal(coords);
+                        dispatchEvent(new GetTaxonEvent(GetTaxonEvent.RESULT,scientificNameInput.text,coords,true));
+                        data.editing = true;
                         (this.parentDocument as ImagesContainer).updateName(scientificNameInput.text,data.path);  
                         textInput = scientificNameInput.text;
                         data.scientific = textInput;            
                     }
                     
                     
+
                     
                     private function updateSelected(event:ListEvent):void {
 					  	if(this.outerList.allowMultipleSelection) {
@@ -119,6 +126,8 @@
                     
                     
                     private function onInputFocusOut():void {
+                    	data.editing = false;
+                    	dispatchEvent(new Event("onFocusInputOut",true));
                     	if (scientificNameInput.text == "") {
                     		scientificNameInput.text = "Not recognized";
                     	}
@@ -127,6 +136,7 @@
                     
                     
                     private function uploadImage():void {
+                    	data.editing = false;
                         uploading = true;
                         this.data.uploading = true;
                         scientificNameInput.setStyle('backgroundAlpha','1');
@@ -188,7 +198,7 @@
         </mx:Canvas>
         <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0" visible="{geotagged}"/>
         <mx:Label text="Not recognized" horizontalCenter="0" bottom="0" color="#363636" fontSize="13" fontFamily="Arial" fontWeight="bold" visible="{textInput=='Not recognized'}"/>
-        <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName()" textAlign="center" maxWidth="181" 
+        <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName(event)" textAlign="center" maxWidth="181" 
         	backgroundAlpha="{selected?1:0}" height="24" styleName="titlePhotoTxtInput" horizontalCenter="0" bottom="0" paddingTop="2" paddingBottom="2" 
         	enabled="{!uploading}" color="{(textInput=='Not recognized')?0x000000:0xBBBBBB}" focusOut="onInputFocusOut()"/>
 		<mx:Button label="" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" visible="{!uploading}" x="10" y="0" alpha="{selected?1:0}" styleName="uploadGreenBtn"
