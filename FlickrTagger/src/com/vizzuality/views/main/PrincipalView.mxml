@@ -38,10 +38,13 @@
 					first = true;
 					var images:File = File.applicationStorageDirectory.resolvePath("images");
 					var database:File = File.applicationStorageDirectory.resolvePath("DBV.db");
+					
 					var gpxFile:File = File.applicationStorageDirectory.resolvePath("track.gpx");
 					images.deleteDirectory(true);
 					database.deleteFile();
-					gpxFile.deleteFile();
+					if(gpxFile.exists) {
+						gpxFile.deleteFile();
+					}
 					Application.application.principalView.imagesState.sqlArray = new ArrayCollection();
 					Application.application.principalView.imagesState.chooseState();
 					if (Application.application.authorization!=null) {

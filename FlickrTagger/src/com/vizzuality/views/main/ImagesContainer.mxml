@@ -73,10 +73,6 @@
 		
 	<mx:Script>
 		<![CDATA[
-			import mx.controls.TextInput;
-			import com.vizzuality.event.SelectedSpecieEvent;
-			import com.vizzuality.views.main.components.ImageRenderer;
-			import com.vizzuality.event.GetTaxonEvent;
 			import __AS3__.vec.Vector;
 			
 			import com.adobe.crypto.MD5;
@@ -90,7 +86,10 @@
 			import com.vizzuality.dao.DataAccessObject;
 			import com.vizzuality.dao.FlickrUploadService;
 			import com.vizzuality.dao.TaxonomyResolutionService;
+			import com.vizzuality.event.GetTaxonEvent;
+			import com.vizzuality.event.SelectedSpecieEvent;
 			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
+			import com.vizzuality.views.main.components.ImageRenderer;
 			
 			import flash.data.*;
 			import flash.desktop.*;
@@ -104,6 +103,7 @@
 			import mx.containers.TabNavigator;
 			import mx.controls.Alert;
 			import mx.controls.Image;
+			import mx.controls.TextInput;
 			import mx.controls.TileList;
 			import mx.core.Application;
 			import mx.core.IFlexDisplayObject;
@@ -502,6 +502,23 @@
 					dateTimeDigitized=null;
 				}
 				
+				//get the lat/lon from exif
+				var latFromExif:Number = NaN;
+				var lonFromExif:Number = NaN;
+				try {
+					//Decimal Degrees = Degrees + minutes/60 + seconds/3600
+					var latCoords:Array = (event.target.loader.exif as ExifInfo).ifds.gps.GPSLatitude;
+					var lonCoords:Array = (event.target.loader.exif as ExifInfo).ifds.gps.GPSLongitude;
+					
+					latFromExif = latCoords[0] +(latCoords[1]/60)+(latCoords[2]/3600);
+					lonFromExif = lonCoords[0] +(lonCoords[1]/60)+(lonCoords[2]/3600);
+				}catch(e:Error) {
+					
+				}
+				
+				
+				
+				
 				var bitmap:Bitmap = Bitmap(event.target.content);
 				var bitmapData:BitmapData = bitmap.bitmapData;
 				var originalWidth:Number = bitmapData.width;
@@ -536,9 +553,12 @@
 	            stream.close();
 	            
 				var sqlStament:SQLStatement = new SQLStatement();
-				sqlStament.text ="INSERT INTO photos (path,timestamp) VALUES(:path,:timestamp)";
+				sqlStament.text ="INSERT INTO photos (path,timestamp,lat,lon) VALUES(:path,:timestamp,:lat,:lon)";
 				sqlStament.parameters[":path"]=event.target.loader.url;
 				sqlStament.parameters[":timestamp"]=dateTimeDigitized;
+				sqlStament.parameters[":lat"]=latFromExif;
+				sqlStament.parameters[":lon"]=lonFromExif;
+				
 				dao.openConnection("",sqlStament);
 			  	dao.openConnection("SELECT id FROM photos WHERE path='"+event.target.loader.url+"'");
 			  	var identification:Object = dao.dbResult[0];

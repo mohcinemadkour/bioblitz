@@ -22,17 +22,19 @@
 		
 	<mx:Script>
 		<![CDATA[
-			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
+			import com.adobe.crypto.MD5;
 			import com.adobe.serialization.json.JSON;
+			import com.vizzuality.dao.*;
+			import com.vizzuality.event.GetTokenEvent;
+			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
+			
 			import flash.events.Event;
+			
+			import mx.collections.ArrayCollection;
+			import mx.core.Application;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			import mx.rpc.http.HTTPService;
-			import mx.collections.ArrayCollection;
-			import mx.core.Application;
-			import com.adobe.crypto.MD5;
-			import com.vizzuality.dao.*;
-			import com.vizzuality.event.GetTokenEvent;
 			
 	
 			private var sqlArray: ArrayCollection;
@@ -75,7 +77,14 @@
 	
 			private function onResult(ev:ResultEvent):void{
 		        var data:String = String(ev.result);
-		 		object = JSON.decode(data);
+				try {
+			 		object = JSON.decode(data);
+				} catch(e:Error) {
+					currentState="httpError";
+					return;
+				}
+				
+				
 				if (object==null || object.stat!="ok" ) {
 	        		dispatchEvent(ko);
 	        		trace("Token expired");
