@@ -73,6 +73,10 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.TextInput;
+			import com.vizzuality.event.SelectedSpecieEvent;
+			import com.vizzuality.views.main.components.ImageRenderer;
+			import com.vizzuality.event.GetTaxonEvent;
 			import __AS3__.vec.Vector;
 			
 			import com.adobe.crypto.MD5;
@@ -86,10 +90,7 @@
 			import com.vizzuality.dao.DataAccessObject;
 			import com.vizzuality.dao.FlickrUploadService;
 			import com.vizzuality.dao.TaxonomyResolutionService;
-			import com.vizzuality.event.GetTaxonEvent;
-			import com.vizzuality.event.SelectedSpecieEvent;
 			import com.vizzuality.views.authentication.FlickrAuthorizationSettings;
-			import com.vizzuality.views.main.components.ImageRenderer;
 			
 			import flash.data.*;
 			import flash.desktop.*;
@@ -103,7 +104,6 @@
 			import mx.containers.TabNavigator;
 			import mx.controls.Alert;
 			import mx.controls.Image;
-			import mx.controls.TextInput;
 			import mx.controls.TileList;
 			import mx.core.Application;
 			import mx.core.IFlexDisplayObject;
@@ -164,9 +164,11 @@
 		 		//(ev.target as ImageRenderer).
 		 		//Positioning Search as you type
 		 		if (ev.coords.x<208) {
+		 			searchAsYouType.currentState = "ToLeft";
 		 			searchAsYouType.setStyle('top',ev.coords.y-308);
 		 			searchAsYouType.setStyle('left',ev.coords.x+130);
 		 		} else {
+		 			searchAsYouType.currentState = "";
 		 			searchAsYouType.setStyle('top',ev.coords.y-308);
 		 			searchAsYouType.setStyle('left',ev.coords.x-220);
 		 		}
@@ -251,8 +253,13 @@
 
 		 	
 		 	
-		 	public function updateName(scientificName:String,path:String):void {
-			 	dao.openConnection("UPDATE photos SET scientific='"+scientificName+"' WHERE path='"+path+"'");
+		 	public function updateName(scientificName:String,path:String,group_id:int = -1):void {
+			 	if (group_id == -1) {
+			 		dao.openConnection("UPDATE photos SET scientific='"+scientificName+"' WHERE path='"+path+"'");
+			 	} else {
+			 		dao.openConnection("UPDATE groups SET scientific='"+scientificName+"' WHERE id='"+group_id+"'");
+			 		dao.openConnection("UPDATE photos SET scientific='"+scientificName+"' WHERE group_id='"+group_id+"'");
+			 	}
 		 	}
 
 
@@ -347,7 +354,7 @@
 					//If there isn't a group in the selected items
 					group_data.count = tilelist.selectedItems.length;
 					for (var i:int=0; i<tilelist.selectedItems.length; i++) {
-						if (group_data.scientific==undefined && tilelist.selectedItems[i].scientific != null) {
+						if (group_data.scientific==undefined && tilelist.selectedItems[i].scientific != null && tilelist.selectedItems[i].scientific != "Not recognized") {
 							group_data.scientific = tilelist.selectedItems[i].scientific;
 						}
 						if (group_data.path==undefined) {
@@ -502,23 +509,6 @@
 					dateTimeDigitized=null;
 				}
 				
-				//get the lat/lon from exif
-				var latFromExif:Number = NaN;
-				var lonFromExif:Number = NaN;
-				try {
-					//Decimal Degrees = Degrees + minutes/60 + seconds/3600
-					var latCoords:Array = (event.target.loader.exif as ExifInfo).ifds.gps.GPSLatitude;
-					var lonCoords:Array = (event.target.loader.exif as ExifInfo).ifds.gps.GPSLongitude;
-					
-					latFromExif = latCoords[0] +(latCoords[1]/60)+(latCoords[2]/3600);
-					lonFromExif = lonCoords[0] +(lonCoords[1]/60)+(lonCoords[2]/3600);
-				}catch(e:Error) {
-					
-				}
-				
-				
-				
-				
 				var bitmap:Bitmap = Bitmap(event.target.content);
 				var bitmapData:BitmapData = bitmap.bitmapData;
 				var originalWidth:Number = bitmapData.width;
@@ -553,12 +543,9 @@
 	            stream.close();
 	            
 				var sqlStament:SQLStatement = new SQLStatement();
-				sqlStament.text ="INSERT INTO photos (path,timestamp,lat,lon) VALUES(:path,:timestamp,:lat,:lon)";
+				sqlStament.text ="INSERT INTO photos (path,timestamp) VALUES(:path,:timestamp)";
 				sqlStament.parameters[":path"]=event.target.loader.url;
 				sqlStament.parameters[":timestamp"]=dateTimeDigitized;
-				sqlStament.parameters[":lat"]=latFromExif;
-				sqlStament.parameters[":lon"]=lonFromExif;
-				
 				dao.openConnection("",sqlStament);
 			  	dao.openConnection("SELECT id FROM photos WHERE path='"+event.target.loader.url+"'");
 			  	var identification:Object = dao.dbResult[0];
@@ -594,7 +581,8 @@
 							tilelist.renderers[i][j].data.editing = false;
 							(tilelist.renderers[i][j].scientificNameInput as TextInput).focusEnabled = false;
 							tilelist.renderers[i][j].scientificNameInput.text = ev.taxon;
-							updateName(ev.taxon,tilelist.renderers[i][j].data.path);
+							var group_id:int = (tilelist.renderers[i][j].data.group_total!=undefined && tilelist.renderers[i][j].data.group_total!=null)?tilelist.renderers[i][j].data.group_tot:-1;
+							updateName(ev.taxon,tilelist.renderers[i][j].data.path,tilelist.renderers[i][j].data.id);
 							return;
 						}	
 					}

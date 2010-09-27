@@ -1,28 +1,33 @@
 /*New code*/
 /*Embed fonts*/
+
+
 @font-face {
-    src: url(components_skin2.swf);
+    src: url("com/vizzuality/skin/arial.swf");
     fontFamily: "Arial";
     fontWeight: normal;
 }
 
 @font-face {
-    src: url(components_skin2.swf);
-    fontFamily: "Arial Bold";
-    fontWeight: normal;
+    src: url("com/vizzuality/skin/arial.swf");
+    fontFamily: "Arial";
+    fontWeight: bold;
 }
 
 @font-face {
-    src: url(components_skin2.swf);
-    fontFamily: "Arial Bold Italic";
-    fontWeight: normal;
+    src: url("com/vizzuality/skin/arial.swf");
+    fontFamily: "Arial";
+    fontWeight: bold;
+    text-decoraiton: italic;
 }
 
 @font-face {
-    src: url(components_skin2.swf);
-    fontFamily: "Arial Italic";
+    src: url("com/vizzuality/skin/arial.swf");
+    fontFamily: "Arial";
     fontWeight: normal;
+    text-decoration: italic;
 }
+
 
 
 /* class */
@@ -120,8 +125,13 @@ VBox.auth {
  	background-size: '100%';
 }
 
-.tooltipGreyBkg {
- 	background-image:Embed(source="components_skin2.swf", symbol="tooltipGreyBkg");
+.tooltipGreyBkgRight {
+ 	background-image:Embed(source="components_skin2.swf", symbol="tooltipGreyBkg_right");
+ 	background-size: '100%';
+}
+
+.tooltipGreyBkgLeft {
+ 	background-image:Embed(source="components_skin2.swf", symbol="tooltipGreyBkg_left");
  	background-size: '100%';
 }
 	
