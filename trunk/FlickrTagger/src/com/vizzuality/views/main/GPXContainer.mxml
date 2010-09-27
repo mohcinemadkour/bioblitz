@@ -10,7 +10,7 @@
 			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpGreenBkg"/>
 			<mx:RemoveChild target="{dropZone}"/>
 			<mx:AddChild relativeTo="{vbox1}" position="lastChild">
-				<mx:Image id="staticMap" width="100%" height="100%" source="{staticMapUrl}" />
+				<mx:Image id="staticMap" scaleContent="true" width="100%" height="100%" source="{staticMapUrl}" />
 			</mx:AddChild>
 			<mx:SetProperty target="{label1}" name="text" value="This is the track you have loaded. XX photos had been geotagged."/>
 			<mx:SetProperty target="{label2}" name="text" value="This is the track you have loaded. XX photos had been geotagged."/>
@@ -151,7 +151,7 @@
 				
 				//Loop over pics
 				var sqlStatement:SQLStatement = new SQLStatement();
-				sqlStatement.text="SELECT * from photos where lat is null ";
+				sqlStatement.text="SELECT * from photos where lat is null and timestamp is not null ";
 					//"and timestamp >=:minTime and timestamp<= :maxTime";
 				//sqlStatement.parameters[":minTime"]=minTime;
 				//sqlStatement.parameters[":maxTime"]=maxTime;
@@ -159,24 +159,30 @@
 				dao.openConnection("",sqlStatement);
 				var pics:Array = dao.dbResult.source;
 				for each(var pic:Object in pics) {
-					var firstClosestWayPointIndex:uint=0;
-					var counter:uint=0;
-					var minimumDistance:Number=999999999999999999;
-					for each(var wp:Waypoint in gpxPath) {
-						var distance:Number= Math.abs((pic.timestamp as Date).time - wp.time.time);
-						if(distance < minimumDistance) {
-							minimumDistance=distance;
-						} else {
-							break;
-						}
-						counter++;	
-					}		
-					counter=(counter==0)?0:counter-1;
-					var closestWp:Waypoint = gpxPath[counter];
-					dao.openConnection("UPDATE photos set lat="+closestWp.latitude+", lon="+closestWp.longitude+" WHERE path='"+pic.path+"'");
-					pic.lat = closestWp.latitude;
-					pic.lon = closestWp.longitude;
-					pic.altitude = closestWp.elevation;					
+					if(pic.timestamp && 
+						(pic.timestamp as Date)>=minTime &&
+						(pic.timestamp as Date)<=maxTime
+					) {
+						var firstClosestWayPointIndex:uint=0;
+						var counter:uint=0;
+						var minimumDistance:Number=999999999999999999;
+						for each(var wp:Waypoint in gpxPath) {
+							var distance:Number= Math.abs((pic.timestamp as Date).time - wp.time.time);
+							if(distance < minimumDistance) {
+								minimumDistance=distance;
+							} else {
+								break;
+							}
+							counter++;	
+						}		
+						counter=(counter==0)?0:counter-1;
+						var closestWp:Waypoint = gpxPath[counter];
+						trace("WP: "+DateUtil.toW3CDTF(closestWp.time)+" PIC: "+DateUtil.toW3CDTF(pic.timestamp as Date));
+						dao.openConnection("UPDATE photos set lat="+closestWp.latitude+", lon="+closestWp.longitude+" WHERE path='"+pic.path+"'");
+						pic.lat = closestWp.latitude;
+						pic.lon = closestWp.longitude;
+						pic.altitude = closestWp.elevation;					
+					}
 				}
 				Application.application.principalView.imagesState.refreshTilelist();
 			}

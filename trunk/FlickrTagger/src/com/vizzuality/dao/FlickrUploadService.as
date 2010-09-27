@@ -10,6 +10,7 @@ package com.vizzuality.dao
 	import flash.desktop.*;
 	import flash.events.DataEvent;
 	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.filesystem.File;
 	
 	import mx.controls.Alert;
@@ -64,6 +65,7 @@ package com.vizzuality.dao
 		
 		
 		private function saveToFusionTables():void {
+			trace("SAVING TO FT");
 		   var obj:Object = new Object();
 		   var scientific:String = (observationData.taxon!=null && observationData.taxon!="Not recognized")?observationData.taxon:"";
 		   var takenDate: String = (observationData.timestamp!=null && observationData.timestamp!=undefined)?DateUtil.toW3CDTF(observationData.timestamp):"";
@@ -137,11 +139,15 @@ package com.vizzuality.dao
 
 
 		private function sendImageFlickr(tag: String, dir:String):void {	
+			trace("UPLOADING IMAGE TO FLICKR....");
 			var imageFile:File= new File();
 			imageFile.url=dir;
 			imageFile.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA,onResult);
 			imageFile.addEventListener(IOErrorEvent.NETWORK_ERROR,onErrorStatus);
 			imageFile.addEventListener(IOErrorEvent.IO_ERROR,onErrorStatus);
+			imageFile.addEventListener(ProgressEvent.PROGRESS,function(ev:ProgressEvent):void {
+				trace((ev.bytesLoaded/ev.bytesTotal)*100+"%");
+			});
 			var service:FlickrService = new FlickrService(FlickrAuthorizationSettings.flickrAPIKey);
 			service.secret = FlickrAuthorizationSettings.flickrAPISecret;
 			service.token = FlickrAuthorizationSettings.authToken;
@@ -152,6 +158,8 @@ package com.vizzuality.dao
 		
 		
 		private function onResult(ev: DataEvent):void {
+			trace("UPLOADING IMAGE FINISHED...");
+			trace("GETTING PIC INFO");
 			var xml: XML = new XML(ev.data);
 			var photoID: String = "";
 		   	for each( var id:XML in xml..photoid ) {
@@ -166,10 +174,11 @@ package com.vizzuality.dao
 		
 		
 		private function onGetPhotoInfo(event:FlickrResultEvent):void {
+			trace("GETTING PIC INFO FINISHED");
+			trace("SETTING IMAGE LOCATION");
 			observationData.pathString = observationData.pathString + "http://farm"+ event.data.photo.farm +".static.flickr.com/"+ event.data.photo.server +"/"+ 
 			event.data.photo.id +"_"+ event.data.photo.secret +"_b.jpg ";
 			setImageLocation(event.data.photo.id,event.target.image_url as String);
-			trace(observationData.pathString);
 		}
 		
 
