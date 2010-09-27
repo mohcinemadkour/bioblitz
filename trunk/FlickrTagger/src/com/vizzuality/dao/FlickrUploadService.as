@@ -1,5 +1,6 @@
 package com.vizzuality.dao
 {
+	import com.adobe.utils.DateUtil;
 	import com.adobe.webapis.flickr.*;
 	import com.adobe.webapis.flickr.events.*;
 	import com.adobe.webapis.flickr.methodgroups.Upload;
@@ -29,7 +30,7 @@ package com.vizzuality.dao
 		private var observationData: Object = new Object();		// Object with all data referent to observation data (taxon,group_id,lat,lon,timestamp,...)
 		private var modeUpload: int = 0;						// Kind of upload (0 -> single, 1 -> group)
 		private var googleService:HTTPService = new HTTPService();						
-		
+		private var AuthString:String;
 		private var SERVICE_URL:String = "http://tables.googlelabs.com/api/query";
 		
 		
@@ -39,20 +40,18 @@ package com.vizzuality.dao
 			googleService.method = "POST";
 			googleService.contentType = "application/x-www-form-urlencoded";
 			googleService.request.account = "GOOGLE";
-			googleService.request.Email = "vizzualitybioblitz@gmail.com";  // <-- USER
-			googleService.request.Passwd = "tdwgbioblitz";    // <-- PASSWORD
+			googleService.request.Email = "vizzualitybioblitz@gmail.com";
+			googleService.request.Passwd = "tdwgbioblitz";
 			googleService.request.source = "ImageTagger";
 			googleService.request.service = "fusiontables";
 			googleService.addEventListener(ResultEvent.RESULT,handleGoogleLogin);
 			googleService.addEventListener(FaultEvent.FAULT,function(ev:FaultEvent):void {trace(ev.message)});
+			googleService.send();
 		}
 		
 		
 		private function handleGoogleLogin(event:ResultEvent):void {  
-
            var textindex:int;
-           var AuthString:String;
-
            AuthString = event.result.toString();
            textindex = AuthString.search("Auth");
            AuthString = AuthString.substring(textindex);
@@ -60,25 +59,41 @@ package com.vizzuality.dao
            textindex = AuthString.length;
            textindex = textindex - 1;
            AuthString = AuthString.substring(0,textindex);
-
+        }
+		
+		
+		
+		private function saveToFusionTables():void {
 		   var obj:Object = new Object();
-		   var insertSQL:String ="INSERT INTO 248798(scientificName,latitude,longitude," +
-			   "observedBy,recordedBy,identifiedBy,dateTime,recording_app) VALUES()";
-		   
-		   obj.sql = URLEncoding.decode("INSERT INTO 247646 (Text,Number,Location,Date) VALUES ('"+observationData.pathString+"', 25,'"+observationData.scientific+"', '"+
-		   observationData.timestamp +"')");  // -> CHANGE SENTENCE (table id, lat, lon, date, etc)
-		   trace(obj.sql);
+		   var scientific:String = (observationData.taxon!=null && observationData.taxon!="Not recognized")?observationData.taxon:"";
+		   var takenDate: String = (observationData.timestamp!=null && observationData.timestamp!=undefined)?DateUtil.toW3CDTF(observationData.timestamp):"";
+		   var lat:String = (observationData.lat!=null)?observationData.lat:"";
+		   var lon:String = (observationData.lon!=null)?observationData.lon:"";
+		   obj.sql = URLEncoding.decode("INSERT INTO 248798 (scientificName,latitude,longitude," +
+			   "observedBy,recordedBy,identifiedBy,dateTime,associatedMedia,recording_app) VALUES ('"+
+				scientific+"','"+
+				lat+"','"+
+				lon+"','"+
+		   		FlickrAuthorizationSettings.accountName +"','"+
+		   		FlickrAuthorizationSettings.accountName +"','"+
+		   		FlickrAuthorizationSettings.accountName +"','"+
+		   		takenDate +"','"+
+		   		observationData.pathString+"','flickrtagger')");
+		   		trace(obj.sql);
 			
 		   var userRequest: HTTPService = new HTTPService();
 		   userRequest.contentType = "application/x-www-form-urlencoded";
            userRequest.headers = {Authorization:"GoogleLogin auth="+AuthString.toString()};               
            userRequest.url = SERVICE_URL;
            userRequest.method = "POST";
-           userRequest.addEventListener(ResultEvent.RESULT,function(ev:ResultEvent):void {trace(ev.message)});
-           userRequest.addEventListener(FaultEvent.FAULT,function(ev:FaultEvent):void {trace(ev.message)});
+           userRequest.addEventListener(ResultEvent.RESULT,function(ev:ResultEvent):void {
+           	trace(ev.message);
+           });
+           userRequest.addEventListener(FaultEvent.FAULT,function(ev:FaultEvent):void {
+           	trace(ev.message);
+           });
            userRequest.send(obj);
-        }
-		
+		}
 		
 		
 		
@@ -108,7 +123,7 @@ package com.vizzuality.dao
 		
 		private function nextImageFromGroup():void {
 			if (observationData.images.length==0) {
-				googleService.send();
+				saveToFusionTables();
 				Application.application.principalView.imagesState.deleteGroup(observationData.group_id);
 			} else {
 				var tag:String = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
@@ -181,7 +196,7 @@ package com.vizzuality.dao
 				Application.application.principalView.imagesState.deleteImagefromGroup(path,1);
 				nextImageFromGroup();
 			} else {
-				googleService.send();
+				saveToFusionTables();
     			Application.application.principalView.imagesState.deleteImage(path,1);
 			}
 			DockIcon(NativeApplication.nativeApplication.icon).bounce();
