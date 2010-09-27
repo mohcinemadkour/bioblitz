@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="208" height="174" styleName="tooltipGreyBkg" filters="{[glowTooltip]}">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="208" height="174" styleName="tooltipGreyBkgRight" filters="{[glowTooltip]}">
+	<mx:states>
+		<mx:State name="ToLeft">
+			<mx:SetProperty name="styleName" value="tooltipGreyBkgLeft"/>
+			<mx:SetStyle target="{listMask}" name="left" value="19"/>
+			<mx:SetStyle target="{listMask}" name="right" value="5"/>
+			<mx:SetStyle target="{label1}" name="left" value="19"/>
+			<mx:SetStyle target="{label2}" name="left" value="19"/>
+		</mx:State>
+	</mx:states>
 
 	<mx:Script>
 		<![CDATA[
@@ -101,8 +110,8 @@
 	</mx:Metadata>
 
 	<mx:GlowFilter id="glowTooltip" alpha="0.7" color="#000000" blurX="8" blurY="8" />
-	<mx:Label text="Suggested species" styleName="txtSuggestedNamesShadow" top="11" left="6"/>
-	<mx:Label text="Suggested species" styleName="txtSuggestedNames" top="10" left="5"/>
+	<mx:Label text="Suggested species" styleName="txtSuggestedNamesShadow" top="11" left="6" id="label2"/>
+	<mx:Label text="Suggested species" styleName="txtSuggestedNames" top="10" left="5" id="label1"/>
 	<mx:Canvas id="listMask" top="31" left="5" right="19" bottom="6" borderStyle="solid" borderThickness="1" borderColor="#CCCCCC" cornerRadius="3" backgroundColor="#F5F5F5"
 		verticalScrollPolicy="off" horizontalScrollPolicy="off">
 		<mx:VBox width="181" verticalScrollPolicy="off" horizontalScrollPolicy="off" verticalGap="0">

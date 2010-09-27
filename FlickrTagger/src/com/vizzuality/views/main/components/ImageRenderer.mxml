@@ -35,7 +35,7 @@
 
 						if (value != null) {
 						  	 // Geotagged?
-						  	 (value.lat !=null && value.lat!=undefined)?geotagged = true:geotagged = false;
+						  	 (value.lat !=null && value.lat!=undefined && value.lat!="undefined")?geotagged = true:geotagged = false;
 						  	 
 						  	 // Scientific Name?
 						  	 (value.scientific == null || value.scientific == "Not recognized" || value.scientific == undefined)?textInput = "Not recognized":textInput = value.scientific;						  	 
@@ -83,7 +83,8 @@
                         coords = scientificNameInput.localToGlobal(coords);
                         dispatchEvent(new GetTaxonEvent(GetTaxonEvent.RESULT,scientificNameInput.text,coords,true));
                         data.editing = true;
-                        (this.parentDocument as ImagesContainer).updateName(scientificNameInput.text,data.path);  
+                        var group_id:int = (data.group_total!=undefined && data.group_total!=null)?data.id:-1;
+                        (this.parentDocument as ImagesContainer).updateName(scientificNameInput.text,data.path,group_id);  
                         textInput = scientificNameInput.text;
                         data.scientific = textInput;            
                     }
