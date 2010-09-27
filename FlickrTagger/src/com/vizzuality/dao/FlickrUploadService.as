@@ -39,8 +39,8 @@ package com.vizzuality.dao
 			googleService.method = "POST";
 			googleService.contentType = "application/x-www-form-urlencoded";
 			googleService.request.account = "GOOGLE";
-			googleService.request.Email = "jatorre@gmail.com";  // <-- USER
-			googleService.request.Passwd = "steivos666";    // <-- PASSWORD
+			googleService.request.Email = "vizzualitybioblitz@gmail.com";  // <-- USER
+			googleService.request.Passwd = "tdwgbioblitz";    // <-- PASSWORD
 			googleService.request.source = "ImageTagger";
 			googleService.request.service = "fusiontables";
 			googleService.addEventListener(ResultEvent.RESULT,handleGoogleLogin);
@@ -62,6 +62,9 @@ package com.vizzuality.dao
            AuthString = AuthString.substring(0,textindex);
 
 		   var obj:Object = new Object();
+		   var insertSQL:String ="INSERT INTO 248798(scientificName,latitude,longitude," +
+			   "observedBy,recordedBy,identifiedBy,dateTime,recording_app) VALUES()";
+		   
 		   obj.sql = URLEncoding.decode("INSERT INTO 247646 (Text,Number,Location,Date) VALUES ('"+observationData.pathString+"', 25,'"+observationData.scientific+"', '"+
 		   observationData.timestamp +"')");  // -> CHANGE SENTENCE (table id, lat, lon, date, etc)
 		   trace(obj.sql);
