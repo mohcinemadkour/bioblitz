@@ -28,6 +28,7 @@
                     [Bindable]private var textInput: String;  
                     [Bindable]private var canvasBkg: String;
                     [Bindable]private var geotagged: Boolean;
+                    [Bindable]private var commentStyle: String;
                     [Bindable]private var selected: Boolean;
                     [Bindable]private var path: String;
                     [Bindable]private var group: Boolean;
@@ -41,13 +42,10 @@
                     override public function set data(value:Object):void{
 
 						if (value != null) {
-						  	 // Geotagged?
 						  	 (value.lat !=null && value.lat!=undefined && value.lat!="undefined")?geotagged = true:geotagged = false;
 						  	 
-						  	 // Scientific Name?
 						  	 (value.scientific == null || value.scientific == "Not identified" || value.scientific == undefined)?textInput = "Not identified":textInput = value.scientific;						  	 
 						  	 
-						  	 // Single <> Group && Selected <> Unselected
 						  	 if (value.group_total != undefined) {		
 						  	 	group = true;				
 						     	canvasBkg = (value.selected==true)?'photoGroupBkgSelected':'photoGroupBkg';
@@ -55,7 +53,8 @@
 						     	group = false;
 						     	canvasBkg = (value.selected==true)?'photoBkgSelected':'photoBkg';
 						     }
-
+							 
+							 commentStyle = (value.comment!=undefined && value.comment!=null)?'CommentDoneBtn':'CommentBtn';
 						  	 path = getImageUrlInsideApp(value.path);
 						     uploading = (value.uploading==undefined)?false:value.uploading;
 
@@ -217,6 +216,7 @@
                     		deleteButton.visible = false;
                     		flickrButton.visible = false;
                     		commentArea.visible = true;
+                    		commentArea.textArea.setFocus();
                     	} else {
                     		scientificNameInput.enabled = true;
                     		deleteButton.visible = true;
@@ -230,7 +230,12 @@
                     	if (data.group_total != undefined && data.group_total>0) {
                     		dao.openConnection("UPDATE groups SET comment='"+event.comment+"' WHERE path='"+path+"'");
                     	} else {
-                    		dao.openConnection("UPDATE photos SET comment='"+event.comment+"' WHERE path='"+path+"'");
+                    		dao.openConnection("UPDATE photos SET comment='"+event.comment+"' WHERE path='"+data.path+"'");
+                    	}
+                    	if (event.comment.length>0) {
+                    		commentStyle = 'CommentDoneBtn';
+                    	} else {
+                    		commentStyle = 'CommentBtn';
                     	}
                     }
                     
@@ -260,7 +265,7 @@
         <mx:Button label="" fontSize="10" click="onDeleteButton()" width="28" id="deleteButton" height="28" visible="{!uploading}" x="180" y="0" alpha="{selected?1:0}" 
         	styleName="deleteRedBtn" buttonMode="true" mouseChildren="false" useHandCursor="true"/>  
         <mx:Button label="" click="onEditButton()" width="28" id="editButton" height="28" visible="{!uploading}" x="180" y="130" alpha="{selected?1:0}" 
-        	styleName="CommentBtn" buttonMode="true" mouseChildren="false" useHandCursor="true"/>
+        	styleName="{commentStyle}" buttonMode="true" mouseChildren="false" useHandCursor="true"/>
         	
         <mx:Canvas id="loading" verticalCenter="-8" horizontalCenter="0" width="86" height="86" visible="{uploading}" styleName="spinnerBkg" horizontalScrollPolicy="off" 
         	verticalScrollPolicy="off">

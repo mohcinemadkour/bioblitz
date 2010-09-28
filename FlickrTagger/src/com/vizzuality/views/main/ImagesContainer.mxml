@@ -5,6 +5,7 @@
 	<mx:states>
 		<mx:State name="imagesAdded">
 			<mx:RemoveChild target="{emptySelectionPhoto}"/>
+			<mx:SetProperty target="{Application.application.principalView.arrow}" name="source" value="{Application.application.Orange_Arrow}"/>
 			<mx:SetProperty target="{label1}" name="text">
 				<mx:value>Drag or select multiple photos (shift+click) to create groups</mx:value>
 			</mx:SetProperty>
@@ -104,6 +105,7 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import mx.events.StateChangeEvent;
 			import mx.controls.TextInput;
 			import com.vizzuality.event.SelectedSpecieEvent;
 			import com.vizzuality.views.main.components.ImageRenderer;
@@ -173,6 +175,7 @@
 				addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDropEnter);
 				addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDrop);
 		 	}
+		 	
 			
 			
 		 	public function refreshTilelist():void {
@@ -185,7 +188,6 @@
 				dao.openConnection("SELECT scientific,path,id,lat,lon,comment,timestamp FROM photos WHERE group_id is NULL");
 				sqlArray = new ArrayCollection(sqlArray.source.concat(dao.dbResult.source));
 				chooseState();
-				
 		 	}
 			
 			
