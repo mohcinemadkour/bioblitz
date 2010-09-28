@@ -11,5 +11,6 @@
 	</mx:Metadata>
 	
 	<mx:TextArea id="textArea" text="" change="dispatchEvent(new SendCommentEvent('changeComment',textArea.text))" left="16" 
-		right="18" bottom="12" top="32" fontSize="12" fontFamily="Verdana" color="#747550" backgroundAlpha="0" borderStyle="none"/>
+		right="18" bottom="12" top="32" fontSize="12" fontFamily="Verdana" color="#747550" backgroundAlpha="0" borderStyle="none"
+		focusThickness="0"/>
 </mx:Canvas>
