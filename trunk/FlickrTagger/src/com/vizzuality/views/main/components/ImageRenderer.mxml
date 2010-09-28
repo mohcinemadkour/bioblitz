@@ -260,7 +260,7 @@
         <mx:Button label="" fontSize="10" click="onDeleteButton()" width="28" id="deleteButton" height="28" visible="{!uploading}" x="180" y="0" alpha="{selected?1:0}" 
         	styleName="deleteRedBtn" buttonMode="true" mouseChildren="false" useHandCursor="true"/>  
         <mx:Button label="" click="onEditButton()" width="28" id="editButton" height="28" visible="{!uploading}" x="180" y="130" alpha="{selected?1:0}" 
-        	styleName="deleteRedBtn" buttonMode="true" mouseChildren="false" useHandCursor="true"/>
+        	styleName="CommentBtn" buttonMode="true" mouseChildren="false" useHandCursor="true"/>
         	
         <mx:Canvas id="loading" verticalCenter="-8" horizontalCenter="0" width="86" height="86" visible="{uploading}" styleName="spinnerBkg" horizontalScrollPolicy="off" 
         	verticalScrollPolicy="off">

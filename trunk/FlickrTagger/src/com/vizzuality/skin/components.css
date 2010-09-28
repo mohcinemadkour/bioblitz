@@ -539,6 +539,22 @@ Label.txtHelpStepNumberShadow {
 	disabled-skin: Embed(source="components_skin2.swf", symbol="deleteRedBtn_disabled");
 }
 
+.CommentBtn {
+	up-skin: Embed(source="components_skin2.swf", symbol="noteYellowBtn_up");
+	over-skin: Embed(source="components_skin2.swf", symbol="noteYellowBtn_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="noteYellowBtn_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="noteYellowBtn_up");
+}
+
+.CommentDoneBtn {
+	up-skin: Embed(source="components_skin2.swf", symbol="noteDoneYellowBtn_up");
+	over-skin: Embed(source="components_skin2.swf", symbol="noteDoneYellowBtn_over");
+	down-skin: Embed(source="components_skin2.swf", symbol="noteDoneYellowBtn_down");
+	disabled-skin: Embed(source="components_skin2.swf", symbol="noteDoneYellowBtn_up");
+}
+
+
+
 .btnEmptySection{	
 	skin: ClassReference(null);
 	up-skin: ClassReference(null);
@@ -624,4 +640,9 @@ Label.txtHelpStepNumberShadow {
 	font-weight: bold;
 	font-size: 13;
 	focus-alpha: 0;
+}
+
+.postit{
+	background-image:Embed(source="components_skin2.swf", symbol="postit_bkg");
+	border-style: none;
 }
