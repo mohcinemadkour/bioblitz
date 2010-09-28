@@ -250,7 +250,8 @@
         	styleName="{canvasBkg}" backgroundSize="100%" doubleClick="onDoubleClick(event)" doubleClickEnabled="true">
 			<mx:Image source="{path}" verticalCenter="0" horizontalCenter="0"/>
         </mx:Canvas>
-        <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0" visible="{geotagged}" click="showPosition(event)"/>
+        <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0" visible="{geotagged}" click="showPosition(event)" useHandCursor="true"
+        	buttonMode="true" mouseChildren="false"/>
         <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName(event)" textAlign="center" maxWidth="181" 
         	backgroundAlpha="{selected?1:0}" height="24" styleName="titlePhotoTxtInput" horizontalCenter="0" bottom="0" paddingTop="2" paddingBottom="2" 
         	enabled="{!uploading}" color="{(textInput=='Not identified')?0x666666:0xBBBBBB}" focusOut="onInputFocusOut()"/>
