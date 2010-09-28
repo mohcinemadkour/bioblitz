@@ -39,7 +39,7 @@ namespace :workers do
     config = YAML::load_file("#{Rails.root}/config/credentials.yml")
     ft = GData::Client::FusionTables.new
     ft.clientlogin(config["ft_username"],config["ft_password"])    
-    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,associatedMedia from #{config['ft_occurrence_table']} WHERE zoomitId='' and associatedMedia not equal to ''"))
+    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,associatedMedia from #{config['ft_occurrence_table']} WHERE zoomit_ID='' and associatedMedia not equal to ''"))
     res.body.each do |rec|
       rowid = rec[:rowid] 
       #Loop over the images on the observation
