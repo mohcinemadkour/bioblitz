@@ -55,7 +55,7 @@ namespace :workers do
         ids << response['id']
         puts response['id']
       }
-      ft.sql_post("UPDATE #{config['ft_occurrence_table']} SET zoomitId='#{ids.join(" ")}' WHERE ROWID='#{rowid}'")
+      ft.sql_post("UPDATE #{config['ft_occurrence_table']} SET zoomit_ID='#{ids.join(" ")}' WHERE ROWID='#{rowid}'")
     end 
   end
   
