@@ -10,14 +10,14 @@ namespace :workers do
     ft = GData::Client::FusionTables.new
     ft.clientlogin(config["ft_username"],config["ft_password"])
     
-    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,scientificName from #{config['ft_occurrence_table']} WHERE colId='' and scientificName not equal to ''"))
+    res = GData::Client::FusionTables::Data.parse(ft.sql_get("select ROWID,scientificName from #{config['ft_occurrence_table']} WHERE col_ID='' and scientificName not equal to ''"))
     res.body.each do |rec|
       rowid = rec[:rowid]      
       taxonomy=resolve_taxonomy(rec[:scientificname])
       if(taxonomy.any?)
         puts taxonomy[0]['id_col']
         ft.sql_post("UPDATE #{config['ft_occurrence_table']} SET 
-          colId='#{taxonomy[0]['id_col']}',
+          col_ID='#{taxonomy[0]['id_col']}',
           colLsid='#{taxonomy[0]['lsid']}',
           kingdom='#{taxonomy[0]['k']}',
           phylum='#{taxonomy[0]['p']}',
@@ -28,7 +28,7 @@ namespace :workers do
         WHERE ROWID='#{rowid}'")
       else
         puts "not found:#{rec[:scientificname]}"
-        ft.sql_post("UPDATE #{config['ft_occurrence_table']} SET colId='failed' WHERE ROWID='#{rowid}'")
+        ft.sql_post("UPDATE #{config['ft_occurrence_table']} SET col_ID='failed' WHERE ROWID='#{rowid}'")
       end
       
     end
