@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="126" height="147" styleName="postit">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="147" height="126" styleName="postit" backgroundSize="100%">
 	<mx:Script>
 		<![CDATA[
 			import com.vizzuality.event.SendCommentEvent;
@@ -10,6 +10,6 @@
 		    [Event(name="changeComment", type="com.vizzuality.event.SendCommentEvent")]
 	</mx:Metadata>
 	
-	<mx:TextArea id="textArea" text="" change="dispatchEvent(new SendCommentEvent('changeComment',textArea.text))" left="10" 
-		right="10" bottom="25" top="40" fontSize="12" fontFamily="Verdana" color="#747550" backgroundAlpha="0" borderColor="#E2E49D" focusAlpha=".2" />
+	<mx:TextArea id="textArea" text="" change="dispatchEvent(new SendCommentEvent('changeComment',textArea.text))" left="16" 
+		right="18" bottom="12" top="32" fontSize="12" fontFamily="Verdana" color="#747550" backgroundAlpha="0" borderStyle="none"/>
 </mx:Canvas>
