@@ -67,6 +67,37 @@
 			<mx:SetStyle target="{headerHBox}" name="left" value="0"/>
 			<mx:SetStyle target="{headerHBox}" name="right" value="0"/>
 		</mx:State>
+		<mx:State name="showGroup">
+			<mx:SetProperty target="{label1}" name="text" value="You are browsing this group"/>
+			<mx:SetProperty target="{label2}" name="text" value="You are browsing this group"/>
+			<mx:RemoveChild target="{emptySelectionPhoto}"/>
+			<mx:SetProperty target="{vbox1}" name="y" value="0"/>
+			<mx:SetProperty target="{vbox1}" name="x" value="0"/>
+			<mx:AddChild relativeTo="{headerHBox}" position="firstChild">
+				<components1:CanvasBtn width="55" height="22" click="backStart()"
+					btnText="BACK"
+					styleBtnOver="goBackBtnOver"
+					styleBtnUp="goBackBtnUp"
+					styleLabel="goBackBtnLabel"
+					styleLabelShadow="goBackBtnLabelShadow"/>
+			</mx:AddChild>
+			<mx:RemoveChild target="{tilelist}"/>
+			<mx:RemoveChild target="{spacer1}"/>
+			<mx:AddChild relativeTo="{vbox1}" position="lastChild">
+				<mx:Canvas  id="canvas_group" height="37" width="100%" styleName="infoUpOrangeBkg" backgroundSize="100%" 
+					 verticalScrollPolicy="off" horizontalScrollPolicy="off">
+	    			<mx:Label text="There are 16 photos in this group" x="11" verticalCenter="1" styleName="txtInfoUpShadow" alpha="0.3" left="14" id="total_photos1"/>
+	    			<mx:Label text="There are 16 photos in this group" x="10" verticalCenter="0" styleName="txtInfoUp" left="13" id="total_photos2"/>
+				</mx:Canvas>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{vbox1}" position="lastChild">
+				<comp:TileListFlickTagger width="100%" height="100%" backgroundAlpha="0" selectionColor="#4a4a4a" selectionDisabledColor="#4a4a4a" rollOverColor="#4a4a4a" id="grouplist"  
+					dataProvider="{groupArray}" itemRenderer="com.vizzuality.views.main.components.GroupRenderer" minWidth="440" borderThickness="0"  
+					dragEnabled="false" dragMoveEnabled="false" styleName="imagesContent"/>
+			</mx:AddChild>
+			<mx:SetProperty target="{canvas1}" name="styleName" value="infoUpGreyBkg"/>
+			<mx:SetStyle target="{headerHBox}" name="paddingLeft" value="9"/>
+		</mx:State>
 	</mx:states>
 
 	
@@ -120,6 +151,7 @@
 			public var progressPop:IFlexDisplayObject;	
 			private var dao: DataAccessObject= new DataAccessObject();
 			[Bindable] public var sqlArray: ArrayCollection;
+			[Bindable] public var groupArray: ArrayCollection;
 			private var dir:File = File.applicationStorageDirectory.resolvePath("images");
 			private var imagesDir:String;
 			private var fileToOpen:File = File.documentsDirectory;
@@ -128,23 +160,8 @@
 			private var path: String;
 			private var scientific: String;
 			
-			private var taxonomyResolutionService:TaxonomyResolutionService;
 			
 			
-			
-		 	public function refreshTilelist():void {
-		 		sqlArray = new ArrayCollection();
-		 		//Get first images not grouped
-		 		dao.openConnection("SELECT scientific,path,id,lat,lon,timestamp, (select count(id) from photos where group_id=g.id) AS group_total FROM groups as g");
-				sqlArray = dao.dbResult;
-
-		 		//Get second images not grouped
-				dao.openConnection("SELECT scientific,path,id,lat,lon,timestamp FROM photos WHERE group_id is NULL");
-				sqlArray = new ArrayCollection(sqlArray.source.concat(dao.dbResult.source));
-				chooseState();
-		 	}
-			
-						
 			private function onCreationComplete():void {
 		    	addEventListener(GetTaxonEvent.RESULT,onTaxonResult);
 		    	addEventListener("onFocusInputOut",function(ev:Event):void{searchAsYouType.visible = false;});
@@ -156,6 +173,78 @@
 				addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDropEnter);
 				addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDrop);
 		 	}
+			
+			
+		 	public function refreshTilelist():void {
+		 		sqlArray = new ArrayCollection();
+		 		//Get first images not grouped
+		 		dao.openConnection("SELECT scientific,path,id,lat,lon,comment,timestamp, (select count(id) from photos where group_id=g.id) AS group_total FROM groups as g");
+				sqlArray = dao.dbResult;
+
+		 		//Get second images not grouped
+				dao.openConnection("SELECT scientific,path,id,lat,lon,comment,timestamp FROM photos WHERE group_id is NULL");
+				sqlArray = new ArrayCollection(sqlArray.source.concat(dao.dbResult.source));
+				chooseState();
+				
+		 	}
+			
+			
+			private function backStart():void {
+				refreshTilelist();
+				chooseState();
+			}
+			
+			
+			public function showGroupPhotos(group_id:String):void {
+		 		groupArray = new ArrayCollection();
+		 		dao.openConnection("SELECT scientific,path,group_id from photos where group_id="+group_id);
+				groupArray = dao.dbResult;
+				dao.openConnection("SELECT scientific from groups where id="+group_id);
+				currentState = "showGroup";
+		 		Application.application.principalView.arrow.source = "com/vizzuality/assets/grey_arrow.png";				
+				var result:String = dao.dbResult[0].scientific;
+				if (result!="undefined" && result!="Not identified") {
+					label1.text = 'You are browsing a group of “'+result+'”';
+					label2.text = 'You are browsing a group of “'+result+'”';;
+				} else {
+					label1.text = 'You are browsing this group';
+					label2.text = 'You are browsing this group';;
+				}
+				dao.openConnection("select count(id) AS total from photos where group_id="+group_id);
+				var count:int = dao.dbResult[0].total;
+				total_photos1.text = "There are "+count+" photos in this group";
+				total_photos2.text = "There are "+count+" photos in this group";
+
+			}	
+			
+			
+			public function updateGroupReferences(group_id:int, path:String):void {
+                // Change group main image
+				// Change text of the labels!
+				
+                dao.openConnection("UPDATE photos SET group_id=NULL WHERE path='"+path+"'");
+                dao.openConnection("select count(id) AS total from photos where group_id="+group_id);
+				var count:int = dao.dbResult[0].total;
+				if (count<2) {
+                	dao.openConnection("DELETE FROM groups WHERE id='"+ group_id +"'");
+				} else {
+					dao.openConnection("select path from photos where group_id="+group_id);
+					var newPath:String = dao.dbResult[0].path;
+					dao.openConnection("UPDATE groups SET path='"+getImageUrlInsideApp(newPath)+"' WHERE id="+group_id);
+				}
+				
+				total_photos1.text = "There are "+count+" photos in this group";
+				total_photos2.text = "There are "+count+" photos in this group";
+                        
+				for (var i:int=0;i<groupArray.length;i++) {
+ 					if (path==groupArray[i].path)
+ 						break;
+	 			}
+
+	 			grouplist.indexToItemRenderer(i).data=null;
+	 			groupArray.removeItemAt(i);
+			}
+			
 		 	
 		 	
 		 	private function onTaxonResult(ev:GetTaxonEvent):void {
@@ -207,7 +296,7 @@
 		 		var result:ArrayCollection = dao.dbResult;
 		 		for (var i:int=0; i<result.length; i++) {
 		 			var file:File = new File;
-		 			file.url= result[i].path;
+		 			file.url= getImageUrlInsideApp(result[i].path);
 		 			file.deleteFile();
 		 		}
 		 		dao.openConnection("DELETE FROM photos WHERE group_id = '"+group_id+"'");
@@ -259,6 +348,18 @@
 			 	} else {
 			 		dao.openConnection("UPDATE groups SET scientific='"+scientificName+"' WHERE id='"+group_id+"'");
 			 		dao.openConnection("UPDATE photos SET scientific='"+scientificName+"' WHERE group_id='"+group_id+"'");
+			 	}
+		 	}
+		 	
+		 	
+		 	
+		 	
+		 	public function updateComment(comment:String, path:String, group_id:int = -1):void {
+		 		if (group_id == -1) {
+			 		dao.openConnection("UPDATE photos SET comment='"+comment+"' WHERE path='"+path+"'");
+			 	} else {
+			 		dao.openConnection("UPDATE groups SET scientific='"+comment+"' WHERE id='"+group_id+"'");
+			 		dao.openConnection("UPDATE photos SET scientific='"+comment+"' WHERE group_id='"+group_id+"'");
 			 	}
 		 	}
 
@@ -342,11 +443,9 @@
 						}
 					}
 					
-					
 					for (var k:int=0; k<imagesIdsArray.length; k++) {					
 	 					removeImageTilelist(imagesIdsArray[k]);
 					}
-					
 					
 					photos_ids_str = photos_ids_str.substr(0,photos_ids_str.length-1);
 		     		dao.openConnection("UPDATE photos SET group_id="+isThereGroup.group_id+" where id in ("+photos_ids_str+")");				
@@ -354,12 +453,23 @@
 					//If there isn't a group in the selected items
 					group_data.count = tilelist.selectedItems.length;
 					for (var i:int=0; i<tilelist.selectedItems.length; i++) {
-						if (group_data.scientific==undefined && tilelist.selectedItems[i].scientific != null && tilelist.selectedItems[i].scientific != "Not recognized") {
+						//Scientific name
+						if (group_data.scientific==undefined && tilelist.selectedItems[i].scientific != null && tilelist.selectedItems[i].scientific != "Not identified") {
 							group_data.scientific = tilelist.selectedItems[i].scientific;
 						}
+						//Path
 						if (group_data.path==undefined) {
 							group_data.path = tilelist.selectedItems[i].path;
 						}
+						//Timestamp
+						if (group_data.timestamp==undefined && tilelist.selectedItems[i].timestamp!=null) {
+							group_data.timestamp = tilelist.selectedItems[i].timestamp;
+						}
+						
+						if (group_data.comment==undefined && tilelist.selectedItems[i].comment!=null) {
+							group_data.comment = tilelist.selectedItems[i].comment;
+						}
+						
 						if (group_data.lat==undefined && tilelist.selectedItems[i].lat != null) {
 							group_data.lat = tilelist.selectedItems[i].lat;
 							group_data.lon = tilelist.selectedItems[i].lon;
@@ -369,23 +479,33 @@
 						
 					}
 					
-					for (var z:int=0; z<imagesIdsArray.length; z++) {					
-						removeImageTilelist(imagesIdsArray[z]);
-					}
-
 					dao.openConnection("INSERT INTO groups (scientific,path,lat,lon) VALUES ('"+group_data.scienfitic+"','"+group_data.path+"','"+group_data.lat+"','"+group_data.lon+"')");
 					dao.openConnection("SELECT id FROM groups order by id DESC LIMIT 1");
 					var group_identification:String = dao.dbResult[0].id;
 					
-					//Create the group and added to the tilelist
-					var obj: Object = new Object();
-			  		obj.path = group_data.path;
-			  		obj.scientific = group_data.scienfitic;
-			  		obj.lat = (group_data.lat==undefined)?null:group_data.lat;
-			  		obj.lon = (group_data.lon==undefined)?null:group_data.lon;
-			  		obj.id = group_identification;
-			  		obj.group_total = group_data.count;
-			  		sqlArray.addItem(obj);					
+					//Change data of the first element for converting it into a group
+					var find:Boolean = false;
+					for (var u:int = 0; u<tilelist.renderers.length; u++) {
+						if (find) break;
+						for (var o:int = 0; o<tilelist.renderers[u].length; o++) {
+							if (tilelist.renderers[u][o].data.path == tilelist.selectedItems[0].path) {
+								tilelist.renderers[u][o].data.group_total = group_data.count;
+			  					tilelist.renderers[u][o].data.scientific = group_data.scientific;
+			  					tilelist.renderers[u][o].data.lat = (group_data.lat==undefined)?null:group_data.lat;
+			  					tilelist.renderers[u][o].data.lon = (group_data.lon==undefined)?null:group_data.lon;
+			  					tilelist.renderers[u][o].data.timestamp = (group_data.timestamp==undefined)?null:group_data.timestamp;
+			  					tilelist.renderers[u][o].data.comment = (group_data.comment==undefined)?null:group_data.comment;
+			  					tilelist.renderers[u][o].data.id = group_identification;
+								find = true;
+								break;
+							}	
+						}
+					}
+					
+					//Delete rest of the photos
+					for (var z:int=1; z<imagesIdsArray.length; z++) {					
+						removeImageTilelist(imagesIdsArray[z]);
+					}				
 					
 					photos_ids_str = photos_ids_str.substr(0,photos_ids_str.length-1);
 		     		dao.openConnection("UPDATE photos SET group_id="+group_identification+" where id in ("+photos_ids_str+")");					
@@ -458,7 +578,7 @@
 			
 			private function getImageUrlInsideApp(externalPath:String):String {
 				var fileName:String = externalPath.replace("file://","").replace(/\//g,'_');
-	          	fileName.replace("gif","jpg").replace("png","jpg").replace("GIF","jpg").replace("PNG","jpg").replace("JPG","jpg");
+	          	fileName.replace("gif","jpg").replace("png","jpg").replace("GIF","jpg").replace("PNG","jpg").replace("JPEG","jpg").replace("jpeg","jpg").replace("JPG","jpg");
 				return File.applicationStorageDirectory.resolvePath(imagesDir + "/"+fileName).url;
 			}
 			
@@ -469,6 +589,8 @@
 			    	} else {
 			    		if(acceptedExtensions.indexOf(file.extension)>=0 && !checkIfExistPhoto(file.url)) {
 			    			imagePaths.push(file.url);
+			    		} else {
+			    			chooseState();
 			    		}
 			    	}			       
 			    }
@@ -485,6 +607,7 @@
 				if(imagePaths.length>0) {
 					processingPath=imagePaths[0];
 				}else {
+					isProcessingImage=false;
 					processingTimer.stop();
 					processingTimer.removeEventListener(TimerEvent.TIMER,loadImage);
 					chooseState();
@@ -558,6 +681,7 @@
 			  	obj.lon = null;
 			  	obj.id = identification.id;
 			  	obj.timestamp = dateTimeDigitized;
+			  	obj.comment = null;
 			  	sqlArray.addItem(obj);	
 	            
 	            isProcessingImage=false;		
@@ -604,7 +728,7 @@
 				</mx:Canvas>
 			</mx:HBox>
 	    </mx:Canvas>
-	    <mx:Spacer height="10"/>
+	    <mx:Spacer height="10" id="spacer1"/>
 		<comp:TileListFlickTagger backgroundAlpha="0" selectionColor="#4a4a4a" selectionDisabledColor="#4a4a4a" rollOverColor="#4a4a4a" id="tilelist"  dataProvider="{sqlArray}"
 				itemRenderer="com.vizzuality.views.main.components.ImageRenderer" minWidth="440" width="100%" height="100%" borderThickness="0" 
 				itemClick="checkMultipleSelection(event)" allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true" styleName="imagesContent"/>					

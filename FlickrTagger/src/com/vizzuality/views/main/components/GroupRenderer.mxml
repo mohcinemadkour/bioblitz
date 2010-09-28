@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="220" height="180" color="#040404" verticalScrollPolicy="off" creationComplete="initRenderer()"
+	horizontalScrollPolicy="off" xmlns:components="com.vizzuality.components.*" verticalCenter="0" horizontalCenter="0" xmlns:components1="com.vizzuality.views.main.components.*">
+        
+        <mx:Script>
+                <![CDATA[
+                	import com.vizzuality.dao.DataAccessObject;
+                	import com.vizzuality.views.main.ImagesContainer;
+                	import mx.collections.ArrayCollection;
+                	import mx.events.FlexEvent;
+                	import mx.events.ListEvent;
+					import com.vizzuality.components.TileListFlickTagger;
+
+                    
+                    [Bindable]private var selected: Boolean;
+                    [Bindable]private var canvasBkg: String;
+                    [Bindable]private var path: String;
+                    private var outerList:TileListFlickTagger;
+                    private var imagesDir:String = File.applicationStorageDirectory.resolvePath("images").nativePath;
+                    private var dao: DataAccessObject= new DataAccessObject();
+                    
+                    
+                    private function initRenderer():void {
+                    	if (this.parentDocument is ImagesContainer) {
+                    		this.outerList = (this.parentDocument as ImagesContainer).grouplist;
+                        	this.outerList.addEventListener(ListEvent.CHANGE, updateSelected); 
+                        	this.addEventListener(FlexEvent.DATA_CHANGE, checkSelected);
+                    	}
+                    }
+                    
+                                  
+                    
+                    override public function set data(value:Object):void{
+						if (value != null) {
+						     canvasBkg = (value.selected==true)?'photoBkgSelected':'photoBkg';
+						  	 path = getImageUrlInsideApp(value.path);
+						  }
+						  super.data = value;
+					}
+					
+					
+					private function getImageUrlInsideApp(externalPath:String):String {
+						var fileName:String = externalPath.replace("file://","").replace(/\//g,'_');
+			          	fileName.replace("gif","jpg").replace("png","jpg").replace("GIF","jpg").replace("PNG","jpg").replace("JPG","jpg");
+						return File.applicationStorageDirectory.resolvePath(imagesDir + "/"+fileName).url;
+					}
+					
+					
+					private function updateSelected(event:ListEvent):void {
+					  	if(this.outerList.allowMultipleSelection) {
+					  		var aux_array:ArrayCollection = new ArrayCollection(this.outerList.selectedItems);
+					    	selected = Boolean((aux_array).getItemIndex(this.data) != -1);
+					    	canvasBkg = (selected!=false)?'photoBkgSelected':'photoBkg';
+					  	} else {
+					    	selected = Boolean(event.itemRenderer == this);
+					    	canvasBkg = (selected!=false)?'photoBkgSelected':'photoBkg';
+					  	}
+                    }
+                    
+                    
+                    
+                    private function checkSelected(event:FlexEvent):void {
+					  	var aux_array:ArrayCollection = new ArrayCollection(this.outerList.selectedItems);
+                        if (this.outerList.selectedItem == this.data || ((aux_array).getItemIndex(this.data) != -1)) {
+         					selected = true;
+                        } else {
+							selected = false;
+         				}
+                    }
+					
+					
+					private function eraseImage():void {
+                        (this.parentDocument as ImagesContainer).updateGroupReferences(data.group_id,data.path);
+                    }                       
+                    
+                    
+                    private function onDeleteButton():void {
+                    	deleteButton.visible = false;
+                    	deleteConfirmation.visible = true;
+                    }
+                    
+                    
+                    private function onCancelDelete():void {
+                    	deleteButton.visible = true;
+                    	deleteConfirmation.visible = false;
+                    }
+					
+					
+                    
+		            
+                ]]>
+        </mx:Script>
+        
+                      
+        
+        <mx:Canvas id="itemSpace" height="157" width="197" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" top="0"
+        	styleName="{canvasBkg}" backgroundSize="100%">
+			<mx:Image source="{path}" verticalCenter="0" horizontalCenter="0"/>
+        </mx:Canvas>
+        
+		
+        <mx:Button label="" fontSize="10" click="onDeleteButton()" width="28" id="deleteButton" height="28" visible="{selected?true:false}" x="180" y="0" alpha="1" 
+        	styleName="deleteRedBtn" buttonMode="true" mouseChildren="false" useHandCursor="true"/>  
+        	
+
+        
+        <components1:DeleteConfirmation id="deleteConfirmation" verticalCenter="-15" kind="image" 
+        	visible="false" deleteImages="eraseImage()" cancelDelete="onCancelDelete()"  horizontalCenter="0"/>  	
+        	
+        
+</mx:Canvas>
