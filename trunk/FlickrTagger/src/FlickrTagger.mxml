@@ -17,7 +17,13 @@
 			[Bindable] public var tagSequence: String = "";
 			[Bindable] public var uploadingStatus: String = "";
 			public var croppedImagesDictionary : Dictionary = new Dictionary();
-				
+			
+			[Embed(source="com/vizzuality/assets/orange_arrow.png")] public var Orange_Arrow:Class;
+			[Embed(source="com/vizzuality/assets/grey_arrow.png")] public var Grey_Arrow:Class;
+			[Embed(source="com/vizzuality/assets/green_arrow.png")] public var Green_Arrow:Class;
+			[Embed(source="com/vizzuality/assets/yellow_arrow.png")] public var Yellow_Arrow:Class;
+			[Embed(source="com/vizzuality/assets/red_arrow.png")] public var Red_Arrow:Class;
+
 			
 			private function onCreationComplete():void {
 				currentState='checkingtoken';

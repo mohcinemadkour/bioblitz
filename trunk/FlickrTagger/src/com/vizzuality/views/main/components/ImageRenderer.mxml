@@ -4,6 +4,7 @@
         
         <mx:Script>
                 <![CDATA[
+                	import mx.managers.PopUpManager;
                 	import com.vizzuality.dao.DataAccessObject;
                 	import com.vizzuality.event.SendCommentEvent;
 					import com.vizzuality.components.TileListFlickTagger;
@@ -31,6 +32,7 @@
                     [Bindable]private var path: String;
                     [Bindable]private var group: Boolean;
                     private var outerList:TileListFlickTagger;
+                    private var imageMap:ImageMap = new ImageMap();
                     private var imagesDir:String = File.applicationStorageDirectory.resolvePath("images").nativePath;
                     private var dao: DataAccessObject= new DataAccessObject();
                     
@@ -233,6 +235,12 @@
                     }
                     
                     
+                    private function showPosition(event:MouseEvent):void {
+                    	imageMap.source = "http://maps.google.com/maps/api/staticmap?center=63.259591,-144.667969&zoom=14&size=300x300&markers=color:blue|label:S|63.259591,-144.667969&sensor=true";
+		                PopUpManager.addPopUp(imageMap,this, true);
+                    }
+                    
+                    
 		            
                 ]]>
         </mx:Script>
@@ -241,9 +249,9 @@
         
         <mx:Canvas id="itemSpace" height="157" width="197" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" top="0"
         	styleName="{canvasBkg}" backgroundSize="100%" doubleClick="onDoubleClick(event)" doubleClickEnabled="true">
-			<mx:Image source="{path}" verticalCenter="0" horizontalCenter="0" />
+			<mx:Image source="{path}" verticalCenter="0" horizontalCenter="0"  />
         </mx:Canvas>
-        <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0" visible="{geotagged}"/>
+        <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0" visible="{geotagged}" click="showPosition(event)"/>
         <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName(event)" textAlign="center" maxWidth="181" 
         	backgroundAlpha="{selected?1:0}" height="24" styleName="titlePhotoTxtInput" horizontalCenter="0" bottom="0" paddingTop="2" paddingBottom="2" 
         	enabled="{!uploading}" color="{(textInput=='Not identified')?0x666666:0xBBBBBB}" focusOut="onInputFocusOut()"/>

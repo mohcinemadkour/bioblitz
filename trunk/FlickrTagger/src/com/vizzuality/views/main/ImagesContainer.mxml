@@ -201,7 +201,7 @@
 				groupArray = dao.dbResult;
 				dao.openConnection("SELECT scientific from groups where id="+group_id);
 				currentState = "showGroup";
-		 		Application.application.principalView.arrow.source = "com/vizzuality/assets/grey_arrow.png";				
+		 		Application.application.principalView.arrow.source = Application.application.Grey_Arrow;				
 				var result:String = dao.dbResult[0].scientific;
 				if (result!="undefined" && result!="Not identified") {
 					label1.text = 'You are browsing a group of “'+result+'”';
@@ -371,10 +371,10 @@
 			 
 		 	public function chooseState():void {
 		 		if (sqlArray.length!=0) {
-		 			Application.application.principalView.arrow.source = "com/vizzuality/assets/orange_arrow.png";
+		 			Application.application.principalView.arrow.source = Application.application.Orange_Arrow;
 					currentState = "imagesAdded";
 				} else {
-		 			Application.application.principalView.arrow.source = "com/vizzuality/assets/orange_arrow.png";
+		 			Application.application.principalView.arrow.source = Application.application.Orange_Arrow;
 					currentState = "";
 				}
 		 	}			
@@ -384,10 +384,10 @@
 				if (tilelist.selectedItems.length>1) {
 					var result:Object = checkNoMoreTwoGroupsSelected();
 					if (!result.valid) {
-		 				Application.application.principalView.arrow.source = "com/vizzuality/assets/red_arrow.png";
+		 				Application.application.principalView.arrow.source = Application.application.Red_Arrow;
 						currentState = "banSelection";
 					} else {
-		 				Application.application.principalView.arrow.source = "com/vizzuality/assets/yellow_arrow.png";
+		 				Application.application.principalView.arrow.source = Application.application.Yellow_Arrow;
 						currentState = "multipleSelection";
 						label1.text = "You have selected " + result.count;
 						label2.text = "You have selected " + result.count;						

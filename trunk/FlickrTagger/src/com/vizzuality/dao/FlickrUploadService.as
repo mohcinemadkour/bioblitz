@@ -75,7 +75,7 @@ package com.vizzuality.dao
 		   var comment:String = (observationData.comment!=null)?observationData.comment:"";
 		   
 		   obj.sql = URLEncoding.decode("INSERT INTO 248798 (scientificName,latitude,longitude," +
-			   "observedBy,recordedBy,identifiedBy,dateTime,associatedMedia,recording_app,occurrenceRemarks) VALUES ('"+
+			   "observedBy,recordedBy,identifiedBy,dateTime,associatedMedia,occurrenceRemarks,recording_app) VALUES ('"+
 				scientific+"','"+
 				lat+"','"+
 				lon+"','"+
@@ -84,7 +84,7 @@ package com.vizzuality.dao
 		   		FlickrAuthorizationSettings.accountName +"','"+
 		   		takenDate +"','"+
 		   		observationData.pathString+"','"+
-		   		comment +"','"+
+		   		comment +"',"+
 		   		"'flickrtagger')");
 		   		trace(obj.sql);
 			

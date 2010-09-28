@@ -144,7 +144,7 @@
 				
 								
 				currentState="gpxAdded";
-				Application.application.principalView.arrow.source= "com/vizzuality/assets/green_arrow.png";
+				Application.application.principalView.arrow.source = Application.application.Green_Arrow;
 				
 				
 			}
@@ -210,7 +210,7 @@
 			    		return;
 			    	}				       
 			    }
-			    Application.application.principalView.arrow.source= "com/vizzuality/assets/red_arrow.png";
+			    Application.application.principalView.arrow.source= Application.application.Red_Arrow;
 			    currentState = 'gpxError';
 			}
 			
