@@ -18,7 +18,7 @@ namespace :workers do
         puts taxonomy[0]['id_col']
         ft.sql_post("UPDATE #{config['ft_occurrence_table']} SET 
           col_ID='#{taxonomy[0]['id_col']}',
-          colLsid='#{taxonomy[0]['lsid']}',
+          col_lsid='#{taxonomy[0]['lsid']}',
           kingdom='#{taxonomy[0]['k']}',
           phylum='#{taxonomy[0]['p']}',
           class='#{taxonomy[0]['c']}',
