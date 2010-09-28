@@ -88,8 +88,7 @@ namespace :workers do
                             :accuracy=>"1",
                             :safe_search=>"1",
                             :content_type=>"1",
-                            :machine_tags=>"taxonomy:binomial=",
-                            :group_id=>"806927@N20",
+                            :group_id=>"1531186@N21",
                             :per_page=>200,
                             :extras=>"url_l",
                             :has_geo=>"1")
@@ -99,15 +98,69 @@ namespace :workers do
         pic_url=pic.url_l
         info = flickr.photos.getInfo :photo_id => pic['id']
         scientificName=''
+        genus=''
+        family=''
+        common=''
         info.tags.each do |tag|
           if(tag.raw.include?("taxonomy:binomial"))
             scientificName = tag.raw.gsub("taxonomy:binomial=","")
           end
+          if(tag.raw.include?("taxonomy:genus"))
+            genus = tag.raw.gsub("taxonomy:genus=","")
+          end
+          if(tag.raw.include?("taxonomy:family"))
+            family = tag.raw.gsub("taxonomy:family=","")
+          end   
+          if(tag.raw.include?("taxonomy:common"))
+            common = tag.raw.gsub("taxonomy:common=","")
+          end                           
         end 
         puts scientificName
-      
-        sql="INSERT INTO #{config['ft_occurrence_table']}(scientificName,associatedMedia) VALUES('#{scientificName}','#{pic_url}')"
+        if (info.respond_to?(:location) && info.location.respond_to?(:latitude))
+          latitude= info.location.latitude
+          longitude=info.location.longitude
+        else
+          latitude="null"
+          longitude="null"
+        end
+        
+        #first check if the image is not already on FT
+        sql="SELECT ROWID from #{config['ft_occurrence_table']} WHERE associatedMedia matches '#{pic_url}'"
+        res = GData::Client::FusionTables::Data.parse(ft.sql_get(sql))
+        if(res.body.length>0)
+          _rowid=res.body[0][:rowid]
+          sql="UPDATE #{config['ft_occurrence_table']} SET 
+          scientificName = '#{scientificName.gsub(/'/, "\\\\'")}',
+          latitude = #{latitude},
+          longitude = #{longitude},
+          observedBy = '#{info.owner.realname.gsub(/'/, "\\\\'")}',
+          recordedBy = '#{info.owner.realname.gsub(/'/, "\\\\'")}',
+          identifiedBy = '#{info.owner.realname.gsub(/'/, "\\\\'")}',
+          dateTime = '#{info.dates.taken}',
+          occurrenceRemarks = '#{info.description.gsub(/'/, "\\\\'")}',
+          genus = '#{genus.gsub(/'/, "\\\\'")}',
+          family = '#{family.gsub(/'/, "\\\\'")}',
+          vernacular_name = '#{common.gsub(/'/, "\\\\'")}'
+          WHERE ROWID='#{_rowid}'"
+        else
+          sql="INSERT INTO #{config['ft_occurrence_table']}(scientificName,associatedMedia,recording_app,
+          latitude,longitude,observedBy,recordedBy,identifiedBy,dateTime,occurrenceRemarks,genus,family,vernacular_name
+          ) VALUES(
+          '#{scientificName.gsub(/'/, "\\\\'")}',
+          '#{pic_url}',
+          'flickr_technobioblitz_group',
+          #{latitude},#{longitude},
+          '#{info.owner.realname.gsub(/'/, "\\\\'")}',
+          '#{info.owner.realname.gsub(/'/, "\\\\'")}',
+          '#{info.owner.realname.gsub(/'/, "\\\\'")}',
+          '#{info.dates.taken}',
+          '#{info.description.gsub(/'/, "\\\\'")}',
+          '#{genus.gsub(/'/, "\\\\'")}',
+          '#{family.gsub(/'/, "\\\\'")}',
+          '#{common.gsub(/'/, "\\\\'")}')"
+        end
         ft.sql_post(sql)
+      
       end
     end                        
     
