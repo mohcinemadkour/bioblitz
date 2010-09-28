@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="136" height="119">
+	<mx:Script>
+		<![CDATA[
+			import com.vizzuality.event.SendCommentEvent;
+		]]>
+	</mx:Script>
+	
+	<mx:Metadata>
+		    [Event(name="changeComment", type="com.vizzuality.event.SendCommentEvent")]
+	</mx:Metadata>
+	
+	<mx:TextArea id="textArea" text="" change="dispatchEvent(new SendCommentEvent('changeComment',textArea.text))" left="10" 
+		right="10" bottom="10" top="10" fontSize="12" fontFamily="Verdana" color="#747550"/>
+</mx:Canvas>

@@ -4,6 +4,8 @@
         
         <mx:Script>
                 <![CDATA[
+                	import com.vizzuality.dao.DataAccessObject;
+                	import com.vizzuality.event.SendCommentEvent;
 					import com.vizzuality.components.TileListFlickTagger;
 					import com.vizzuality.dao.FlickrUploadService;
 					import com.vizzuality.event.GetTaxonEvent;
@@ -30,6 +32,7 @@
                     [Bindable]private var group: Boolean;
                     private var outerList:TileListFlickTagger;
                     private var imagesDir:String = File.applicationStorageDirectory.resolvePath("images").nativePath;
+                    private var dao: DataAccessObject= new DataAccessObject();
                     
                                   
                     
@@ -40,7 +43,7 @@
 						  	 (value.lat !=null && value.lat!=undefined && value.lat!="undefined")?geotagged = true:geotagged = false;
 						  	 
 						  	 // Scientific Name?
-						  	 (value.scientific == null || value.scientific == "Not recognized" || value.scientific == undefined)?textInput = "Not recognized":textInput = value.scientific;						  	 
+						  	 (value.scientific == null || value.scientific == "Not identified" || value.scientific == undefined)?textInput = "Not identified":textInput = value.scientific;						  	 
 						  	 
 						  	 // Single <> Group && Selected <> Unselected
 						  	 if (value.group_total != undefined) {		
@@ -135,7 +138,7 @@
                     	data.editing = false;
                     	dispatchEvent(new Event("onFocusInputOut",true));
                     	if (scientificNameInput.text == "") {
-                    		scientificNameInput.text = "Not recognized";
+                    		scientificNameInput.text = "Not identified";
                     	}
                     }
                     
@@ -158,9 +161,16 @@
 
                     
                     private function changeScientificName():void {
-                        if (scientificNameInput.text == "Not recognized" && !uploading) {
+                        if (scientificNameInput.text == "Not identified" && !uploading) {
                                 scientificNameInput.text = "";
                         }
+                    }
+                    
+                    
+                    private function onDoubleClick(event:MouseEvent):void {
+                    	if (data.group_total != undefined && data.group_total>0) {
+                    		(this.parentDocument as ImagesContainer).showGroupPhotos(data.id);
+                    	}
                     }
                     
                     
@@ -174,6 +184,9 @@
                     	} else {
                     		(this.parentDocument as ImagesContainer).deleteGroupImages(this.data.id);
                     	}
+                    	scientificNameInput.enabled = true;
+                    	deleteButton.visible = true;
+                    	flickrButton.visible = true;
                     }                       
                     
                     
@@ -192,6 +205,34 @@
                     	deleteConfirmation.visible = false;
                     }
                     
+                    
+                    
+                    /* Edit comment functions */
+                    
+                    private function onEditButton():void {
+                    	if (!commentArea.visible) {
+                    		scientificNameInput.enabled = false;
+                    		deleteButton.visible = false;
+                    		flickrButton.visible = false;
+                    		commentArea.visible = true;
+                    	} else {
+                    		scientificNameInput.enabled = true;
+                    		deleteButton.visible = true;
+                    		flickrButton.visible = true;
+                    		commentArea.visible = false;
+                    	}
+                    }
+                    
+                    private function onChangeComment(event:SendCommentEvent):void {
+                    	this.data.comment = event.comment;
+                    	if (data.group_total != undefined && data.group_total>0) {
+                    		dao.openConnection("UPDATE groups SET comment='"+event.comment+"' WHERE path='"+path+"'");
+                    	} else {
+                    		dao.openConnection("UPDATE photos SET comment='"+event.comment+"' WHERE path='"+path+"'");
+                    	}
+                    }
+                    
+                    
 		            
                 ]]>
         </mx:Script>
@@ -199,18 +240,19 @@
                       
         
         <mx:Canvas id="itemSpace" height="157" width="197" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" top="0"
-        	styleName="{canvasBkg}" backgroundSize="100%">
-			<mx:Image source="{path}" verticalCenter="0" horizontalCenter="0"/>
+        	styleName="{canvasBkg}" backgroundSize="100%" doubleClick="onDoubleClick(event)" doubleClickEnabled="true">
+			<mx:Image source="{path}" verticalCenter="0" horizontalCenter="0" />
         </mx:Canvas>
         <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0" visible="{geotagged}"/>
-        <mx:Label text="Not recognized" horizontalCenter="0" bottom="0" color="#363636" fontSize="13" fontFamily="Arial" fontWeight="bold" visible="{textInput=='Not recognized'}"/>
         <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName(event)" textAlign="center" maxWidth="181" 
         	backgroundAlpha="{selected?1:0}" height="24" styleName="titlePhotoTxtInput" horizontalCenter="0" bottom="0" paddingTop="2" paddingBottom="2" 
-        	enabled="{!uploading}" color="{(textInput=='Not recognized')?0x000000:0xBBBBBB}" focusOut="onInputFocusOut()"/>
+        	enabled="{!uploading}" color="{(textInput=='Not identified')?0x666666:0xBBBBBB}" focusOut="onInputFocusOut()"/>
 		<mx:Button label="" fontSize="10" click="uploadImage()" width="28" id="flickrButton" height="28" visible="{!uploading}" x="10" y="0" alpha="{selected?1:0}" styleName="uploadGreenBtn"
 			buttonMode="true" mouseChildren="false" useHandCursor="true"/>
         <mx:Button label="" fontSize="10" click="onDeleteButton()" width="28" id="deleteButton" height="28" visible="{!uploading}" x="180" y="0" alpha="{selected?1:0}" 
         	styleName="deleteRedBtn" buttonMode="true" mouseChildren="false" useHandCursor="true"/>  
+        <mx:Button label="" click="onEditButton()" width="28" id="editButton" height="28" visible="{!uploading}" x="180" y="130" alpha="{selected?1:0}" 
+        	styleName="deleteRedBtn" buttonMode="true" mouseChildren="false" useHandCursor="true"/>
         	
         <mx:Canvas id="loading" verticalCenter="-8" horizontalCenter="0" width="86" height="86" visible="{uploading}" styleName="spinnerBkg" horizontalScrollPolicy="off" 
         	verticalScrollPolicy="off">
@@ -219,7 +261,9 @@
         </mx:Canvas>
         
         <components1:DeleteConfirmation id="deleteConfirmation" verticalCenter="-15" kind="{(group)?'group':'image'}" 
-        	visible="false" deleteImages="eraseImage()" cancelDelete="onCancelDelete()"  horizontalCenter="0"/>     	
+        	visible="false" deleteImages="eraseImage()" cancelDelete="onCancelDelete()"  horizontalCenter="0"/>
+        	
+       	<components1:NotesComponent id="commentArea" verticalCenter="-15" visible="false" horizontalCenter="0" changeComment="onChangeComment(event)"/>	
         	
         
 </mx:Canvas>

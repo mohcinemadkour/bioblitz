@@ -68,12 +68,14 @@ package com.vizzuality.dao
 			trace("SAVING TO FT");
 			Application.application.uploadingStatus = "Fusioning...";
 		   var obj:Object = new Object();
-		   var scientific:String = (observationData.taxon!=null && observationData.taxon!="Not recognized")?observationData.taxon:"";
+		   var scientific:String = (observationData.taxon!=null && observationData.taxon!="Not identified")?observationData.taxon:"";
 		   var takenDate: String = (observationData.timestamp!=null && observationData.timestamp!=undefined)?DateUtil.toW3CDTF(observationData.timestamp):"";
 		   var lat:String = (observationData.lat!=null)?observationData.lat:"";
 		   var lon:String = (observationData.lon!=null)?observationData.lon:"";
+		   var comment:String = (observationData.comment!=null)?observationData.comment:"";
+		   
 		   obj.sql = URLEncoding.decode("INSERT INTO 248798 (scientificName,latitude,longitude," +
-			   "observedBy,recordedBy,identifiedBy,dateTime,associatedMedia,recording_app) VALUES ('"+
+			   "observedBy,recordedBy,identifiedBy,dateTime,associatedMedia,recording_app,occurrenceRemarks) VALUES ('"+
 				scientific+"','"+
 				lat+"','"+
 				lon+"','"+
@@ -81,7 +83,9 @@ package com.vizzuality.dao
 		   		FlickrAuthorizationSettings.accountName +"','"+
 		   		FlickrAuthorizationSettings.accountName +"','"+
 		   		takenDate +"','"+
-		   		observationData.pathString+"','flickrtagger')");
+		   		observationData.pathString+"','"+
+		   		comment +"','"+
+		   		"'flickrtagger')");
 		   		trace(obj.sql);
 			
 		   var userRequest: HTTPService = new HTTPService();
@@ -105,7 +109,7 @@ package com.vizzuality.dao
 			observationData = _observationData;
 			observationData.pathString = "";
 			var tag:String = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
-			if (observationData.taxon!=null && observationData.taxon!="Not recognized") {
+			if (observationData.taxon!=null && observationData.taxon!="Not identified") {
 				tag = tag + ",bioblitz2010:scientificName=\""+ observationData.taxon +"\"";
 			}
 			sendImageFlickr(tag, _observationData.path);
@@ -130,7 +134,7 @@ package com.vizzuality.dao
 				Application.application.principalView.imagesState.deleteGroup(observationData.group_id);
 			} else {
 				var tag:String = "bioblitz2010:author=\""+FlickrAuthorizationSettings.accountName+"\",bioblitz2010:source=flickrtagger";
-				if (observationData.taxon!=null && observationData.taxon!="Not recognized") {
+				if (observationData.taxon!=null && observationData.taxon!="Not identified") {
 					tag = tag + ",bioblitz2010:scientificName=\""+ observationData.taxon +"\"";
 				}
 				sendImageFlickr(tag, observationData.images[0].path);
@@ -153,7 +157,7 @@ package com.vizzuality.dao
 			service.secret = FlickrAuthorizationSettings.flickrAPISecret;
 			service.token = FlickrAuthorizationSettings.authToken;
 			var uploader:Upload = new Upload(service);
-			uploader.upload(imageFile,((observationData.taxon!=null && observationData.taxon!="Not recognized")?observationData.taxon:""),"Image uploaded at TDWGBioBlitz 2010",tag,true);
+			uploader.upload(imageFile,((observationData.taxon!=null && observationData.taxon!="Not identified")?observationData.taxon:""),"Image uploaded at TDWGBioBlitz 2010 - " + observationData.comment,tag,true);
 		}
 		
 		
