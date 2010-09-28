@@ -52,9 +52,9 @@
 
 		function getNextObservationForIdentification() {
 
-        var randomRecord = Math.floor(Math.random()*30);
+        var randomRecord = Math.floor(Math.random()*2);
         //Here we have to check if there is no pending images and tell them THANKS but come back later.
-        sql="select ROWID,observedBy,dateTime,latitude,longitude,occurrenceRemarks,verbatimLocality,zoomitId from "+ft_occurrence_table+" WHERE zoomitId not equal to '' ORDER BY numIdentifications ASC OFFSET "+randomRecord+" LIMIT 1";
+        sql="select ROWID,observedBy,dateTime,latitude,longitude,occurrenceRemarks,verbatimLocality,zoomit_ID as zoomitId from "+ft_occurrence_table+" WHERE zoomit_ID not equal to '' ORDER BY numIdentifications ASC OFFSET "+randomRecord+" LIMIT 1";
           $.ajax({
   	        url: "http://tables.googlelabs.com/api/query?sql="+escape(sql),
   	        dataType: "jsonp",
