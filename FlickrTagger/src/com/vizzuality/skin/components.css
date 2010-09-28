@@ -643,6 +643,6 @@ Label.txtHelpStepNumberShadow {
 }
 
 .postit{
-	background-image:Embed(source="components_skin2.swf", symbol="postit_bkg");
-	border-style: none;
+	background-image: Embed(source="components_skin2.swf", symbol="postit_bkg");
 }
+
