@@ -236,12 +236,11 @@
                     
                     
                     private function showPosition(event:MouseEvent):void {
-                    	imageMap.source = "http://maps.google.com/maps/api/staticmap?center=63.259591,-144.667969&zoom=14&size=300x300&markers=color:blue|label:S|63.259591,-144.667969&sensor=true";
-		                PopUpManager.addPopUp(imageMap,this, true);
+                    	imageMap.source = "http://maps.google.com/maps/api/staticmap?center="+data.lat+","+data.lon+"&zoom=10&size=300x300\&markers=color:blue|label:S|"+data.lat+","+data.lon+"&sensor=false";
+		                PopUpManager.addPopUp(imageMap,this,true);
                     }
                     
                     
-		            
                 ]]>
         </mx:Script>
         
@@ -249,7 +248,7 @@
         
         <mx:Canvas id="itemSpace" height="157" width="197" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalCenter="0" top="0"
         	styleName="{canvasBkg}" backgroundSize="100%" doubleClick="onDoubleClick(event)" doubleClickEnabled="true">
-			<mx:Image source="{path}" verticalCenter="0" horizontalCenter="0"  />
+			<mx:Image source="{path}" verticalCenter="0" horizontalCenter="0"/>
         </mx:Canvas>
         <mx:Image source="@Embed('com/vizzuality/assets/geotagged.png')"  width="28" height="25" y="120" horizontalCenter="0" visible="{geotagged}" click="showPosition(event)"/>
         <mx:TextInput id="scientificNameInput" text="{textInput}" click="changeScientificName()" change="updateScientificName(event)" textAlign="center" maxWidth="181" 

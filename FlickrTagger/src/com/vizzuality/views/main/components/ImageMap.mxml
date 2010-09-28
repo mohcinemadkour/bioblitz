@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" verticalScrollPolicy="off" horizontalScrollPolicy="off" width="300" height="300"
-	 cornerRadius="4" borderColor="#CCCCCC" borderThickness="2" borderStyle="solid" backgroundColor="#333333">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" verticalScrollPolicy="off" horizontalScrollPolicy="off" width="100%" height="100%"
+	 backgroundColor="#333333">
 
 
 	
@@ -12,32 +12,16 @@
 			
 			[Bindable] public var source: String;
 			
-			private function init():void {
-				image.addEventListener(Event.COMPLETE,onCompleteImage);
-				
+			private function onCompleteImage(ev: Event): void {					
+				this.x = (Application.application.width/2) - (300/2);
+				this.y = (Application.application.height/2) - (300/2); 
 			}
-			
-			private function onCompleteImage(ev: Event): void {
-				if (image.contentHeight) {
-					if (image.contentHeight>Application.application.height - 20) {
-						this.height = Application.application.height - 20;
-					} else {
-						this.height = image.contentHeight;						
-					}
-					
-					if (image.contentWidth>Application.application.width - 20) {
-						this.width = Application.application.width - 20;
-					} else {
-						this.width = image.contentWidth;						
-					}
-					
-					this.x = (Application.application.width/2) - (this.width/2);
-					this.y = (Application.application.height/2) - (this.height/2); 
-				}
-			}
-			
 		]]>
 	</mx:Script>
 	
-	<mx:Image id="image" source="{source}"  width="100%" height="100%" click="PopUpManager.removePopUp(this);"/>
+	<mx:Canvas cornerRadius="0" borderColor="#CCCCCC" borderThickness="2" borderStyle="solid" width="300" height="300" verticalCenter="0" horizontalCenter="0" 
+		horizontalScrollPolicy="off" verticalScrollPolicy="off" id="canvas">
+		<mx:Image id="image" source="{source}"  width="300" height="300" click="PopUpManager.removePopUp(this);" verticalCenter="0" horizontalCenter="0"
+			addedToStage="onCompleteImage(event)"/>
+	</mx:Canvas>
 </mx:Canvas>
