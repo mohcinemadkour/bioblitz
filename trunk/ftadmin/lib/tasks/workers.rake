@@ -102,6 +102,9 @@ namespace :workers do
         info.tags.each do |tag|
           if(tag.raw.include?("taxonomy:binomial"))
             scientificName = tag.raw.gsub("taxonomy:binomial=","")
+            if(tag.raw=="taxonomy:binomial")
+              scientificName=""
+            end
           end
           if(tag.raw.include?("taxonomy:genus"))
             genus = tag.raw.gsub("taxonomy:genus=","")
@@ -127,10 +130,14 @@ namespace :workers do
                                    
         end 
 
-        puts observedBy
         if(observedBy=='') 
           observedBy = info.owner.realname.gsub(/'/, "\\\\'")
         end
+        if(recordedBy=='') 
+          recordedBy = info.owner.realname.gsub(/'/, "\\\\'")
+        end        
+
+        puts (scientificName + "  -   " + observedBy)        
         
         if (info.respond_to?(:location) && info.location.respond_to?(:latitude))
           latitude= info.location.latitude
