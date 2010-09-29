@@ -84,14 +84,9 @@ namespace :workers do
     FlickRaw.shared_secret="55852420f91848dd"
     
     flickrpics = flickr.photos.search(
-                            :privacy_filter=>"1",
-                            :accuracy=>"1",
-                            :safe_search=>"1",
-                            :content_type=>"1",
                             :group_id=>"1531186@N21",
-                            :per_page=>200,
-                            :extras=>"url_l",
-                            :has_geo=>"1")
+                            :per_page=>500,
+                            :extras=>"url_l")
                             
     flickrpics.each do |pic|
       if(pic.respond_to?(:url_l))
@@ -101,6 +96,9 @@ namespace :workers do
         genus=''
         family=''
         common=''
+        observedBy=''
+        recordedBy=''
+        identifiedby=''
         info.tags.each do |tag|
           if(tag.raw.include?("taxonomy:binomial"))
             scientificName = tag.raw.gsub("taxonomy:binomial=","")
@@ -113,16 +111,36 @@ namespace :workers do
           end   
           if(tag.raw.include?("taxonomy:common"))
             common = tag.raw.gsub("taxonomy:common=","")
-          end                           
+          end    
+
+          if(tag.raw.include?("dwc:observedby"))
+            observedBy = tag.raw.gsub("dwc:observedby=","")
+          end
+          
+          if(tag.raw.include?("dwc:recordedby"))
+            recordedBy = tag.raw.gsub("dwc:recordedby=","")
+          end
+          
+          if(tag.raw.include?("dwc:identifiedby"))
+            identifiedby = tag.raw.gsub("dwc:identifiedby=","")
+          end                              
+                                   
         end 
-        puts scientificName
+
+        puts observedBy
+        if(observedBy=='') 
+          observedBy = info.owner.realname.gsub(/'/, "\\\\'")
+        end
+        
         if (info.respond_to?(:location) && info.location.respond_to?(:latitude))
           latitude= info.location.latitude
           longitude=info.location.longitude
         else
-          latitude="null"
-          longitude="null"
+          latitude="''"
+          longitude="''"
         end
+        
+        
         
         #first check if the image is not already on FT
         sql="SELECT ROWID from #{config['ft_occurrence_table']} WHERE associatedMedia matches '#{pic_url}'"
@@ -133,9 +151,9 @@ namespace :workers do
           scientificName = '#{scientificName.gsub(/'/, "\\\\'")}',
           latitude = #{latitude},
           longitude = #{longitude},
-          observedBy = '#{info.owner.realname.gsub(/'/, "\\\\'")}',
-          recordedBy = '#{info.owner.realname.gsub(/'/, "\\\\'")}',
-          identifiedBy = '#{info.owner.realname.gsub(/'/, "\\\\'")}',
+          observedBy = '#{observedBy}',
+          recordedBy = '#{recordedBy}',
+          identifiedBy = '#{identifiedby}',
           dateTime = '#{info.dates.taken}',
           occurrenceRemarks = '#{info.description.gsub(/'/, "\\\\'")}',
           genus = '#{genus.gsub(/'/, "\\\\'")}',
@@ -159,8 +177,7 @@ namespace :workers do
           '#{family.gsub(/'/, "\\\\'")}',
           '#{common.gsub(/'/, "\\\\'")}')"
         end
-        ft.sql_post(sql)
-      
+        #puts sql
       end
     end                        
     
