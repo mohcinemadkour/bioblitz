@@ -105,7 +105,7 @@
 	 	zoomOut.style.margin = "0";
 		zoomOut.style.top = '60px';
 		zoomOut.style.left = '0px';
-	 	zoomOut.style.background = "url(../images/zoomOut.png) no-repeat 0 0";
+	 	zoomOut.style.background = "url(../images/zoomout.png) no-repeat 0 0";
 	 	zoomOut.style.height = "48px";
 	 	zoomOut.style.width = "48px";
 		$(zoomOut).hover(function(ev){
