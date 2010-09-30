@@ -131,13 +131,17 @@ namespace :workers do
         end 
 
         if(observedBy=='') 
-          observedBy = info.owner.realname.gsub(/'/, "\\\\'")
+          if(recordedBy!='')
+            observedBy=recordedBy
+          else
+            observedBy = info.owner.realname.gsub(/'/, "\\\\'")
+          end
         end
         if(recordedBy=='') 
           recordedBy = info.owner.realname.gsub(/'/, "\\\\'")
         end        
 
-        puts (scientificName + "  -   " + observedBy)        
+        #puts (scientificName + "  -   " + recordedBy)        
         
         if (info.respond_to?(:location) && info.location.respond_to?(:latitude))
           latitude= info.location.latitude
@@ -185,6 +189,7 @@ namespace :workers do
           '#{common.gsub(/'/, "\\\\'")}')"
         end
         #puts sql
+        ft.sql_post(sql)
       end
     end                        
     
