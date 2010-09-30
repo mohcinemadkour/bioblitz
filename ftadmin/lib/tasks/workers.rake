@@ -99,6 +99,8 @@ namespace :workers do
         observedBy=''
         recordedBy=''
         identifiedby=''
+        latitude = ''
+        longitude = ''        
         info.tags.each do |tag|
           if(tag.raw.include?("taxonomy:binomial"))
             scientificName = tag.raw.gsub("taxonomy:binomial=","")
@@ -126,7 +128,18 @@ namespace :workers do
           
           if(tag.raw.include?("dwc:identifiedby"))
             identifiedby = tag.raw.gsub("dwc:identifiedby=","")
-          end                              
+          end       
+            
+          if(tag.raw.include?("dc:creator"))
+            recordedBy = tag.raw.gsub("dc:creator=","")
+            observedBy = tag.raw.gsub("dc:creator=","")
+          end      
+ 
+          if(tag.raw.include?("geo:lat"))
+            latitude = tag.raw.gsub("geo:lat=","")
+            longitude = tag.raw.gsub("geo:lon=","")
+          end          
+                         
                                    
         end 
 
